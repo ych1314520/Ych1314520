@@ -11,119 +11,117 @@
     color:#fff;
     font-family:sans-serif;
     text-align:center;
-    padding:40px 20px;
+    padding:40px 20px 120px;
     margin:0;
     min-height:100vh;
     overflow-x:hidden;
   }
 
-  h1{
-    font-size:34px;
-    margin-bottom:8px;
-    letter-spacing:2px;
-  }
+  h1{font-size:34px;margin-bottom:8px;letter-spacing:2px;}
+  .sub{color:#888;font-size:15px;margin-bottom:60px;}
 
-  .sub{
-    color:#888;
-    font-size:15px;
-    margin-bottom:60px;
-  }
-
-  .box{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:18px;
-  }
+  .box{display:flex;flex-direction:column;align-items:center;gap:18px;}
 
   .btn{
-    width:86%;
-    max-width:360px;
-    padding:22px 18px;
-    border:0;
-    border-radius:18px;
-    font-size:20px;
-    font-weight:700;
-    color:#fff;
-    cursor:pointer;
-    opacity:0;
-    transform:translateY(80px);
-    animation:rise 0.8s ease forwards;
-    transition:.15s;
+    width:86%;max-width:360px;padding:22px 18px;border:0;border-radius:18px;
+    font-size:20px;font-weight:700;color:#fff;cursor:pointer;
+    opacity:0;transform:translateY(80px);
+    animation:rise 0.8s ease forwards;position:relative;overflow:hidden;transition:.15s;
+  }
+  .btn:active{transform:translateY(0) scale(.98);}
+  .btn::before,.btn::after{content:'';position:absolute;inset:-50%;z-index:0;pointer-events:none;}
+
+  /* 抖音红系 */
+  .dy::before{
+    background:conic-gradient(from 0deg,#fe2c55,#ff445e,#e6213d,#ff6a88,#fe2c55,#ff1744,#c5002b,#fe2c55);
+    filter:blur(28px) saturate(200%);animation:slimeA 3.2s linear infinite;
+  }
+  .dy::after{
+    background:conic-gradient(from 160deg,#ff0a44,#fe2c55,#ff8a9d,#e6213d,#ff445e,#b8002a,#ff6a88,#ff0a44);
+    filter:blur(22px) saturate(190%);animation:slimeB 4.5s linear infinite reverse;
+  }
+  .dy-wash{
+    position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 120%,rgba(254,44,85,.5),transparent 55%),
+                radial-gradient(circle at 50% -20%,rgba(255,106,136,.25),transparent 50%);
+    mix-blend-mode:screen;z-index:0;pointer-events:none;animation:dyWash 3.5s ease-in-out infinite alternate;
+  }
+  @keyframes dyWash{0%{opacity:.8;transform:scale(1)}100%{opacity:1;transform:scale(1.05)}}
+
+  /* QQ蓝系 */
+  .qq::before{
+    background:conic-gradient(from 0deg,#009cff,#00d4ff,#006cff,#00fff0,#008cff,#005bff,#00b8ff,#009cff);
+    filter:blur(30px) saturate(220%) brightness(1.05);animation:slimeA 3.6s linear infinite;
+  }
+  .qq::after{
+    background:conic-gradient(from 210deg,#12b7f5,#4fc3f7,#006dff,#00eaff,#2b6cff,#00ffd0,#12b7f5);
+    filter:blur(22px) saturate(210%);animation:slimeB 5s linear infinite reverse;
+  }
+  .qq-wash{
+    position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 120%,rgba(0,150,255,.45),transparent 55%),
+                radial-gradient(circle at 50% -20%,rgba(0,255,220,.18),transparent 50%);
+    mix-blend-mode:screen;z-index:0;pointer-events:none;animation:qqWash 4s ease-in-out infinite alternate;
+  }
+  @keyframes qqWash{0%{opacity:.85;transform:scale(1)}100%{opacity:1;transform:scale(1.06)}}
+
+  @keyframes slimeA{
+    0%{transform:rotate(0deg) scale(1)}25%{transform:rotate(90deg) scale(1.12)}
+    50%{transform:rotate(180deg) scale(.92)}75%{transform:rotate(270deg) scale(1.06)}100%{transform:rotate(360deg) scale(1)}
+  }
+  @keyframes slimeB{
+    0%{transform:rotate(0deg) scale(1.1)}33%{transform:rotate(-120deg) scale(.95)}
+    66%{transform:rotate(-240deg) scale(1.15)}100%{transform:rotate(-360deg) scale(1.1)}
   }
 
-  .btn:active{
-    transform:translateY(0) scale(.98);
-  }
+  .btn span.label{position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.5);}
 
-  .dy{
-    background:linear-gradient(135deg,#fe2c55,#ff6a88);
-    animation-delay:.25s;
-  }
+  .dy{animation-delay:.25s;box-shadow:inset 0 0 28px rgba(254,44,85,.35),0 6px 22px rgba(254,44,85,.18);}
+  .qq{animation-delay:.55s;box-shadow:inset 0 0 28px rgba(0,120,255,.35),0 6px 22px rgba(0,90,255,.18);}
 
-  .qq{
-    background:linear-gradient(135deg,#12b7f5,#4fc3f7);
-    animation-delay:.55s;
-  }
+  @keyframes rise{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:translateY(0)}}
 
-  @keyframes rise{
-    from{opacity:0;transform:translateY(80px);}
-    to{opacity:1;transform:translateY(0);}
-  }
-
-  .tip{
-    margin-top:36px;
-    font-size:12px;
-    color:#555;
-    opacity:0;
-    animation:fade 1s ease .9s forwards;
-  }
-
+  .tip{margin-top:36px;font-size:12px;color:#555;opacity:0;animation:fade 1s ease .9s forwards;}
   @keyframes fade{to{opacity:1}}
 
-  /* 弹层通用 */
+  /* 底部去听歌按钮 */
+  .music-btn{
+    position:fixed;left:50%;bottom:28px;transform:translateX(-50%);
+    width:140px;padding:13px 0;border:1px solid #2a2a2a;border-radius:999px;
+    background:#111;color:#ff6a88;font-size:15px;font-weight:700;cursor:pointer;
+    z-index:10;transition:.15s;box-shadow:0 4px 18px rgba(0,0,0,.35);
+  }
+  .music-btn:active{transform:translateX(-50%) scale(.97);}
+
+  /* 弹层 */
   .panel{
-    margin-top:24px;
-    width:86%;
-    max-width:360px;
-    background:#161616;
-    border:1px solid #222;
-    border-radius:16px;
-    padding:18px;
-    display:none;
-    flex-direction:column;
-    gap:14px;
-    animation:fade .4s ease forwards;
+    margin-top:24px;width:86%;max-width:360px;background:#161616;border:1px solid #222;
+    border-radius:16px;padding:18px;display:none;flex-direction:column;gap:14px;animation:fade .4s ease forwards;
   }
-
-  .panel.show{
-    display:flex;
-  }
-
-  .panel button{
-    padding:14px;
-    border:0;
-    border-radius:12px;
-    font-size:16px;
-    font-weight:700;
-    color:#fff;
-    cursor:pointer;
-  }
-
+  .panel.show{display:flex;}
+  .panel button{padding:14px;border:0;border-radius:12px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;}
   .p-app{background:linear-gradient(135deg,#fe2c55,#ff6a88);}
   .p-scan{background:#222;color:#9ad;}
   .p-qq{background:linear-gradient(135deg,#12b7f5,#4fc3f7);}
   .p-close{background:#333;color:#aaa;font-size:14px;}
 
-  .qr{
-    background:#fff;
-    padding:10px;
-    border-radius:12px;
-    display:inline-block;
-    align-self:center;
-  }
+  .qr{background:#fff;padding:10px;border-radius:12px;display:inline-block;align-self:center;}
+  .qr img,.qr canvas{display:block;}
 
-  .qr img, .qr canvas{display:block;}
+  /* 自定义提示弹窗 */
+  .toast{
+    position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);
+    background:rgba(20,20,20,.96);border:1px solid #333;border-radius:18px;
+    padding:26px 22px;text-align:center;z-index:100;opacity:0;pointer-events:none;
+    transition:.18s;box-shadow:0 10px 40px rgba(0,0,0,.6);max-width:280px;
+  }
+  .toast.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
+  .toast p{margin:0 0 20px;font-size:16px;line-height:1.6;}
+  .toast button{
+    width:100%;padding:12px;border:0;border-radius:12px;font-size:15px;font-weight:700;
+    color:#fff;background:linear-gradient(135deg,#fe2c55,#ff6a88);cursor:pointer;
+  }
+  .toast .t-web{background:#222;margin-top:10px;color:#9ad;}
 </style>
 </head>
 <body>
@@ -132,11 +130,10 @@
 <div class="sub">ych_123678 · 3797197884</div>
 
 <div class="box">
-  <button class="btn dy" onclick="toggleDouyin()">抖音主页</button>
-  <button class="btn qq" onclick="toggleQQ()">QQ 加好友</button>
+  <button class="btn dy" onclick="toggleDouyin()"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
+  <button class="btn qq" onclick="toggleQQ()"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
 </div>
 
-<!-- 抖音选项面板 -->
 <div class="panel" id="dyPanel">
   <button class="p-app" onclick="openDouyinApp()">1. 跳转抖音（主页 / 加好友）</button>
   <button class="p-scan" onclick="showDouyinQR()">2. 扫码加好友</button>
@@ -144,7 +141,6 @@
   <button class="p-close" onclick="toggleDouyin()">关闭</button>
 </div>
 
-<!-- QQ 选项面板 -->
 <div class="panel" id="qqPanel">
   <button class="p-qq" onclick="openQQApp()">1. 跳转 QQ（资料卡 / 加好友）</button>
   <button class="p-scan" onclick="showQQQR()">2. 扫码加好友</button>
@@ -154,10 +150,49 @@
 
 <div class="tip">手机端点击自动唤起 App，未安装则跳转网页版</div>
 
-<!-- 二维码库（换了 fastly 节点） -->
+<button class="music-btn" onclick="goKugou()">去听歌</button>
+
+<!-- 未装酷狗的提示弹窗 -->
+<div class="toast" id="kgToast">
+  <p id="kgToastText">未检测到酷狗音乐<br>是否打开酷狗网页版？</p>
+  <button onclick="openKugouWeb()">打开酷狗网页版</button>
+  <button class="t-web" onclick="closeToast()">取消</button>
+</div>
+
 <script src="https://fastly.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-/* 抖音面板 */
+var KUGOU_WEB = 'http://m.kugou.com/weibo/?action=single&hash=17b8770dd34688d05c86e339700c99cc&chl=link&album_id=&p_speed=1.0&p_viper_dj=0&us=NjQ0NDc1OTc1&usm=fb24ad5e5836285c5fd75ca93fe72957&sruserid=644475975&kgsscty1=link';
+
+function goKugou(){
+  var timeout = 2000;       // 2秒内没唤起就认为没装
+  var t = Date.now();
+
+  // 先尝试唤起酷狗App（会弹"是否打开酷狗音乐"）
+  location.href = 'kugouplayer://';
+
+  var timer = setTimeout(function(){
+    // 如果页面还在这儿，说明没装酷狗，弹提示
+    document.getElementById('kgToast').classList.add('show');
+  }, timeout);
+
+  // 页面切到后台（被App唤起）就取消弹窗
+  document.addEventListener('visibilitychange', function handler(){
+    if(document.hidden){
+      clearTimeout(timer);
+      document.removeEventListener('visibilitychange', handler);
+    }
+  });
+}
+
+function openKugouWeb(){
+  closeToast();
+  location.href = KUGOU_WEB;
+}
+
+function closeToast(){
+  document.getElementById('kgToast').classList.remove('show');
+}
+
 function toggleDouyin(){
   document.getElementById('dyPanel').classList.toggle('show');
   document.getElementById('dyQr').style.display = 'none';
@@ -165,26 +200,16 @@ function toggleDouyin(){
 }
 
 function openDouyinApp(){
-  // 先试唤起抖音
   location.href = 'snssdk1128://user/profile/ych_123678';
-  // 没唤起就跳短链
-  setTimeout(function(){
-    location.href = 'https://v.douyin.com/cToozaNZf4s/';
-  }, 1200);
+  setTimeout(function(){ location.href = 'https://v.douyin.com/cToozaNZf4s/'; }, 1200);
 }
 
 function showDouyinQR(){
   var box = document.getElementById('dyQr');
-  box.style.display = 'inline-block';
-  box.innerHTML = '';
-  new QRCode(box, {
-    text: 'https://v.douyin.com/cToozaNZf4s/',
-    width: 180,
-    height: 180
-  });
+  box.style.display = 'inline-block';box.innerHTML = '';
+  new QRCode(box, { text:'https://v.douyin.com/cToozaNZf4s/', width:180, height:180 });
 }
 
-/* QQ面板 */
 function toggleQQ(){
   document.getElementById('qqPanel').classList.toggle('show');
   document.getElementById('qqQr').style.display = 'none';
@@ -193,20 +218,13 @@ function toggleQQ(){
 
 function openQQApp(){
   location.href = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
-  setTimeout(function(){
-    location.href = 'https://qm.qq.com/q/wTL90DbHqM';
-  }, 1200);
+  setTimeout(function(){ location.href = 'https://qm.qq.com/q/wTL90DbHqM'; }, 1200);
 }
 
 function showQQQR(){
   var box = document.getElementById('qqQr');
-  box.style.display = 'inline-block';
-  box.innerHTML = '';
-  new QRCode(box, {
-    text: 'https://qm.qq.com/q/wTL90DbHqM',
-    width: 180,
-    height: 180
-  });
+  box.style.display = 'inline-block';box.innerHTML = '';
+  new QRCode(box, { text:'https://qm.qq.com/q/wTL90DbHqM', width:180, height:180 });
 }
 </script>
 
