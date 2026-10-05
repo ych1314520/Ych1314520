@@ -14,7 +14,7 @@
     padding:40px 20px;
     margin:0;
     min-height:100vh;
-    overflow:hidden;
+    overflow-x:hidden;
   }
 
   h1{
@@ -67,14 +67,8 @@
   }
 
   @keyframes rise{
-    from{
-      opacity:0;
-      transform:translateY(80px);
-    }
-    to{
-      opacity:1;
-      transform:translateY(0);
-    }
+    from{opacity:0;transform:translateY(80px);}
+    to{opacity:1;transform:translateY(0);}
   }
 
   .tip{
@@ -85,9 +79,51 @@
     animation:fade 1s ease .9s forwards;
   }
 
-  @keyframes fade{
-    to{opacity:1}
+  @keyframes fade{to{opacity:1}}
+
+  /* 弹层通用 */
+  .panel{
+    margin-top:24px;
+    width:86%;
+    max-width:360px;
+    background:#161616;
+    border:1px solid #222;
+    border-radius:16px;
+    padding:18px;
+    display:none;
+    flex-direction:column;
+    gap:14px;
+    animation:fade .4s ease forwards;
   }
+
+  .panel.show{
+    display:flex;
+  }
+
+  .panel button{
+    padding:14px;
+    border:0;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:700;
+    color:#fff;
+    cursor:pointer;
+  }
+
+  .p-app{background:linear-gradient(135deg,#fe2c55,#ff6a88);}
+  .p-scan{background:#222;color:#9ad;}
+  .p-qq{background:linear-gradient(135deg,#12b7f5,#4fc3f7);}
+  .p-close{background:#333;color:#aaa;font-size:14px;}
+
+  .qr{
+    background:#fff;
+    padding:10px;
+    border-radius:12px;
+    display:inline-block;
+    align-self:center;
+  }
+
+  .qr img, .qr canvas{display:block;}
 </style>
 </head>
 <body>
@@ -96,19 +132,81 @@
 <div class="sub">ych_123678 · 3797197884</div>
 
 <div class="box">
-  <button class="btn dy" onclick="openDouyin()">抖音主页</button>
-  <button class="btn qq" onclick="openQQ()">QQ 资料卡</button>
+  <button class="btn dy" onclick="toggleDouyin()">抖音主页</button>
+  <button class="btn qq" onclick="toggleQQ()">QQ 加好友</button>
+</div>
+
+<!-- 抖音选项面板 -->
+<div class="panel" id="dyPanel">
+  <button class="p-app" onclick="openDouyinApp()">1. 跳转抖音（主页 / 加好友）</button>
+  <button class="p-scan" onclick="showDouyinQR()">2. 扫码加好友</button>
+  <div class="qr" id="dyQr" style="display:none"></div>
+  <button class="p-close" onclick="toggleDouyin()">关闭</button>
+</div>
+
+<!-- QQ 选项面板 -->
+<div class="panel" id="qqPanel">
+  <button class="p-qq" onclick="openQQApp()">1. 跳转 QQ（资料卡 / 加好友）</button>
+  <button class="p-scan" onclick="showQQQR()">2. 扫码加好友</button>
+  <div class="qr" id="qqQr" style="display:none"></div>
+  <button class="p-close" onclick="toggleQQ()">关闭</button>
 </div>
 
 <div class="tip">手机端点击自动唤起 App，未安装则跳转网页版</div>
 
+<!-- 二维码库（换了 fastly 节点） -->
+<script src="https://fastly.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-function openDouyin(){
-  location.href = 'https://v.douyin.com/SI-5KtAif4o/';
+/* 抖音面板 */
+function toggleDouyin(){
+  document.getElementById('dyPanel').classList.toggle('show');
+  document.getElementById('dyQr').style.display = 'none';
+  document.getElementById('qqPanel').classList.remove('show');
 }
 
-function openQQ(){
+function openDouyinApp(){
+  // 先试唤起抖音
+  location.href = 'snssdk1128://user/profile/ych_123678';
+  // 没唤起就跳短链
+  setTimeout(function(){
+    location.href = 'https://v.douyin.com/cToozaNZf4s/';
+  }, 1200);
+}
+
+function showDouyinQR(){
+  var box = document.getElementById('dyQr');
+  box.style.display = 'inline-block';
+  box.innerHTML = '';
+  new QRCode(box, {
+    text: 'https://v.douyin.com/cToozaNZf4s/',
+    width: 180,
+    height: 180
+  });
+}
+
+/* QQ面板 */
+function toggleQQ(){
+  document.getElementById('qqPanel').classList.toggle('show');
+  document.getElementById('qqQr').style.display = 'none';
+  document.getElementById('dyPanel').classList.remove('show');
+}
+
+function openQQApp(){
   location.href = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
+  setTimeout(function(){
+    location.href = 'https://qm.qq.com/q/wTL90DbHqM';
+  }, 1200);
+}
+
+function showQQQR(){
+  var box = document.getElementById('qqQr');
+  box.style.display = 'inline-block';
+  box.innerHTML = '';
+  new QRCode(box, {
+    text: 'https://qm.qq.com/q/wTL90DbHqM',
+    width: 180,
+    height: 180
+  });
 }
 </script>
 
