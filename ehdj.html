@@ -1,0 +1,1014 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MCTier 让 Windows 与 Android 跨网络组成虚拟局域网，集成语音小队、多媒体聊天、互动弹幕、文件夹共享、可调画质屏幕共享与远程协作。查看下载、快速上手和故障排查。">
+    <meta name="keywords" content="MCTier,虚拟局域网,通用组网,远程组网,局域网互访,EasyTier,远程控制,变声器,消息弹幕,屏幕共享,语音小队,公开大厅,游戏HUD,Minecraft联机,游戏快连,连接诊断">
+    <meta name="author" content="青云制作_彭明航">
+    <title>MCTier - 虚拟局域网通用组网工具</title>
+    <link rel="canonical" href="https://mctier.pmhs.top/">
+    <meta name="theme-color" content="#0d0f14">
+    <link rel="icon" type="image/png" href="images/MCTierIcon.png">
+    <link rel="stylesheet" href="style.css?v=20261001-copy-hover">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到正文 / Skip to content</a>
+    <nav class="navbar">
+      <a class="brand" href="#home" aria-label="MCTier 首页">
+        <img src="images/MCTierIcon.png" alt="MCTier">
+        <span>MCTier</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="展开或收起导航" aria-expanded="false" data-en="Menu" data-zh="
+        菜单
+      ">
+        菜单
+      </button>
+      <div class="nav-links">
+        <a href="#features" data-en="Features" data-zh="功能">功能</a>
+        <a href="#guide" data-en="Get started" data-zh="上手">上手</a>
+        <a href="#preview" data-en="Preview" data-zh="预览">预览</a>
+        <a href="#download" data-en="Download" data-zh="下载">下载</a>
+        <a href="#deploy" data-en="Self-host" data-zh="私有化">私有化</a>
+        <a href="#sponsor" data-en="Sponsor" data-zh="赞助">赞助</a>
+        <a href="#about" data-en="About" data-zh="关于">关于</a>
+        <a href="#faq" data-en="Help" data-zh="帮助">帮助</a>
+        <button class="lang-toggle" id="langToggle" type="button" aria-label="切换语言 / Switch language">EN</button>
+      </div>
+    </nav>
+
+    <main id="main-content">
+      <section id="home" class="hero">
+        <div class="hero-backdrop" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow" data-en="Universal virtual LAN networking tool" data-zh="
+            虚拟局域网通用组网工具
+          ">
+            虚拟局域网通用组网工具
+          </p>
+          <h1>MCTier</h1>
+          <p class="hero-lead" data-en="Bring PCs and phones into one lobby. Play across networks, talk with your team, share files and show your screen — all in one place." data-zh="
+            电脑与手机，连进同一个大厅。跨网络联机、语音沟通、传文件和分享屏幕，把分散的设备连接起来。
+          ">
+            电脑与手机，连进同一个大厅。跨网络联机、语音沟通、传文件和分享屏幕，把分散的设备连接起来。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#download" data-en="Download Now" data-zh="立即下载">立即下载</a>
+            <a class="button secondary" href="#preview" data-en="Screenshots" data-zh="运行预览图">运行预览图</a>
+            <a class="button secondary" href="#sponsor" data-en="Sponsor" data-zh="赞助支持">赞助支持</a>
+          </div>
+          <div class="platform-strip" aria-label="支持平台">
+            <span>Windows 10</span>
+            <span>Windows 11</span>
+            <span>Android 8.0+ · ARM64</span>
+            <span data-en="Cross-network" data-zh="跨网络组网">跨网络组网</span>
+          </div>
+          <p class="content-stamp" data-en="Feature guide for the 3.8.0 series · Updated September 30, 2026. Check the release page or download folder for the version actually available." data-zh="
+            功能说明按 3.8.0 系列整理 · 内容更新于
+            2026-09-30。下载文件的实际版本以发布页和网盘标注为准。
+          ">
+            功能说明按 3.8.0 系列整理 · 内容更新于
+            2026-09-30。下载文件的实际版本以发布页和网盘标注为准。
+          </p>
+        </div>
+      </section>
+
+      <section id="updates" class="section">
+        <div class="section-head">
+          <p class="eyebrow">WHAT’S NEW</p>
+          <h2 data-en="Recent improvements across both platforms" data-zh="近期完善，双端同步">近期完善，双端同步</h2>
+        </div>
+        <div class="update-grid">
+          <article class="update-card">
+            <h3 data-en="Faster everyday chat" data-zh="更顺手的聊天">更顺手的聊天</h3>
+            <p data-en="Built-in GIFs travel as compact IDs. Click a notification to copy, play or download. Outgoing messages show progress and failures." data-zh="
+              内置 GIF
+              按编号发送；点击弹幕即可复制、播放或下载。发送中的消息会显示状态，失败也能及时看见。
+            ">
+              内置 GIF
+              按编号发送；点击弹幕即可复制、播放或下载。发送中的消息会显示状态，失败也能及时看见。
+            </p>
+          </article>
+          <article class="update-card">
+            <h3 data-en="Choose your sharing quality" data-zh="画质按设备来选">画质按设备来选</h3>
+            <p data-en="Use 720p / 30 FPS on slower devices or connections, or raise resolution and frame rate on capable hardware. Both platforms remember your choice." data-zh="
+              低配和低带宽可选 720p / 30 FPS；高配可提高分辨率与帧率。两端都能设置，并记住上次选择。
+            ">
+              低配和低带宽可选 720p / 30 FPS；高配可提高分辨率与帧率。两端都能设置，并记住上次选择。
+            </p>
+          </article>
+          <article class="update-card">
+            <h3 data-en="Easier setup and troubleshooting" data-zh="更容易设置和排障">更容易设置和排障</h3>
+            <p data-en="Light and dark themes, an in-app color picker, log tools and a unified data folder make settings and troubleshooting easier." data-zh="
+              明暗主题、专用取色器、日志入口与统一数据目录，让常用设置和问题定位更直接。
+            ">
+              明暗主题、专用取色器、日志入口与统一数据目录，让常用设置和问题定位更直接。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="section-head">
+          <p class="eyebrow" data-en="Core Capabilities" data-zh="核心能力">核心能力</p>
+          <h2 data-en="A complete networking experience around virtual lobbies" data-zh="
+            围绕虚拟大厅做完整组网体验
+          ">
+            围绕虚拟大厅做完整组网体验
+          </h2>
+          <p data-en="From virtual networking to voice squads, files, screen, two-way remote control, voice changer, danmaku, a public lobby plaza, in-game HUD, Minecraft world discovery, game quick connect and diagnostics — everything you need for ad-hoc networking in one place." data-zh="
+            从虚拟网络到语音小队、文件、屏幕、双向远程控制、变声器、消息弹幕，再到公开大厅广场、游戏内
+            HUD、Minecraft 世界发现、游戏快连与连接诊断，把临时组网需要的能力集成在一起
+          ">
+            从虚拟网络到语音小队、文件、屏幕、双向远程控制、变声器、消息弹幕，再到公开大厅广场、游戏内
+            HUD、Minecraft 世界发现、游戏快连与连接诊断，把临时组网需要的能力集成在一起
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3 data-en="Virtual LAN" data-zh="虚拟局域网">虚拟局域网</h3>
+            <p data-en="Build a virtual LAN with EasyTier without a public IP. Direct connections are preferred; relays may be used when needed. Latency depends on your network and nodes." data-zh="
+              基于 EasyTier 建立虚拟网络。无需公网
+              IP，优先尝试直连；网络条件不允许时可能经过中继，实际延迟取决于线路与节点。
+            ">
+              基于 EasyTier 建立虚拟网络。无需公网
+              IP，优先尝试直连；网络条件不允许时可能经过中继，实际延迟取决于线路与节点。
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Cross-platform Lobbies" data-zh="跨端大厅">跨端大厅</h3>
+            <p data-en="Desktop and mobile can join the same lobby — enter quickly by scanning a QR code or copying an invite link." data-zh="
+              电脑端和手机端可以加入同一个大厅，扫码或复制邀请链接都能快速进入
+            ">
+              电脑端和手机端可以加入同一个大厅，扫码或复制邀请链接都能快速进入
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Real-time Voice" data-zh="实时语音">实时语音</h3>
+            <p data-en="Lobby voice and squads with microphone selection, mute and voice effects. Windows can use NVIDIA Broadcast / RTX Voice or AMD Noise Suppression virtual microphones." data-zh="
+              大厅内实时语音与语音小队，支持麦克风选择、静音和变声。Windows 可接入 NVIDIA Broadcast
+              / RTX Voice 或 AMD Noise Suppression 虚拟麦克风。
+            ">
+              大厅内实时语音与语音小队，支持麦克风选择、静音和变声。Windows 可接入 NVIDIA Broadcast
+              / RTX Voice 或 AMD Noise Suppression 虚拟麦克风。
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Folder Sharing" data-zh="文件夹共享">文件夹共享</h3>
+            <p data-en="Share resource packs, documents, tools or temporary files with lobby members, no more back-and-forth file transfers." data-zh="
+              把资源包、文档、工具或临时文件共享给同大厅成员，减少来回传文件的麻烦
+            ">
+              把资源包、文档、工具或临时文件共享给同大厅成员，减少来回传文件的麻烦
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Screen Sharing" data-zh="屏幕共享">屏幕共享</h3>
+            <p data-en="On Windows and Android, choose 720p, 1080p, 2K or 4K, 30/60/120 FPS and a bitrate limit. Multiple viewers are supported; actual quality depends on hardware and network conditions." data-zh="
+              Windows 和 Android 均可设置 720p、1080p、2K、4K，以及 30、60、120 FPS
+              和码率上限。支持多人观看，实际画质由设备与网络决定。
+            ">
+              Windows 和 Android 均可设置 720p、1080p、2K、4K，以及 30、60、120 FPS
+              和码率上限。支持多人观看，实际画质由设备与网络决定。
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Remote Control" data-zh="远程控制">远程控制</h3>
+            <p data-en="View and operate a device after the other person accepts. PC and phone collaboration is supported. Controlling Android requires screen-capture and accessibility permissions; available actions depend on the system." data-zh="
+              经对方同意后远程查看与操作设备，支持电脑与手机协作。Android
+              被控端需系统录屏和无障碍授权，操作范围取决于系统支持。
+            ">
+              经对方同意后远程查看与操作设备，支持电脑与手机协作。Android
+              被控端需系统录屏和无障碍授权，操作范围取决于系统支持。
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Built-in Voice Changer" data-zh="内置变声器">内置变声器</h3>
+            <p data-en="Real-time voice changing with presets like loli and uncle voices, making mic chat more fun — preview before you apply." data-zh="
+              实时语音变声，内置萝莉音、大叔音等多种音色，开麦聊天更有趣，应用前还能先试听
+            ">
+              实时语音变声，内置萝莉音、大叔音等多种音色，开麦聊天更有趣，应用前还能先试听
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Message Danmaku" data-zh="消息弹幕">消息弹幕</h3>
+            <p data-en="Click a notification to copy text, play a voice message, save the original image or download a file. Both platforms offer size, speed, opacity, track and color controls, including random colors." data-zh="
+              直接点击弹幕：文字复制、语音播放、图片保存原图、文件下载。双端可调字号、速度、透明度、轨道与颜色，支持每条随机颜色。
+            ">
+              直接点击弹幕：文字复制、语音播放、图片保存原图、文件下载。双端可调字号、速度、透明度、轨道与颜色，支持每条随机颜色。
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Lobby Chat Room" data-zh="大厅聊天室">大厅聊天室</h3>
+            <p data-en="Public and private chat with text, voice, images, animated emoji and files. Built-in emoji are prepared automatically and sent as compact IDs; images use lossless optimization and voice is encoded while recording." data-zh="
+              文字、语音、图片、GIF
+              表情与文件消息，支持公开聊天和私聊。内置表情自动准备、按编号传输；图片无损优化，语音边录边压缩。
+            ">
+              文字、语音、图片、GIF
+              表情与文件消息，支持公开聊天和私聊。内置表情自动准备、按编号传输；图片无损优化，语音边录边压缩。
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Public Lobby Plaza" data-zh="公开大厅广场">公开大厅广场</h3>
+            <p data-en="Hosts can publish a lobby to the plaza, so strangers can find it and join with one click — perfect for open rooms and finding teammates." data-zh="
+              房主可以把大厅公开到广场，陌生人也能在广场看到并一键加入，适合开放房间和找队友
+            ">
+              房主可以把大厅公开到广场，陌生人也能在广场看到并一键加入，适合开放房间和找队友
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Voice Squads" data-zh="语音小队">语音小队</h3>
+            <p data-en="Split members into squads so you only hear teammates in your own squad — easy grouped voice for multi-team play." data-zh="
+              把成员分到不同小队，只听同队成员的语音，轻松实现多队伍分组开黑
+            ">
+              把成员分到不同小队，只听同队成员的语音，轻松实现多队伍分组开黑
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Host Management" data-zh="房主管理">房主管理</h3>
+            <p data-en="Hosts can post a scrolling announcement, set a member cap, kick members, and publish or unpublish the lobby to the public plaza." data-zh="
+              房主可发布滚动公告、设置人数上限、踢出成员，并把大厅发布或下架到公开广场
+            ">
+              房主可发布滚动公告、设置人数上限、踢出成员，并把大厅发布或下架到公开广场
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="In-game HUD Overlay" data-zh="游戏内 HUD 浮层">游戏内 HUD 浮层</h3>
+            <p data-en="A pinned click-through overlay shows each teammate's latency, packet loss and who's talking while gaming — with mute, drag, opacity and scale controls." data-zh="
+              游戏中以置顶穿透浮窗显示每位队友的延迟、丢包和谁在说话，可静音、拖动、调透明度与缩放
+            ">
+              游戏中以置顶穿透浮窗显示每位队友的延迟、丢包和谁在说话，可静音、拖动、调透明度与缩放
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Minecraft World Discovery" data-zh="Minecraft 世界发现">Minecraft 世界发现</h3>
+            <p data-en="Scan Minecraft worlds opened by lobby members (MOTD/version/players/latency) and auto-inject them into your local LAN list to join without typing an IP." data-zh="
+              扫描大厅成员开放的 Minecraft 世界（MOTD/版本/人数/延迟），免输 IP
+              自动注入本机局域网列表一键加入
+            ">
+              扫描大厅成员开放的 Minecraft 世界（MOTD/版本/人数/延迟），免输 IP
+              自动注入本机局域网列表一键加入
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Game Quick Connect" data-zh="游戏快连">游戏快连</h3>
+            <p data-en="Built-in port presets for common multiplayer games, auto-generating a virtual IP:port direct address to copy in one click." data-zh="
+              内置常见联机游戏的端口预设，自动生成“虚拟 IP:端口”直连地址，一键复制
+            ">
+              内置常见联机游戏的端口预设，自动生成“虚拟 IP:端口”直连地址，一键复制
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Connection &amp; Network Diagnostics" data-zh="连接 / 网络诊断">连接 / 网络诊断</h3>
+            <p data-en="Aggregate members' direct/relay status, latency and packet loss into a score with tips; network diagnostics also check the virtual adapter, firewall, UDP ports and security-software blocking, with one-click firewall allow." data-zh="
+              聚合成员直连/中继、延迟与丢包给出评分与建议；网络诊断还能检测虚拟网卡、防火墙、UDP
+              端口与安全软件拦截，并支持一键放行
+            ">
+              聚合成员直连/中继、延迟与丢包给出评分与建议；网络诊断还能检测虚拟网卡、防火墙、UDP
+              端口与安全软件拦截，并支持一键放行
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Room Tools" data-zh="房间工具">房间工具</h3>
+            <p data-en="Built-in dice roller, countdown timer and a shared multi-user to-do list — great for tabletop games, draws and team task planning." data-zh="
+              内置掷骰子、倒计时与多人协同待办清单，方便跑团、抽签和团队任务安排
+            ">
+              内置掷骰子、倒计时与多人协同待办清单，方便跑团、抽签和团队任务安排
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Minecraft Helper" data-zh="Minecraft 联机助手">Minecraft 联机助手</h3>
+            <p data-en="Detect the Minecraft install path and version, provide an illustrated LAN multiplayer guide, and automatically disable LAN online-mode verification for mainstream launchers." data-zh="
+              检测 Minecraft
+              安装路径与版本，提供局域网联机图文指南，并可自动为主流启动器关闭局域网正版验证
+            ">
+              检测 Minecraft
+              安装路径与版本，提供局域网联机图文指南，并可自动为主流启动器关闭局域网正版验证
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Favorites &amp; Recents" data-zh="常用大厅与最近联机">常用大厅与最近联机</h3>
+            <p data-en="Save favorite lobbies for one-click fill, keep a history of recently joined lobbies and players you've played with, and favorite frequent teammates." data-zh="
+              收藏常用大厅一键填入，记录最近进入的大厅与一起玩过的玩家，还能收藏常用队友
+            ">
+              收藏常用大厅一键填入，记录最近进入的大厅与一起玩过的玩家，还能收藏常用队友
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Global Hotkeys" data-zh="全局快捷键">全局快捷键</h3>
+            <p data-en="Customizable hotkeys supporting push-to-talk, one-key mute and more, so you can control voice without leaving your game." data-zh="
+              自定义快捷键，支持按键说话、一键静音等操作，不用切出游戏也能控制语音
+            ">
+              自定义快捷键，支持按键说话、一键静音等操作，不用切出游戏也能控制语音
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Advanced Network Config" data-zh="高级网络配置">高级网络配置</h3>
+            <p data-en="Global and per-lobby advanced options (KCP/QUIC proxy, latency-first, P2P/hole-punching toggles) plus exit-node settings like SOCKS5 and port forwarding." data-zh="
+              提供全局与单大厅级高级参数（KCP/QUIC 代理、延迟优先、P2P/打洞开关等），以及
+              SOCKS5、端口转发等出口节点设置
+            ">
+              提供全局与单大厅级高级参数（KCP/QUIC 代理、延迟优先、P2P/打洞开关等），以及
+              SOCKS5、端口转发等出口节点设置
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Local Statistics" data-zh="本地数据统计">本地数据统计</h3>
+            <p data-en="Purely local stats for play time, join/host counts, active hours and a most-played-with ranking — never uploaded to any server." data-zh="
+              纯本地统计联机时长、加入/房主次数、活跃时段与常玩伙伴排行，绝不上报网络
+            ">
+              纯本地统计联机时长、加入/房主次数、活跃时段与常玩伙伴排行，绝不上报网络
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Minimize to Tray" data-zh="系统托盘后台运行">系统托盘后台运行</h3>
+            <p data-en="Minimize the desktop app to the system tray to keep it running quietly in the background, with an option to auto-hide to the tray on startup — voice and lobby stay online without taking up the taskbar." data-zh="
+              桌面端可最小化到系统托盘后台静默运行，还能设置启动后自动隐藏到托盘，语音与大厅保持在线又不占用任务栏
+            ">
+              桌面端可最小化到系统托盘后台静默运行，还能设置启动后自动隐藏到托盘，语音与大厅保持在线又不占用任务栏
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Self-hosting" data-zh="私有化部署">私有化部署</h3>
+            <p data-en="Run your own signaling server — ideal for users, teams or communities who want control over the connection entry and data boundary." data-zh="
+              支持自建信令服务，适合想掌控连接入口和数据边界的用户、团队或社群
+            ">
+              支持自建信令服务，适合想掌控连接入口和数据边界的用户、团队或社群
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Community &amp; custom nodes" data-zh="共享节点与自建节点">共享节点与自建节点</h3>
+            <p data-en="Default order: Weiai Xiamen, Haibo mainland China, Haibo US. Save custom nodes, browse or submit community nodes, and share connection settings through invitations." data-zh="
+              默认节点顺序为唯爱厦门、海波中国大陆、海波美国。支持保存自定义节点、浏览和投稿共享节点；邀请信息同步连接配置。
+            ">
+              默认节点顺序为唯爱厦门、海波中国大陆、海波美国。支持保存自定义节点、浏览和投稿共享节点；邀请信息同步连接配置。
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3 data-en="Logs &amp; local data" data-zh="日志与本地数据">日志与本地数据</h3>
+            <p data-en="View or export logs from settings. Windows configuration, logs and caches live under Local/com.mctier.app; Android uses its application sandbox." data-zh="
+              设置中查看或导出日志。Windows 配置、日志与缓存统一收纳在 Local/com.mctier.app；Android
+              数据由系统沙盒管理。
+            ">
+              设置中查看或导出日志。Windows 配置、日志与缓存统一收纳在 Local/com.mctier.app；Android
+              数据由系统沙盒管理。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="guide" class="section">
+        <div class="section-head">
+          <p class="eyebrow">GET STARTED</p>
+          <h2 data-en="Three steps to your virtual LAN" data-zh="三步进入同一个局域网">三步进入同一个局域网</h2>
+        </div>
+        <ol class="getting-started">
+          <li>
+            <h3 data-en="Install and check your environment" data-zh="安装并完成环境检查">安装并完成环境检查</h3>
+            <p data-en="Install the client for your platform. Windows uses native microphone and screen capture, without browser microphone prompts; Windows privacy settings still apply. On Android, allow the VPN connection and grant microphone or screen capture access when needed." data-zh="
+              选择对应平台的客户端。Windows 使用原生麦克风和屏幕捕获，不弹出浏览器麦克风授权，仍遵循系统隐私设置。Android 允许创建 VPN 连接，并在使用时授权麦克风或屏幕录制。
+            ">
+              选择对应平台的客户端。Windows 使用原生麦克风和屏幕捕获，不弹出浏览器麦克风授权，仍遵循系统隐私设置。Android 允许创建 VPN 连接，并在使用时授权麦克风或屏幕录制。
+            </p>
+          </li>
+          <li>
+            <h3 data-en="Create a lobby and invite others" data-zh="创建大厅，发出邀请">创建大厅，发出邀请</h3>
+            <p data-en="Set a lobby name, password and node, then share its QR code or invitation link. Join with matching connection settings and wait for a virtual IP." data-zh="
+              房主设置大厅名、密码和节点，把二维码或邀请链接发给朋友。加入方使用相同的连接配置，等待虚拟
+              IP 分配完成。
+            ">
+              房主设置大厅名、密码和节点，把二维码或邀请链接发给朋友。加入方使用相同的连接配置，等待虚拟
+              IP 分配完成。
+            </p>
+          </li>
+          <li>
+            <h3 data-en="Start playing and collaborating" data-zh="开始联机与协作">开始联机与协作</h3>
+            <p data-en="Use the host’s virtual IP and game port or a game quick-connect preset. Open chat, join a voice squad, share a folder or start a screen-sharing session." data-zh="
+              按游戏要求使用房主的虚拟 IP
+              与端口，或使用游戏快连。进入聊天室、语音小队、文件夹共享或屏幕共享开始协作。
+            ">
+              按游戏要求使用房主的虚拟 IP
+              与端口，或使用游戏快连。进入聊天室、语音小队、文件夹共享或屏幕共享开始协作。
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="preview" class="section preview-section">
+        <p class="section-note" data-en="Screenshots illustrate the features; your installed version may look different." data-zh="
+          以下为功能预览，具体界面以当前安装版本为准。
+        ">
+          以下为功能预览，具体界面以当前安装版本为准。
+        </p>
+        <div class="section-head">
+          <p class="eyebrow" data-en="Screenshots" data-zh="运行预览">运行预览</p>
+          <h2 data-en="Desktop and mobile screenshots" data-zh="桌面端与手机端运行预览">桌面端与手机端运行预览</h2>
+          <p data-en="Unified theme across both platforms with a modern UI, for the best possible experience." data-zh="
+            双端主题统一，现代化界面设计，只为提供最佳的使用体验
+          ">
+            双端主题统一，现代化界面设计，只为提供最佳的使用体验
+          </p>
+        </div>
+
+        <div class="preview-block">
+          <div class="preview-title-row">
+            <h3 data-en="Windows" data-zh="Windows 端">Windows 端</h3>
+            <span data-en="Home, lobby, chat, files and settings" data-zh="主界面、大厅、聊天、文件与设置">主界面、大厅、聊天、文件与设置</span>
+          </div>
+          <div class="desktop-preview-grid">
+            <figure>
+              <img src="images/软件预览-主界面.png" alt="Windows 主界面" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Windows 主界面">
+              <figcaption data-en="Home" data-zh="主界面">主界面</figcaption>
+            </figure>
+            <figure>
+              <img src="images/软件预览-大厅界面.png" alt="Windows 大厅界面" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Windows 大厅界面">
+              <figcaption data-en="Lobby" data-zh="大厅界面">大厅界面</figcaption>
+            </figure>
+            <figure>
+              <img src="images/软件预览-聊天室.png" alt="Windows 聊天室" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Windows 聊天室">
+              <figcaption data-en="Chat Room" data-zh="聊天室">聊天室</figcaption>
+            </figure>
+            <figure>
+              <img src="images/软件预览-文件夹共享.png" alt="Windows 文件夹共享" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Windows 文件夹共享">
+              <figcaption data-en="Folder Sharing" data-zh="文件夹共享">文件夹共享</figcaption>
+            </figure>
+            <figure>
+              <img src="images/软件预览-屏幕共享.png" alt="Windows 屏幕共享" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Windows 屏幕共享">
+              <figcaption data-en="Screen Sharing" data-zh="屏幕共享">屏幕共享</figcaption>
+            </figure>
+            <figure>
+              <img src="images/软件预览-设置.png" alt="Windows 设置" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Windows 设置">
+              <figcaption data-en="Settings" data-zh="设置中心">设置中心</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="preview-block">
+          <div class="phone-pin" id="phonePin">
+            <div class="phone-pin-sticky">
+              <div class="preview-title-row">
+                <h3 data-en="Android" data-zh="Android 端">Android 端</h3>
+                <span data-en="Keep scrolling to auto-browse phone screenshots" data-zh="继续向下滚动自动浏览手机运行截图">继续向下滚动自动浏览手机运行截图</span>
+              </div>
+              <div class="phone-strip" id="phoneStrip">
+                <figure>
+                  <img src="images/手机端-主界面.jpg" alt="Android 主界面" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Android 主界面">
+                  <figcaption data-en="Home" data-zh="主界面">主界面</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/手机端-大厅界面.jpg" alt="Android 大厅界面" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Android 大厅界面">
+                  <figcaption data-en="Lobby" data-zh="大厅界面">大厅界面</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/手机端-大厅二维码.jpg" alt="Android 大厅二维码" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Android 大厅二维码">
+                  <figcaption data-en="Lobby QR Code" data-zh="大厅二维码">大厅二维码</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/手机端-聊天室.jpg" alt="Android 聊天室" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Android 聊天室">
+                  <figcaption data-en="Chat Room" data-zh="聊天室">聊天室</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/手机端-文件夹共享.jpg" alt="Android 文件夹共享" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Android 文件夹共享">
+                  <figcaption data-en="Folder Sharing" data-zh="文件夹共享">文件夹共享</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/手机端-屏幕共享.jpg" alt="Android 屏幕共享" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Android 屏幕共享">
+                  <figcaption data-en="Screen Sharing" data-zh="屏幕共享">屏幕共享</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/手机端-大厅动态设置.jpg" alt="Android 大厅动态设置" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Android 大厅动态设置">
+                  <figcaption data-en="Lobby Settings" data-zh="大厅设置">大厅设置</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/手机端-设置.jpg" alt="Android 设置" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Android 设置">
+                  <figcaption data-en="Settings" data-zh="设置">设置</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="download" class="section download-section">
+        <div class="section-head">
+          <p class="eyebrow" data-en="Download" data-zh="下载">下载</p>
+          <h2 data-en="Choose the build for your system" data-zh="选择适合你系统的版本">选择适合你系统的版本</h2>
+          <p data-en="Windows and Android are the primary supported platforms. Linux support is experimental; read the limitations below." data-zh="
+            Windows 与 Android 提供日常使用版本；Linux 处于实验性支持阶段，请先查看下方限制。
+          ">
+            Windows 与 Android 提供日常使用版本；Linux 处于实验性支持阶段，请先查看下方限制。
+          </p>
+        </div>
+        <div class="download-grid">
+          <article class="download-card" data-platform="android" aria-current="false">
+            <h3 data-en="Android APK" data-zh="Android APK">Android APK</h3>
+            <p data-en="Android 8.0 or later on ARM64 phones and tablets. Join the same lobby as Windows users." data-zh="
+              Android 8.0 及以上，当前 APK 面向 ARM64 手机和平板。支持与 Windows 加入同一大厅。
+            ">
+              Android 8.0 及以上，当前 APK 面向 ARM64 手机和平板。支持与 Windows 加入同一大厅。
+            </p>
+            <a class="button secondary" href="https://pan.quark.cn/s/530b676eb6fc" target="_blank" rel="noreferrer" data-en="Download Android APK" data-zh="下载 Android APK">下载 Android APK</a>
+          </article>
+          <article class="download-card recommended" data-platform="windows" aria-current="true">
+            <h3 data-en="Windows Installer" data-zh="Windows 安装包">Windows 安装包</h3>
+            <p data-en="64-bit Windows 10 / 11. Install and launch from the Start menu. The interface runs on WebView2." data-zh="
+              Windows 10 / 11，64 位。安装后从开始菜单启动，使用 WebView2 运行界面。
+            ">
+              Windows 10 / 11，64 位。安装后从开始菜单启动，使用 WebView2 运行界面。
+            </p>
+            <a class="button primary" href="https://pan.quark.cn/s/56981908d2e5" target="_blank" rel="noreferrer" data-en="Download Windows Installer" data-zh="下载 Windows 安装包">下载 Windows 安装包</a>
+          </article>
+          <article class="download-card" data-platform="portable" aria-current="false">
+            <h3 data-en="Windows Portable" data-zh="Windows 便携版">Windows 便携版</h3>
+            <p data-en="64-bit Windows 10 / 11. Extract or run as instructed by the download package; settings and caches remain in the user data directory." data-zh="
+              Windows 10 / 11，64 位。按下载包说明解压或直接运行；配置与缓存仍保存在用户数据目录。
+            ">
+              Windows 10 / 11，64 位。按下载包说明解压或直接运行；配置与缓存仍保存在用户数据目录。
+            </p>
+            <a class="button secondary" href="https://pan.quark.cn/s/bbcea175c71e" target="_blank" rel="noreferrer" data-en="Download Windows Portable" data-zh="下载 Windows 便携版">下载 Windows 便携版</a>
+          </article>
+          <article class="download-card" data-platform="linux" aria-current="false">
+            <h3 data-en="Linux · experimental" data-zh="Linux · 实验性支持">Linux · 实验性支持</h3>
+            <p data-en="For x86_64 Debian-family distributions such as Debian and Ubuntu. Networking is verified; voice, screen sharing and remote control are limited by WebKit / WebRTC and do not have Windows feature parity." data-zh="
+              面向 Debian / Ubuntu 等 Debian 家族 x86_64。组网已验证；语音、屏幕共享与远程控制受
+              WebKit / WebRTC 限制，不应按 Windows 同等能力使用。
+            ">
+              面向 Debian / Ubuntu 等 Debian 家族 x86_64。组网已验证；语音、屏幕共享与远程控制受
+              WebKit / WebRTC 限制，不应按 Windows 同等能力使用。
+            </p>
+            <a class="button secondary" href="#platforms" data-en="Read platform limits" data-zh="查看平台限制">查看平台限制</a>
+          </article>
+        </div>
+        <p class="download-note" data-en="Windows captures the microphone natively without a browser permission prompt; system privacy settings still apply. Android uses system permissions. Reset Application clears web data and permissions, not the application configuration." data-zh="
+          Windows 麦克风采用原生采集，无需浏览器授权，仍受系统隐私设置控制；Android 使用系统权限。「重置软件」清理网页数据和权限，保留应用配置文件。
+        ">
+          Windows 麦克风采用原生采集，无需浏览器授权，仍受系统隐私设置控制；Android 使用系统权限。「重置软件」清理网页数据和权限，保留应用配置文件。
+        </p>
+      </section>
+
+      <div class="release-links">
+        <span data-en="Release history and alternative downloads:" data-zh="备用下载与版本记录：">备用下载与版本记录：</span>
+        <a href="https://github.com/pmh1314520/MCTier/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a>
+        ·
+        <a href="https://gitee.com/peng-minghang/mctier/releases" target="_blank" rel="noopener noreferrer">Gitee Releases</a>
+      </div>
+      <section id="platforms" class="section">
+        <div class="section-head">
+          <p class="eyebrow">PLATFORMS</p>
+          <h2 data-en="Choose a platform and know its limits" data-zh="选对平台，也了解边界">选对平台，也了解边界</h2>
+        </div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="平台能力对照 / Platform comparison">
+          <table class="platform-table">
+            <caption>
+              <span data-en="Platform capabilities" data-zh="平台能力概览">平台能力概览</span>
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" data-en="Feature" data-zh="功能">功能</th>
+                <th scope="col">Windows</th>
+                <th scope="col">Android</th>
+                <th scope="col">Linux</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" data-en="Networking, lobbies &amp; text chat" data-zh="
+                  组网、大厅与文字聊天
+                ">
+                  组网、大厅与文字聊天
+                </th>
+                <td data-en="Supported" data-zh="支持">支持</td>
+                <td data-en="Supported" data-zh="支持">支持</td>
+                <td data-en="Networking verified; see build notes for other features" data-zh="
+                  组网已验证；其余详见构建说明
+                ">
+                  组网已验证；其余详见构建说明
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" data-en="Voice, screen sharing &amp; remote collaboration" data-zh="
+                  语音、屏幕共享、远程协作
+                ">
+                  语音、屏幕共享、远程协作
+                </th>
+                <td data-en="Supported with permissions" data-zh="支持，需相应权限">支持，需相应权限</td>
+                <td data-en="Supported with permissions" data-zh="支持，需相应权限">支持，需相应权限</td>
+                <td data-en="Known limitations; no full support" data-zh="已知受限，非完整支持">已知受限，非完整支持</td>
+              </tr>
+              <tr>
+                <th scope="row" data-en="NVIDIA / AMD virtual noise-removal inputs" data-zh="
+                  NVIDIA / AMD 虚拟降噪麦克风
+                ">
+                  NVIDIA / AMD 虚拟降噪麦克风
+                </th>
+                <td data-en="Requires supported hardware and vendor software" data-zh="
+                  需受支持硬件及厂商软件
+                ">
+                  需受支持硬件及厂商软件
+                </td>
+                <td data-en="Uses platform audio features" data-zh="使用平台音频能力">使用平台音频能力</td>
+                <td data-en="This driver integration does not apply" data-zh="不适用此桌面驱动适配">不适用此桌面驱动适配</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="section-note" data-en="Screen-sharing profiles are limits, not a guarantee of 4K / 120 FPS. NVIDIA and AMD noise removal uses virtual microphones provided by separately installed and enabled vendor software. Android uses platform audio features." data-zh="
+          屏幕共享档位是上限，不保证所有设备都达到 4K / 120 FPS。NVIDIA 与 AMD
+          降噪通过厂商虚拟麦克风接入，需自行安装并启用对应软件；Android 使用系统音频能力。
+        ">
+          屏幕共享档位是上限，不保证所有设备都达到 4K / 120 FPS。NVIDIA 与 AMD
+          降噪通过厂商虚拟麦克风接入，需自行安装并启用对应软件；Android 使用系统音频能力。
+        </p>
+        <p class="section-note" data-en="No iOS or macOS packages are provided. Linux build instructions and feature status are documented in MCTier-Linux/README.md in the client source." data-zh="
+          目前不提供 iOS 或 macOS 安装包。Linux 构建及逐项状态见客户端源码中的
+          MCTier-Linux/README.md。
+        ">
+          目前不提供 iOS 或 macOS 安装包。Linux 构建及逐项状态见客户端源码中的
+          MCTier-Linux/README.md。
+        </p>
+      </section>
+
+      <section id="deploy" class="section deploy-section">
+        <div class="section-head">
+          <p class="eyebrow" data-en="Self-hosting" data-zh="私有化">私有化</p>
+          <h2 data-en="Host your own signaling endpoint" data-zh="自建自己的信令入口">自建自己的信令入口</h2>
+          <p data-en="Server source is available under its included license. It handles lobbies and connection coordination; the signaling service and EasyTier nodes are separate components." data-zh="
+            信令服务源码可获取，按随包许可使用。它负责大厅与连接协调；EasyTier
+            节点和信令服务是不同组件。
+          ">
+            信令服务源码可获取，按随包许可使用。它负责大厅与连接协调；EasyTier
+            节点和信令服务是不同组件。
+          </p>
+        </div>
+        <div class="deploy-panel">
+          <div>
+            <h3 data-en="MCTier Signaling Server" data-zh="MCTier 信令服务器">MCTier 信令服务器</h3>
+            <p data-en="Includes source code, Dockerfile and README, for self-hosting the MCTier-WebRTC signaling service." data-zh="
+              包含 源码、Dockerfile 和 README文档，可用于自建 MCTier-WebRTC 信令服务。
+            ">
+              包含 源码、Dockerfile 和 README文档，可用于自建 MCTier-WebRTC 信令服务。
+            </p>
+          </div>
+          <a class="button primary" href="https://pan.quark.cn/s/1437fd73369d" target="_blank" rel="noreferrer" data-en="Download Signaling Source" data-zh="下载信令服务源码包">下载信令服务源码包</a>
+        </div>
+        <div class="deploy-guide">
+          <article class="deploy-step">
+            <span>1</span>
+            <div>
+              <h3 data-en="Prepare a server" data-zh="准备服务器">准备服务器</h3>
+              <p data-en="Prepare a Linux server, cloud host or a Linux machine on your LAN. For public deployment fill in the public IP or domain; for LAN deployment fill in the internal IP." data-zh="
+                准备一台 Linux 服务器、云主机或局域网内 Linux 主机。公网部署填写公网 IP
+                或域名，局域网部署填写内网 IP。
+              ">
+                准备一台 Linux 服务器、云主机或局域网内 Linux 主机。公网部署填写公网 IP
+                或域名，局域网部署填写内网 IP。
+              </p>
+            </div>
+          </article>
+          <article class="deploy-step">
+            <span>2</span>
+            <div>
+              <h3 data-en="Upload and unzip" data-zh="上传并解压压缩包">上传并解压压缩包</h3>
+              <p data-en="Upload `MCTier信令服务器.zip` to the server, then unzip and enter the directory." data-zh="
+                把 `MCTier信令服务器.zip` 上传到服务器，然后解压进入目录。
+              ">
+                把 `MCTier信令服务器.zip` 上传到服务器，然后解压进入目录。
+              </p>
+              <div class="code-block"><pre tabindex="0"><code>unzip MCTier信令服务器.zip
+cd MCTier信令服务器</code></pre><button type="button" class="copy-command" aria-label="复制代码" title="复制代码"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button><span class="copy-status" role="status"></span></div>
+            </div>
+          </article>
+          <article class="deploy-step">
+            <span>3</span>
+            <div>
+              <h3 data-en="Run the deploy script" data-zh="执行部署脚本">执行部署脚本</h3>
+              <p data-en="Configure environment variables using the included README and start the service. The current Compose file binds only 127.0.0.1:8445; a reverse proxy and TLS are needed for public WSS access." data-zh="
+                按随包 README 配置环境变量并启动。当前 Compose 只绑定
+                127.0.0.1:8445，需另配反向代理和 TLS 才能对外提供 WSS 服务。
+              ">
+                按随包 README 配置环境变量并启动。当前 Compose 只绑定
+                127.0.0.1:8445，需另配反向代理和 TLS 才能对外提供 WSS 服务。
+              </p>
+              <div class="code-block"><pre tabindex="0"><code>chmod +x deploy.sh
+sudo ./deploy.sh</code></pre><button type="button" class="copy-command" aria-label="复制代码" title="复制代码"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button><span class="copy-status" role="status"></span></div>
+            </div>
+          </article>
+          <article class="deploy-step">
+            <span>4</span>
+            <div>
+              <h3 data-en="Check service status" data-zh="检查服务状态">检查服务状态</h3>
+              <p data-en="Confirm the container is running and check logs to troubleshoot ports, domain or network issues." data-zh="
+                确认容器正常运行，并查看日志排查端口、域名或网络问题。
+              ">
+                确认容器正常运行，并查看日志排查端口、域名或网络问题。
+              </p>
+              <div class="code-block"><pre tabindex="0"><code>docker compose ps
+docker compose logs -f</code></pre><button type="button" class="copy-command" aria-label="复制代码" title="复制代码"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button><span class="copy-status" role="status"></span></div>
+            </div>
+          </article>
+          <article class="deploy-step">
+            <span>5</span>
+            <div>
+              <h3 data-en="Fill the address in the client" data-zh="在客户端填写地址">在客户端填写地址</h3>
+              <p data-en="Open MCTier settings and change the WebRTC signaling server to your address, for example:" data-zh="
+                打开 MCTier 设置，把 WebRTC 信令服务器改为你的地址，例如：
+              ">
+                打开 MCTier 设置，把 WebRTC 信令服务器改为你的地址，例如：
+              </p>
+              <div class="code-block"><pre tabindex="0"><code>ws://your-server-ip:8445
+wss://your-domain.example:8445</code></pre><button type="button" class="copy-command" aria-label="复制代码" title="复制代码"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button><span class="copy-status" role="status"></span></div>
+            </div>
+          </article>
+          <article class="deploy-step">
+            <span>6</span>
+            <div>
+              <h3 data-en="Common maintenance commands" data-zh="常用维护命令">常用维护命令</h3>
+              <p data-en="A restart does not reload .env values. Recreate containers after configuration changes and add --build after source changes. Configure trusted proxy addresses for your actual deployment; see the included README." data-zh="
+                普通重启不会重新读取 .env；修改环境变量后需重建容器，修改源码后还需加
+                --build。反向代理的可信来源按实际部署配置，详见随包 README。
+              ">
+                普通重启不会重新读取 .env；修改环境变量后需重建容器，修改源码后还需加
+                --build。反向代理的可信来源按实际部署配置，详见随包 README。
+              </p>
+              <div class="code-block"><pre tabindex="0"><code>docker compose restart
+docker compose logs --tail=100 -f
+# Reload changed .env values
+docker compose up -d --force-recreate</code></pre><button type="button" class="copy-command" aria-label="复制代码" title="复制代码"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button><span class="copy-status" role="status"></span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="faq" class="section">
+        <div class="section-head">
+          <p class="eyebrow">HELP</p>
+          <h2 data-en="Help and troubleshooting" data-zh="常见问题与排障">常见问题与排障</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary data-en="What should I check if joining fails or latency is high?" data-zh="
+              连接不上或延迟高，先检查什么？
+            ">
+              连接不上或延迟高，先检查什么？
+            </summary>
+            <p data-en="Check that everyone uses matching lobby and connection settings and can reach the node and signaling server. The built-in order is Weiai Xiamen, Haibo mainland China, Haibo US, with Weiai as default. A nearby node does not guarantee a direct connection. Use diagnostics and exported logs to inspect relays, packet loss and latency." data-zh="
+              确认所有成员使用相同的大厅与连接配置，检查节点和信令服务是否可达。内置顺序是唯爱厦门、海波中国大陆、海波美国，默认唯爱；节点距离近不等于一定直连。使用连接诊断查看直连／中继、丢包与延迟，再导出日志排查。
+            ">
+              确认所有成员使用相同的大厅与连接配置，检查节点和信令服务是否可达。内置顺序是唯爱厦门、海波中国大陆、海波美国，默认唯爱；节点距离近不等于一定直连。使用连接诊断查看直连／中继、丢包与延迟，再导出日志排查。
+            </p>
+          </details>
+          <details>
+            <summary data-en="Where are logs and settings stored?" data-zh="日志和配置在哪里？">日志和配置在哪里？</summary>
+            <p data-en="Use the log viewer or export action in settings. Windows app data is stored in <code>%LOCALAPPDATA%\com.mctier.app</code>, with runtime logs in <code>mctier.log</code>. Legacy data is migrated on startup; user downloads and exports keep their selected locations. Export Android logs from app settings; its data stays in the application sandbox." data-zh="
+              优先使用设置中的日志查看／导出入口。Windows 用户数据统一在
+              <code>%LOCALAPPDATA%\com.mctier.app</code>，运行日志为
+              <code>mctier.log</code>。旧目录首次启动时迁移；主动下载或导出的文件仍保存在用户所选位置。Android
+              日志从应用设置导出，数据在系统应用沙盒内。
+            ">
+              优先使用设置中的日志查看／导出入口。Windows 用户数据统一在
+              <code>%LOCALAPPDATA%\com.mctier.app</code>，运行日志为
+              <code>mctier.log</code>。旧目录首次启动时迁移；主动下载或导出的文件仍保存在用户所选位置。Android
+              日志从应用设置导出，数据在系统应用沙盒内。
+            </p>
+          </details>
+          <details>
+            <summary data-en="Is “Reset and restart” a factory reset?" data-zh="
+              “一键重置并重启”会恢复出厂设置吗？
+            ">
+              “一键重置并重启”会恢复出厂设置吗？
+            </summary>
+            <p data-en="No. On desktop it clears WebView2 local storage, caches and permissions, which may reset some interface preferences. Application configuration files are retained. Check Windows privacy settings or Android app permissions first if the microphone is unavailable." data-zh="
+              不是。桌面端该操作清理 WebView2
+              网页本地存储、浏览缓存和权限记录，可能重置部分界面偏好；应用配置文件保留。麦克风不可用时，先检查
+              Windows 隐私设置或 Android 应用权限。
+            ">
+              不是。桌面端该操作清理 WebView2
+              网页本地存储、浏览缓存和权限记录，可能重置部分界面偏好；应用配置文件保留。麦克风不可用时，先检查
+              Windows 隐私设置或 Android 应用权限。
+            </p>
+          </details>
+          <details>
+            <summary data-en="How are images and voice messages compressed?" data-zh="
+              图片和语音会怎样压缩？
+            ">
+              图片和语音会怎样压缩？
+            </summary>
+            <p data-en="Only smaller lossless image results are used, preserving dimensions, transparency and animation. Original bytes are kept if optimization does not help, times out or is busy. Voice uses low-bitrate lossy encoding while recording. An outgoing status is not a delivery guarantee; network conditions still matter." data-zh="
+              图片只采用更小的无损结果，保留尺寸、透明度和动画；压缩收益不明显、超时或繁忙时保留原图。语音以适合人声的低码率边录边编码，属于有损压缩。发送状态不代表对方已收到，接收速度仍受网络影响。
+            ">
+              图片只采用更小的无损结果，保留尺寸、透明度和动画；压缩收益不明显、超时或繁忙时保留原图。语音以适合人声的低码率边录边编码，属于有损压缩。发送状态不代表对方已收到，接收速度仍受网络影响。
+            </p>
+          </details>
+          <details>
+            <summary data-en="How do message notifications work?" data-zh="弹幕怎么操作？">弹幕怎么操作？</summary>
+            <p data-en="Click a notification to copy text, play a voice message, save the original image or download an attachment. Adjust colors, size, speed, opacity and tracks in settings. Android requires overlay permission." data-zh="
+              直接点击弹幕即可操作：文本复制、语音播放、图片保存原图，文件或音视频附件下载原文件。设置中可调颜色、字号、速度、透明度与轨道；Android
+              需要允许悬浮窗显示。
+            ">
+              直接点击弹幕即可操作：文本复制、语音播放、图片保存原图，文件或音视频附件下载原文件。设置中可调颜色、字号、速度、透明度与轨道；Android
+              需要允许悬浮窗显示。
+            </p>
+          </details>
+          <details>
+            <summary data-en="Which screen-sharing quality should I use? Can system indicators be hidden?" data-zh="
+              屏幕共享怎么选画质？能隐藏系统提示吗？
+            ">
+              屏幕共享怎么选画质？能隐藏系统提示吗？
+            </summary>
+            <p data-en="Use 720p / 30 FPS on slower devices or connections. The default is 1080p / 30 FPS, with automatic or manual bitrate. Higher profiles need suitable capture, encoding and upload capacity. On Windows 10 1903+ and Windows 11, native capture uses the MCTier source picker without a separate sharing window. Stop sharing inside MCTier, or leave the lobby to stop automatically. Windows capture borders and Android capture permission prompts still apply." data-zh="
+              低配或低带宽建议 720p / 30 FPS；默认 1080p / 30
+              FPS，码率可自动推荐或手动设置。更高档位需要足够的采集、编码和上行能力。Windows 10 1903+ 与 Windows 11 使用原生采集和 MCTier 选屏界面，不显示独立共享提示窗口；在 MCTier 内停止共享，或离开大厅时自动停止。Windows 捕获边框与 Android 系统录屏授权仍保留。
+            ">
+              低配或低带宽建议 720p / 30 FPS；默认 1080p / 30
+              FPS，码率可自动推荐或手动设置。更高档位需要足够的采集、编码和上行能力。Windows 10 1903+ 与 Windows 11 使用原生采集和 MCTier 选屏界面，不显示独立共享提示窗口；在 MCTier 内停止共享，或离开大厅时自动停止。Windows 捕获边框与 Android 系统录屏授权仍保留。
+            </p>
+          </details>
+          <details>
+            <summary data-en="What do AMD / NVIDIA noise-removal options require?" data-zh="
+              AMD / NVIDIA 降噪需要什么？
+            ">
+              AMD / NVIDIA 降噪需要什么？
+            </summary>
+            <p data-en="On Windows, enable NVIDIA Broadcast / RTX Voice or AMD Noise Suppression in Adrenalin on supported hardware, then select the provider in MCTier. AMD exposes AMD Streaming Audio Device as an input. If unavailable, MCTier falls back to normal microphone processing." data-zh="
+              Windows 先安装并启用 NVIDIA Broadcast / RTX Voice，或在受支持设备的 AMD Adrenalin
+              中启用 Noise Suppression，再到 MCTier 选择对应方式。AMD 输入设备名称为 AMD Streaming
+              Audio Device；未检测到时使用普通麦克风处理。
+            ">
+              Windows 先安装并启用 NVIDIA Broadcast / RTX Voice，或在受支持设备的 AMD Adrenalin
+              中启用 Noise Suppression，再到 MCTier 选择对应方式。AMD 输入设备名称为 AMD Streaming
+              Audio Device；未检测到时使用普通麦克风处理。
+            </p>
+          </details>
+          <details>
+            <summary data-en="Is MCTier only for Minecraft?" data-zh="是 Minecraft 专用工具吗？">是 Minecraft 专用工具吗？</summary>
+            <p data-en="No. MCTier supports compatible LAN games, access to local services and temporary collaboration. Minecraft Java/Bedrock interoperability and game-version compatibility still depend on the game or additional services." data-zh="
+              不是。MCTier
+              是通用虚拟局域网工具，可用于兼容的局域网游戏、本地服务访问和临时协作。Minecraft Java
+              与基岩版能否互联、游戏版本是否兼容，仍取决于游戏本身或额外服务。
+            ">
+              不是。MCTier
+              是通用虚拟局域网工具，可用于兼容的局域网游戏、本地服务访问和临时协作。Minecraft Java
+              与基岩版能否互联、游戏版本是否兼容，仍取决于游戏本身或额外服务。
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section id="sponsor" class="section sponsor-section">
+        <div class="section-head">
+          <p class="eyebrow" data-en="Sponsor" data-zh="赞助支持">赞助支持</p>
+          <h2 data-en="Help MCTier go further" data-zh="支持 MCTier 走的更远">支持 MCTier 走的更远</h2>
+          <p data-en="If MCTier helped you with networking, gaming or collaboration, your sponsorship is welcome. It will be used to keep improving connection stability, the cross-platform experience and future features." data-zh="
+            如果 MCTier
+            帮你完成了组网、联机或协作，欢迎赞助开发工作。你的支持会用于继续优化连接稳定性、双端体验和后续新功能。
+          ">
+            如果 MCTier
+            帮你完成了组网、联机或协作，欢迎赞助开发工作。你的支持会用于继续优化连接稳定性、双端体验和后续新功能。
+          </p>
+        </div>
+        <div class="sponsor-grid">
+          <article class="sponsor-card">
+            <div class="sponsor-label" data-en="Alipay" data-zh="支付宝赞助">支付宝赞助</div>
+            <div class="qr-frame">
+              <img src="images/zfb.jpg" alt="Alipay" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: Alipay">
+            </div>
+          </article>
+          <article class="sponsor-card">
+            <div class="sponsor-label" data-en="WeChat" data-zh="微信赞助">微信赞助</div>
+            <div class="qr-frame">
+              <img src="images/wx.png" alt="WeChat" loading="lazy" tabindex="0" role="button" aria-label="全屏查看: WeChat">
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="section about-section">
+        <div class="section-head">
+          <p class="eyebrow" data-en="Project Info" data-zh="项目信息">项目信息</p>
+          <h2 data-en="Free to use, source available, continuously improved" data-zh="
+            免费使用，源码可得，持续完善
+          ">
+            免费使用，源码可得，持续完善
+          </h2>
+        </div>
+        <div class="about-grid">
+          <article>
+            <h3 data-en="Author" data-zh="作者">作者</h3>
+            <p data-en="QingYun Studio_PengMingHang" data-zh="青云制作_彭明航">青云制作_彭明航</p>
+            <p data-en="QQ: 2124691573<br>QQ Group: 1075096452" data-zh="
+              QQ：2124691573<br>QQ 交流群：1075096452
+            ">
+              QQ：2124691573<br>QQ 交流群：1075096452
+            </p>
+          </article>
+          <article>
+            <h3 data-en="Repositories" data-zh="仓库">仓库</h3>
+            <p>
+              <a class="repo-link" href="https://github.com/pmh1314520/MCTier" target="_blank" rel="noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.263.82-.582 0-.288-.01-1.05-.015-2.06-3.338.724-4.042-1.61-4.042-1.61-.546-1.386-1.334-1.755-1.334-1.755-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.382 1.235-3.222-.123-.303-.535-1.523.118-3.176 0 0 1.008-.322 3.3 1.23A11.48 11.48 0 0 1 12 5.777c1.02.005 2.045.138 3.003.404 2.29-1.552 3.295-1.23 3.295-1.23.655 1.653.243 2.873.12 3.176.77.84 1.233 1.912 1.233 3.222 0 4.61-2.805 5.625-5.478 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.9-.015 3.293 0 .322.216.7.825.58C20.565 21.796 24 17.298 24 12c0-6.63-5.37-12-12-12z"></path>
+                </svg>
+                <span data-en="GitHub Repo" data-zh="GitHub 仓库">GitHub 仓库</span>
+              </a>
+            </p>
+            <p>
+              <a class="repo-link" href="https://gitee.com/peng-minghang/mctier" target="_blank" rel="noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M11.984 0A12 12 0 0 0 0 12.016 12 12 0 0 0 11.984 24 12 12 0 0 0 24 12.016 12 12 0 0 0 11.984 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.592.592 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.593h6.815c.327 0 .593.266.593.593v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296z"></path>
+                </svg>
+                <span data-en="Gitee Repo" data-zh="Gitee 仓库">Gitee 仓库</span>
+              </a>
+            </p>
+          </article>
+          <article>
+            <h3 data-en="Technology &amp; license" data-zh="技术与许可">技术与许可</h3>
+            <p data-en="First-party code uses a source-available, noncommercial license, not an OSI open-source license. Third-party components keep their own licenses. See the client LICENSE for usage terms." data-zh="
+              自有代码采用源码可得、非商业许可，不属于 OSI
+              定义的开源许可；第三方组件遵循各自许可。具体使用范围以客户端 LICENSE 为准。
+            ">
+              自有代码采用源码可得、非商业许可，不属于 OSI
+              定义的开源许可；第三方组件遵循各自许可。具体使用范围以客户端 LICENSE 为准。
+            </p>
+            <p data-en="Tauri, React, Rust, EasyTier, WebRTC, native Android" data-zh="
+              Tauri、React、Rust、EasyTier、WebRTC、Android原生开发
+            ">
+              Tauri、React、Rust、EasyTier、WebRTC、Android原生开发
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="disclaimer" class="section about-section">
+        <div class="section-head">
+          <p class="eyebrow" data-en="Disclaimer" data-zh="免责声明">免责声明</p>
+          <h2 data-en="Lawful use only, users bear their own responsibility" data-zh="
+            仅限合法使用，使用者自己负责
+          ">
+            仅限合法使用，使用者自己负责
+          </h2>
+        </div>
+        <div class="about-grid">
+          <article>
+            <h3 data-en="Neutral tool" data-zh="中立工具">中立工具</h3>
+            <p data-en="MCTier is a neutral virtual-LAN networking and collaboration tool, intended only for lawful personal use in compliance with the laws of your jurisdiction. Connections are established between members where possible; relays may be used depending on network conditions. Only share files, services or device access with people you trust." data-zh="
+              MCTier
+              是中立的虚拟局域网组网与协作工具，仅供在符合所在地法律法规的前提下用于个人合法用途。通信优先建立成员间连接；网络条件不允许时可能通过中继。请只向你信任的成员开放文件、服务或设备访问。
+            ">
+              MCTier
+              是中立的虚拟局域网组网与协作工具，仅供在符合所在地法律法规的前提下用于个人合法用途。通信优先建立成员间连接；网络条件不允许时可能通过中继。请只向你信任的成员开放文件、服务或设备访问。
+            </p>
+          </article>
+          <article>
+            <h3 data-en="User responsibility" data-zh="使用者责任">使用者责任</h3>
+            <p data-en="Users are solely responsible for all their use and transmitted content. Strictly prohibited: unlicensed commercial/cross-border networking, spreading illegal or infringing content, unauthorized control/monitoring of others' devices, and using voice/voice-changer for fraud or impersonation." data-zh="
+              使用者须对自身全部使用行为及传输内容独立承担法律责任。严禁：未经许可的经营性/跨境组网、传播违法或侵权信息、未经授权控制或监控他人设备、利用语音/变声进行诈骗或冒充他人等。
+            ">
+              使用者须对自身全部使用行为及传输内容独立承担法律责任。严禁：未经许可的经营性/跨境组网、传播违法或侵权信息、未经授权控制或监控他人设备、利用语音/变声进行诈骗或冒充他人等。
+            </p>
+          </article>
+          <article>
+            <h3 data-en="In-app consent &amp; no warranty" data-zh="应用内同意与免担保">应用内同意与免担保</h3>
+            <p data-en="Sensitive features (remote control, screen sharing, voice changer) require the user's explicit in-app agreement before use. The software is provided 'as is' without warranty; the developer is not liable for any loss arising from use. If you disagree, do not download or use it." data-zh="
+              远程控制、屏幕共享、变声器等敏感功能在应用内均需用户明确同意后方可使用。软件按“现状”提供，不作任何担保；开发者不对使用造成的任何损失负责。如不同意，请勿下载或使用。
+            ">
+              远程控制、屏幕共享、变声器等敏感功能在应用内均需用户明确同意后方可使用。软件按“现状”提供，不作任何担保；开发者不对使用造成的任何损失负责。如不同意，请勿下载或使用。
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <div class="image-viewer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="图片全屏预览">
+      <button class="image-viewer-close" type="button" aria-label="关闭图片预览">×</button>
+      <figure class="image-viewer-content">
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+        <figcaption></figcaption>
+      </figure>
+    </div>
+
+    <footer class="footer">
+      <p>
+        <a href="#faq" data-en="Help &amp; logs" data-zh="帮助与日志">帮助与日志</a> ·
+        <a href="#disclaimer" data-en="Usage terms" data-zh="使用说明">使用说明</a>
+      </p>
+      <img src="images/MCTierIcon.png" alt="MCTier">
+      <p data-en="MCTier - Universal virtual LAN networking tool" data-zh="
+        MCTier - 虚拟局域网通用组网工具
+      ">
+        MCTier - 虚拟局域网通用组网工具
+      </p>
+      <p data-en="© 2026 QingYun Studio_PengMingHang. All rights reserved." data-zh="
+        © 2026 青云制作_彭明航 版权所有
+      ">
+        © 2026 青云制作_彭明航 版权所有
+      </p>
+      <p class="footer-disclaimer" data-en="For lawful use only. Users bear sole responsibility for their use and content. The developer assumes no liability." style="opacity: 0.6; font-size: 12px; margin-top: 6px" data-zh="
+        仅限合法使用，使用行为及内容责任由使用者自负，开发者不承担任何责任。
+      ">
+        仅限合法使用，使用行为及内容责任由使用者自负，开发者不承担任何责任。
+      </p>
+    </footer>
+
+    <script src="script.js?v=20261001-copy-hover"></script>
+  
+
+</body>
+</html>
