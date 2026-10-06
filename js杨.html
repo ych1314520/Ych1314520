@@ -165,6 +165,12 @@ var currentType = '';
 var DOUYIN_URL = 'https://v.douyin.com/cToozaNZf4s/';
 var QQ_URL = 'https://qm.qq.com/q/wTL90DbHqM';
 var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
+var QQ_PC   = 'tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3797197884';
+
+// 设备判断
+var ua = navigator.userAgent || '';
+var isMobile = /Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
+var isPC = !isMobile;
 
 (function pixelNameCanvas(){
   var canvas = document.getElementById('nameCanvas');
@@ -178,7 +184,6 @@ var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=379719788
   canvas.height = cssH * dpr;
   ctx.scale(dpr, dpr);
 
-  // 离屏采样
   var off = document.createElement('canvas');
   off.width = cssW * dpr;
   off.height = cssH * dpr;
@@ -191,7 +196,6 @@ var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=379719788
   octx.font = '700 32px "Courier New","Consolas",monospace';
   octx.fillText(text, cssW/2, cssH/2);
 
-  // 收集像素点 —— step=1 颗粒最细
   var step = 1;
   var grid = [];
   for(var y=0;y<cssH;y+=step){
@@ -204,7 +208,6 @@ var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=379719788
           r:255, g:255, b:255,
           tr:255, tg:255, tb:255,
           delay: Math.random()*0.4 + (x/cssW)*0.4,
-          // 抖动参数（颗粒细了，幅度收小一点更精致）
           jitterX: 0, jitterY: 0,
           jitterSpeed: 0.15 + Math.random()*0.25,
           jitterAmount: 0.5 + Math.random()*1.0
@@ -215,8 +218,6 @@ var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=379719788
 
   var start = null;
   var pixelDone = false;
-
-  // 颜色系统
   var lastChange = 0;
   var CHANGE_INTERVAL = 2000;
   var TRANSITION_SPEED = 0.04;
@@ -261,7 +262,6 @@ var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=379719788
     var t = (ts-start)/1000;
     ctx.clearRect(0,0,cssW,cssH);
 
-    // 每2秒换目标色
     if(ts - lastChange > CHANGE_INTERVAL){
       lastChange = ts;
       setNewTargetColor();
@@ -283,12 +283,10 @@ var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=379719788
         ctx.fillStyle = 'rgba(255,255,255,'+e+')';
         ctx.fillRect(px, py, p.size, p.size);
       } else {
-        // 颜色插值
         p.r += (p.tr - p.r) * TRANSITION_SPEED;
         p.g += (p.tg - p.g) * TRANSITION_SPEED;
         p.b += (p.tb - p.b) * TRANSITION_SPEED;
 
-        // 抖动
         var jx = Math.sin(jitterPhase * p.jitterSpeed * 10 + p.x) * p.jitterAmount;
         var jy = Math.cos(jitterPhase * p.jitterSpeed * 8 + p.y) * p.jitterAmount;
 
@@ -304,6 +302,50 @@ var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=379719788
   requestAnimationFrame(frame);
 })();
 
+/* ===== 唤起 QQ：手机 App / PC 客户端自动分流 + 检测 ===== */
+function launchQQ(){
+  var QQ_NUM = '3797197884';
+
+  if(isMobile){
+    // 手机：先尝试唤起 QQ App
+    var t = Date.now();
+    location.href = QQ_APP;
+    // 没唤起起来就走网页
+    setTimeout(function(){
+      if(Date.now() - t < 2000) location.href = QQ_URL;
+    }, 1200);
+    return;
+  }
+
+  // PC 端：用 tencent:// 协议唤起 PC QQ
+  var launched = false;
+  var blurHandler = function(){
+    launched = true;
+    window.removeEventListener('blur', blurHandler);
+    window.removeEventListener('focus', focusHandler);
+  };
+  var focusHandler = function(){
+    // 页面没失焦，说明唤起失败（没装/被拦）
+    if(!launched){
+      window.removeEventListener('blur', blurHandler);
+      window.removeEventListener('focus', focusHandler);
+    }
+  };
+  window.addEventListener('blur', blurHandler);
+  window.addEventListener('focus', focusHandler);
+
+  location.href = QQ_PC;
+
+  // 2 秒后检测：若没唤起成功则跳网页加好友
+  setTimeout(function(){
+    if(!launched){
+      window.removeEventListener('blur', blurHandler);
+      window.removeEventListener('focus', focusHandler);
+      location.href = QQ_URL;
+    }
+  }, 2000);
+}
+
 function openOptions(type){
   currentType = type;
   var title = document.getElementById('optionsTitle');
@@ -317,7 +359,7 @@ function openOptions(type){
     btnScan.className = 'panel-btn scan';
   } else if(type === 'qq'){
     title.innerHTML = 'QQ<small>唤起App 或 扫码</small>';
-    btnApp.textContent = '1. 跳转 QQ（App）';
+    btnApp.textContent = isMobile ? '1. 跳转 QQ（App）' : '1. 跳转 QQ（PC）';
     btnScan.textContent = '2. 扫码';
     btnScan.className = 'panel-btn scan qq-scan';
   }
@@ -327,8 +369,7 @@ function openOptions(type){
 
 function jumpTarget(){
   if(currentType === 'qq'){
-    location.href = QQ_APP;
-    setTimeout(function(){ location.href = QQ_URL; }, 1200);
+    launchQQ();
   } else if(currentType === 'douyin'){
     location.href = DOUYIN_URL;
   }
