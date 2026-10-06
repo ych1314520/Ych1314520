@@ -34,6 +34,7 @@
   }
   .pwd-input:focus{border-color:#fe2c55}
   .pwd-input.error{border-color:#ff1744;animation:shake .4s ease}
+  .pwd-input:disabled{opacity:.4;cursor:not-allowed}
   @keyframes shake{
     0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}
     40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}
@@ -43,11 +44,13 @@
     background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;cursor:pointer;
     transition:transform .15s ease,box-shadow .15s ease;white-space:nowrap;
   }
-  .verify-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(254,44,85,.35)}
-  .verify-btn:active{transform:translateY(0) scale(.97)}
-  .pwd-hint{margin-top:20px;font-size:13px;color:#555;min-height:20px}
+  .verify-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(254,44,85,.35)}
+  .verify-btn:active:not(:disabled){transform:translateY(0) scale(.97)}
+  .verify-btn:disabled{opacity:.4;cursor:not-allowed}
+  .pwd-hint{margin-top:20px;font-size:13px;color:#555;min-height:24px}
   .pwd-hint.wrong{color:#ff1744}
   .pwd-hint.success{color:#00e676}
+  .pwd-hint.locked{color:#ff9800;font-size:14px;font-weight:700}
   .qr-trigger{
     margin-top:60px;padding:14px 28px;border:0;border-radius:999px;
     color:#ff5f7a;font-size:15px;font-weight:700;cursor:pointer;
@@ -55,6 +58,7 @@
     background:linear-gradient(180deg,rgba(254,44,85,.08),rgba(254,44,85,.02));
   }
   .qr-trigger:active{background:rgba(254,44,85,.15)}
+  .qr-trigger:disabled{opacity:.3;cursor:not-allowed}
 
   /* ===== 二维码弹窗 ===== */
   .qr-mask{
@@ -154,10 +158,10 @@
   <div class="lock-sub">请输入访问密码</div>
   <div class="pwd-wrapper">
     <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="●●●●" autocomplete="current-password" inputmode="text" />
-    <button class="verify-btn" onclick="checkPassword()">验证</button>
+    <button class="verify-btn" id="verifyBtn" onclick="checkPassword()">验证</button>
   </div>
   <div class="pwd-hint" id="pwdHint"></div>
-  <button class="qr-trigger" onclick="showQR()">没有密码？请扫描下方二维码</button>
+  <button class="qr-trigger" id="qrTrigger" onclick="showQR()">没有密码？请扫描下方二维码</button>
 </div>
 
 <!-- ===== 二维码弹窗 ===== -->
@@ -210,27 +214,111 @@ document.addEventListener('keydown', function(e){
 });
 document.addEventListener('dragstart', function(e){ e.preventDefault(); });
 
-/* ===== 密码验证 ===== */
+/* ===== 锁定系统（localStorage 持久化，刷新不重置）===== */
 var CORRECT='CFTH';
 var input=document.getElementById('pwdInput');
 var hint=document.getElementById('pwdHint');
 var lock=document.getElementById('lockScreen');
 var main=document.getElementById('mainContent');
-input.focus();
+var verifyBtn=document.getElementById('verifyBtn');
+var qrTrigger=document.getElementById('qrTrigger');
+
+// localStorage key
+var KEY_WRONG='pwdWrongCount';
+var KEY_LOCK='pwdLockUntil';
+
+function getWrongCount(){ return Number(localStorage.getItem(KEY_WRONG)) || 0; }
+function setWrongCount(n){ localStorage.setItem(KEY_WRONG, n); }
+function getLockUntil(){ return Number(localStorage.getItem(KEY_LOCK)) || 0; }
+function setLockUntil(ts){ localStorage.setItem(KEY_LOCK, ts); }
+
+function getLockDuration(wrongCount){
+  if(wrongCount >= 15) return 60 * 60;        // 15次+ → 1小时
+  if(wrongCount >= 10) return 5 * 60;          // 10次 → 5分钟
+  if(wrongCount >= 5)  return 1 * 60;          // 5次 → 1分钟
+  return 0;
+}
+
+function isLocked(){
+  var lockUntil = getLockUntil();
+  return lockUntil > Date.now();
+}
+
+function startLock(wrongCount){
+  var duration = getLockDuration(wrongCount);
+  var until = Date.now() + duration * 1000;
+  setLockUntil(until);
+  applyLockUI(duration);
+}
+
+function applyLockUI(duration){
+  input.disabled = true;
+  verifyBtn.disabled = true;
+  qrTrigger.disabled = true;
+  input.blur();
+  runCountdown(duration);
+}
+
+function runCountdown(duration){
+  var lockUntil = getLockUntil();
+  clearInterval(window._lockCountdown);
+  window._lockCountdown = setInterval(function(){
+    var left = Math.floor((lockUntil - Date.now()) / 1000);
+    if(left <= 0){
+      clearInterval(window._lockCountdown);
+      input.disabled = false;
+      verifyBtn.disabled = false;
+      qrTrigger.disabled = false;
+      hint.textContent = '';
+      hint.className = 'pwd-hint';
+      input.focus();
+      return;
+    }
+    var min = Math.floor(left / 60);
+    var sec = left % 60;
+    hint.innerHTML = '🚫 输错次数过多，已锁定<br>剩余 ' + (min>0 ? min+'分'+sec+'秒' : sec+'秒');
+    hint.className = 'pwd-hint locked';
+  }, 1000);
+}
+
+// 页面加载时检查是否已锁定
+(function checkLockOnLoad(){
+  if(isLocked()){
+    var lockUntil = getLockUntil();
+    var left = Math.floor((lockUntil - Date.now()) / 1000);
+    applyLockUI(left);
+  } else {
+    input.focus();
+  }
+})();
+
 input.addEventListener('keydown', function(e){ if(e.key==='Enter') checkPassword(); });
 
 function checkPassword(){
+  if(isLocked()) return;
+
   var val=input.value.toUpperCase();
   if(val.length===0){hint.textContent='请输入密码';hint.className='pwd-hint wrong';return;}
+
   if(val===CORRECT){
     hint.textContent='✓ 验证通过';hint.className='pwd-hint success';
+    // 验证成功 → 清除错误计数和锁定
+    localStorage.removeItem(KEY_WRONG);
+    localStorage.removeItem(KEY_LOCK);
     lock.classList.add('unlocked');
     setTimeout(function(){main.classList.add('show');startBgCycle();pixelNameCanvas();},400);
   } else {
-    hint.textContent='密码错误，请重试';hint.className='pwd-hint wrong';
+    var wrong = getWrongCount() + 1;
+    setWrongCount(wrong);
+    hint.textContent='密码错误，已累计输错 '+wrong+' 次';
+    hint.className='pwd-hint wrong';
     input.classList.add('error');input.value='';
     setTimeout(function(){input.classList.remove('error');},500);
     input.focus();
+
+    if(wrong >= 5){
+      startLock(wrong);
+    }
   }
 }
 
@@ -245,6 +333,7 @@ function startBgCycle(){
 /* ===== 密码门二维码（内容 CFTH，不显示文字）===== */
 var qrGenerated=false;
 function showQR(){
+  if(isLocked()) return;
   var box=document.getElementById('qrCode');
   if(!qrGenerated){box.innerHTML='';new QRCode(box,{text:'CFTH',width:200,height:200});qrGenerated=true;}
   document.getElementById('qrMask').classList.add('show');
@@ -259,7 +348,6 @@ function showTargetQR(){
   box.innerHTML='';
   var exp=Date.now()+60000,token=randomToken(16);
   var url='https://ych1314520.github.io/Ych1314520/verify.html?t='+encodeURIComponent(token)+'&exp='+exp;
-  var cd=document.getElementById('countdownText');if(cd){cd.style.color='';cd.textContent='剩余 60 秒';}
   if(currentType==='douyin'){
     document.getElementById('qrTitle').innerHTML='抖音扫码<small id="countdownText">剩余 60 秒</small>';
   } else {
@@ -284,7 +372,6 @@ function showTargetQR(){
 }
 function backToOptions(){clearTimeout(qrTimer);clearInterval(cdTimer);document.getElementById('qrPanel').classList.remove('show');document.getElementById('optionsPanel').classList.add('show');}
 
-/* 切屏清空 */
 document.addEventListener('visibilitychange',function(){
   if(document.hidden){
     clearTimeout(qrTimer);clearInterval(cdTimer);
