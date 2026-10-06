@@ -21,14 +21,13 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-bottom:8px;
+    margin-bottom:24px;
   }
   #nameCanvas{
     width:min(82vw,420px);
     height:52px;
     image-rendering:pixelated;
   }
-  .sub{color:#888;font-size:15px;margin-bottom:70px;opacity:0;animation:fade .8s ease .9s forwards;}
   .box{display:flex;flex-direction:column;align-items:center;gap:18px;}
   .btn{
     width:86%;max-width:360px;padding:22px 18px;border:0;border-radius:18px;
@@ -132,8 +131,6 @@
   <canvas id="nameCanvas" aria-label="▞▛▖▜▝ ▞▙▛▖▜"></canvas>
 </div>
 
-<div class="sub">ych_123678 · 3797197884</div>
-
 <div class="box">
   <button class="btn dy" onclick="openOptions('douyin')"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
   <button class="btn qq" onclick="openOptions('qq')"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
@@ -167,10 +164,8 @@ var QQ_URL = 'https://qm.qq.com/q/wTL90DbHqM';
 var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
 var QQ_PC   = 'tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3797197884';
 
-// 设备判断
 var ua = navigator.userAgent || '';
 var isMobile = /Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
-var isPC = !isMobile;
 
 (function pixelNameCanvas(){
   var canvas = document.getElementById('nameCanvas');
@@ -302,22 +297,16 @@ var isPC = !isMobile;
   requestAnimationFrame(frame);
 })();
 
-/* ===== 唤起 QQ：手机 App / PC 客户端自动分流 + 检测 ===== */
 function launchQQ(){
-  var QQ_NUM = '3797197884';
-
   if(isMobile){
-    // 手机：先尝试唤起 QQ App
     var t = Date.now();
     location.href = QQ_APP;
-    // 没唤起起来就走网页
     setTimeout(function(){
       if(Date.now() - t < 2000) location.href = QQ_URL;
     }, 1200);
     return;
   }
 
-  // PC 端：用 tencent:// 协议唤起 PC QQ
   var launched = false;
   var blurHandler = function(){
     launched = true;
@@ -325,7 +314,6 @@ function launchQQ(){
     window.removeEventListener('focus', focusHandler);
   };
   var focusHandler = function(){
-    // 页面没失焦，说明唤起失败（没装/被拦）
     if(!launched){
       window.removeEventListener('blur', blurHandler);
       window.removeEventListener('focus', focusHandler);
@@ -336,7 +324,6 @@ function launchQQ(){
 
   location.href = QQ_PC;
 
-  // 2 秒后检测：若没唤起成功则跳网页加好友
   setTimeout(function(){
     if(!launched){
       window.removeEventListener('blur', blurHandler);
