@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>JS 杨的专属网站</title>
 <style>
   *{box-sizing:border-box}
@@ -14,12 +14,19 @@
   .lock-title{font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:2px}
   .lock-sub{font-size:14px;color:#888;margin-bottom:36px}
   .pwd-wrapper{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
-  .pwd-input{width:200px;height:52px;font-size:24px;font-weight:700;text-align:center;letter-spacing:8px;border:2px solid #333;border-radius:14px;background:#111;color:#fff;outline:none;transition:border-color .2s ease;-webkit-text-security:disc;-webkit-user-select:auto;user-select:auto}
+
+  .pwd-input-wrap{position:relative;display:inline-flex;align-items:center}
+  .pwd-input{width:200px;height:52px;font-size:24px;font-weight:700;text-align:center;letter-spacing:8px;border:2px solid #333;border-radius:14px;background:#111;color:#fff;outline:none;transition:border-color .2s ease;padding-right:42px;-webkit-user-select:auto;user-select:auto}
   .pwd-input:focus{border-color:#fe2c55}
   .pwd-input.error{border-color:#ff1744;animation:shake .4s ease}
   .pwd-input:disabled{opacity:.4;cursor:not-allowed}
+
+  .toggle-pwd{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:0;cursor:pointer;font-size:18px;opacity:.5;transition:opacity .2s ease;padding:0;z-index:2}
+  .toggle-pwd:hover{opacity:.9}
+  .toggle-pwd:disabled{opacity:.2;cursor:not-allowed}
+
   @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
-  .verify-btn{height:52px;padding:0 28px;font-size:18px;font-weight:700;border:0;border-radius:14px;background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;white-space:nowrap}
+  .verify-btn{height:52px;padding:0 28px;font-size:18px;font-weight:700;border:0;border-radius:14px;background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;cursor:pointer;white-space:nowrap}
   .verify-btn:disabled{opacity:.4;cursor:not-allowed}
   .pwd-hint{margin-top:20px;font-size:13px;color:#555;min-height:24px}
   .pwd-hint.wrong{color:#ff1744}
@@ -32,7 +39,7 @@
   .qr-card{background:#111;border-radius:24px;padding:36px 32px;text-align:center;box-shadow:0 10px 50px rgba(0,0,0,.6)}
   .qr-card canvas,.qr-card img{border-radius:12px;background:#fff;padding:12px;display:block;margin:0 auto}
   .qr-card .close-btn{margin-top:20px;padding:12px 40px;border:0;border-radius:12px;background:linear-gradient(135deg,#333,#222);color:#fff;font-size:15px;font-weight:700;cursor:pointer}
-  #mainContent{display:none;padding:60px 20px 40px;min-height:100vh;position:relative;z-index:2}
+  #mainContent{display:none;padding:60px 20px 80px;min-height:100vh;position:relative;z-index:2}
   #mainContent.show{display:block}
   .name-wrap{height:64px;display:flex;justify-content:center;align-items:center;margin-bottom:24px}
   #nameCanvas{width:min(82vw,420px);height:52px;image-rendering:pixelated}
@@ -56,21 +63,18 @@
   @keyframes rise{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:translateY(0)}}
   .tip{margin-top:40px;font-size:12px;color:#d0d0d0;opacity:0;animation:fade 1s ease .9s forwards}
   @keyframes fade{to{opacity:1}}
-  .mask{position:fixed;inset:0;background:rgba(0,0,0,.75);opacity:0;pointer-events:none;transition:opacity .4s ease;z-index:50}
-  .mask.show{opacity:1;pointer-events:auto}
-  .slide-panel{position:fixed;left:0;right:0;bottom:0;background:#111;border-radius:24px 24px 0 0;padding:32px 24px 40px;display:flex;flex-direction:column;align-items:center;gap:16px;transform:translateY(100%);opacity:0;transition:transform .7s cubic-bezier(.22,.9,.3,1),opacity .5s ease;z-index:60}
-  .slide-panel.show{transform:translateY(0);opacity:1}
-  .grabber{width:44px;height:5px;border-radius:4px;background:#333;position:absolute;top:14px;left:50%;transform:translateX(-50%)}
-  .panel-title{font-size:18px;font-weight:800;margin-top:4px}
-  .panel-title small{display:block;font-size:12px;color:#777;font-weight:400;margin-top:4px;text-align:center}
-  .panel-btn{width:100%;max-width:300px;padding:16px;border:0;border-radius:14px;font-size:16px;font-weight:700;color:#fff;cursor:pointer}
-  .panel-btn.app{background:linear-gradient(135deg,#333,#222)}
-  .panel-btn.scan{background:linear-gradient(135deg,#fe2c55,#ff6a88)}
-  .panel-btn.scan.qq-scan{background:linear-gradient(135deg,#009cff,#12b7f5)}
-  .panel-btn.back,.panel-btn.close{background:#222;color:#aaa;font-size:14px}
-  .qr-box{background:#fff;padding:16px;border-radius:18px;width:220px;height:220px;display:flex;align-items:center;justify-content:center}
-  .qr-tip{font-size:12px;color:#666;text-align:center;line-height:1.6}
-  .secure-tip{font-size:11px;color:#555;margin-top:10px}
+
+  /* ===== 个人说明块：复用 rise 动画，延迟 1.3s 更晚出现 ===== */
+  .about{
+    margin:56px auto 0;max-width:420px;padding:24px 20px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+    border-radius:18px;text-align:left;
+    opacity:0;transform:translateY(80px);
+    animation:rise 1s ease 1.3s forwards;
+  }
+  .about h3{margin:0 0 14px;font-size:15px;color:#fe2c55;letter-spacing:1px;text-align:center}
+  .about p{margin:0 0 12px;font-size:13.5px;line-height:1.9;color:#b8b8b8;text-align:justify}
+  .about p:last-child{margin-bottom:0;color:#8a8a8a;font-size:12.5px;text-align:center;margin-top:16px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)}
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -78,10 +82,13 @@
 <div id="bgOverlay"></div>
 
 <div id="lockScreen">
-  <div class="lock-title">🔒 访问验证</div>
+  <div class="lock-title">🔒访问密码</div>
   <div class="lock-sub">请输入访问密码</div>
   <div class="pwd-wrapper">
-    <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="●●●●" autocomplete="current-password" inputmode="text" />
+    <div class="pwd-input-wrap">
+      <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="••••" autocomplete="current-password" inputmode="text">
+      <button class="toggle-pwd" id="togglePwd" type="button" onclick="togglePassword()" title="显示密码">👁</button>
+    </div>
     <button class="verify-btn" id="verifyBtn" onclick="checkPassword()">验证</button>
   </div>
   <div class="pwd-hint" id="pwdHint"></div>
@@ -97,36 +104,28 @@
 
 <div id="mainContent">
   <div class="name-wrap">
-    <canvas id="nameCanvas" aria-label="JS 杨"></canvas>
+    <canvas id="nameCanvas" aria-label=""></canvas>
   </div>
   <div class="box">
-    <button class="btn dy" onclick="openOptions('douyin')"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
-    <button class="btn qq" onclick="openOptions('qq')"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
+    <button class="btn dy" onclick="goDouyin()"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
+    <button class="btn qq" onclick="goQQ()"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
   </div>
-  <div class="tip">手机端点击跳转网页版，或扫码加好友</div>
-</div>
+  <div class="tip">点击按钮直接跳转</div>
 
-<div class="mask" id="mask" onclick="closeAll()"></div>
-<div class="slide-panel" id="optionsPanel">
-  <div class="grabber"></div>
-  <div class="panel-title" id="optionsTitle">选择方式<small id="optionsSub">跳转 或 扫码</small></div>
-  <button class="panel-btn app" id="btnApp" onclick="jumpTarget()">1. 跳转</button>
-  <button class="panel-btn scan" id="btnScan" onclick="showTargetQR()">2. 扫码</button>
-  <button class="panel-btn close" onclick="closeAll()">取消</button>
-</div>
-<div class="slide-panel" id="qrPanel">
-  <div class="grabber"></div>
-  <div class="panel-title" id="qrTitle">扫码<small>每次随机生成</small></div>
-  <div class="qr-box" id="qrBox"></div>
-  <div class="qr-tip" id="qrTipExtra"></div>
-  <div class="secure-tip">🔐 内容受保护，禁止截图/录屏</div>
-  <button class="panel-btn back" onclick="backToOptions()">返回</button>
-  <button class="panel-btn close" onclick="closeAll()">关闭</button>
+  <!-- ===== 个人说明 ===== -->
+  <div class="about">
+    <h3>📌 写在前面</h3>
+    <p>本网站是我随手乱写的，纯粹一时兴起，敲敲打打拼出来的一个小玩意儿，没什么高大上的架构，也不打算做成什么正经项目，就是图个乐子，写着玩、看着爽。</p>
+    <p>至于里面的那些链接和联系方式，随缘就好。跟我破产了几十只、100多只、200多只都可以，别太当真，也别太较真，都是随口说说、随手放上去的。我这个人做事一向随性，今天想起来就更新一下，明天懒了可能就搁那儿不动了。</p>
+    <p>所以如果你发现页面很久没变、链接失效、或者按钮点了没反应，先别急着吐槽，很可能只是我又跑去干别的事了。等哪天兴致上来了，说不定就推一版新的，也可能就这么一直放着，谁知道呢。</p>
+    <p>总之，这就是一个属于我自己的小角落，写给自己看，也给碰巧进来的你看看。看得开心就好，别想太多 😄</p>
+    <p>© 随手一写 · 随缘更新</p>
+  </div>
 </div>
 
 <script src="https://fastly.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-/* ===== 配置（改成你自己的 token）===== */
+/* ===== 配置 ===== */
 var GITHUB_TOKEN = 'ghp_你的Token填这里';
 var GITHUB_REPO = 'Ych1314520/Ych1314520';
 var LOCK_FILE_PATH = 'lock.json';
@@ -139,154 +138,134 @@ var lockEl = document.getElementById('lockScreen');
 var main = document.getElementById('mainContent');
 var verifyBtn = document.getElementById('verifyBtn');
 var qrTrigger = document.getElementById('qrTrigger');
+var togglePwd = document.getElementById('togglePwd');
 
-/* ===== 数据读写（双保险：GitHub 优先，localStorage 降级）===== */
+/* ===== 显示/隐藏密码 ===== */
+var pwdVisible = false;
+function togglePassword(){
+  pwdVisible = !pwdVisible;
+  input.type = pwdVisible ? 'text' : 'password';
+  togglePwd.textContent = pwdVisible ? '🙈' : '👁';
+  togglePwd.title = pwdVisible ? '隐藏密码' : '显示密码';
+  input.focus();
+}
+
+/* ===== 存储：GitHub 优先，localStorage 降级 ===== */
 function getLocalData(){
-  try{
-    var raw = localStorage.getItem('pwdLock');
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
-  return {count:0, lockUntil:0};
+  try{ var r=localStorage.getItem('pwdLock'); if(r) return JSON.parse(r); }catch(e){}
+  return {count:0,lockUntil:0};
 }
-function setLocalData(d){
-  try{ localStorage.setItem('pwdLock', JSON.stringify(d)); }catch(e){}
-}
+function setLocalData(d){ try{ localStorage.setItem('pwdLock',JSON.stringify(d)); }catch(e){} }
 
 async function getRemoteData(){
   if(!USE_GITHUB) return null;
   try{
-    var res = await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+LOCK_FILE_PATH, {
+    var res=await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+LOCK_FILE_PATH,{
       headers:{'Authorization':'token '+GITHUB_TOKEN}
     });
-    if(res.status === 404) return {count:0, lockUntil:0, sha:null};
+    if(res.status===404) return {count:0,lockUntil:0,sha:null};
     if(!res.ok) return null;
-    var data = await res.json();
-    var content = JSON.parse(atob(data.content));
-    return {count:content.count||0, lockUntil:content.lockUntil||0, sha:data.sha};
+    var data=await res.json();
+    var content=JSON.parse(atob(data.content));
+    return {count:content.count||0,lockUntil:content.lockUntil||0,sha:data.sha};
   }catch(e){ return null; }
 }
-
-async function setRemoteData(d, sha){
+async function setRemoteData(d,sha){
   if(!USE_GITHUB) return;
   try{
-    var body = btoa(JSON.stringify({count:d.count, lockUntil:d.lockUntil, updated:Date.now()}));
-    var payload = {message:'lock update', content:body};
-    if(sha) payload.sha = sha;
-    await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+LOCK_FILE_PATH, {
+    var body=btoa(JSON.stringify({count:d.count,lockUntil:d.lockUntil,updated:Date.now()}));
+    var p={message:'lock update',content:body}; if(sha)p.sha=sha;
+    await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+LOCK_FILE_PATH,{
       method:'PUT',
-      headers:{'Authorization':'token '+GITHUB_TOKEN, 'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
+      headers:{'Authorization':'token '+GITHUB_TOKEN,'Content-Type':'application/json'},
+      body:JSON.stringify(p)
     });
   }catch(e){}
 }
-
-// 获取最终数据：远程优先，失败用本地
 async function getLockData(){
-  var remote = await getRemoteData();
-  if(remote){
-    setLocalData(remote); // 同步到本地
-    return remote;
-  }
+  var r=await getRemoteData();
+  if(r){ setLocalData(r); return r; }
   return getLocalData();
 }
-
-async function saveLockData(count, lockUntil){
-  var local = getLocalData();
-  setLocalData({count:count, lockUntil:lockUntil});
-  // 后台同步远程
-  var remote = await getRemoteData();
-  var sha = remote ? remote.sha : null;
-  setRemoteData({count:count, lockUntil:lockUntil}, sha);
+async function saveLockData(count,lockUntil){
+  setLocalData({count:count,lockUntil:lockUntil});
+  var r=await getRemoteData();
+  await setRemoteData({count:count,lockUntil:lockUntil},r?r.sha:null);
 }
 
 /* ===== 锁定规则 ===== */
-function getLockDuration(count){
-  if(count >= 15) return 3600;  // 1小时
-  if(count >= 10) return 300;   // 5分钟
-  if(count >= 5)  return 60;    // 1分钟
+function getLockDuration(c){
+  if(c>=15) return 3600;
+  if(c>=10) return 300;
+  if(c>=5)  return 60;
   return 0;
 }
 function isLocked(d){ return d && d.lockUntil > Date.now(); }
 
 /* ===== 倒计时 ===== */
 function startCountdown(lockUntil){
-  input.disabled = true;
-  verifyBtn.disabled = true;
-  qrTrigger.disabled = true;
-  input.blur();
+  input.disabled=true; verifyBtn.disabled=true; qrTrigger.disabled=true; togglePwd.disabled=true; input.blur();
   clearInterval(window._cd);
-  window._cd = setInterval(async function(){
-    var data = await getLockData();
-    var left = Math.floor((data.lockUntil - Date.now())/1000);
-    if(left <= 0){
+  window._cd=setInterval(async function(){
+    var data=await getLockData();
+    var left=Math.floor((data.lockUntil-Date.now())/1000);
+    if(left<=0){
       clearInterval(window._cd);
-      input.disabled = false;
-      verifyBtn.disabled = false;
-      qrTrigger.disabled = false;
-      hint.textContent = '';
-      hint.className = 'pwd-hint';
-      input.focus();
+      input.disabled=false; verifyBtn.disabled=false; qrTrigger.disabled=false; togglePwd.disabled=false;
+      hint.textContent=''; hint.className='pwd-hint'; input.focus();
       return;
     }
-    var m = Math.floor(left/60), s = left%60;
-    hint.innerHTML = '🚫 累计输错 '+data.count+' 次，已锁定<br>剩余 '+(m>0?m+'分'+s+'秒':s+'秒');
-    hint.className = 'pwd-hint locked';
-  }, 1000);
+    var m=Math.floor(left/60), s=left%60;
+    hint.innerHTML='🚫 累计输错 '+data.count+' 次，已锁定<br>剩余 '+(m>0?m+'分'+s+'秒':s+'秒');
+    hint.className='pwd-hint locked';
+  },1000);
 }
 
-/* ===== 页面加载检查 ===== */
+/* ===== 页面加载 ===== */
 (async function init(){
-  var data = await getLockData();
-  if(isLocked(data)){
-    startCountdown(data.lockUntil);
-  } else {
-    input.focus();
-  }
+  var data=await getLockData();
+  if(isLocked(data)) startCountdown(data.lockUntil);
+  else input.focus();
 })();
 
-input.addEventListener('keydown', function(e){ if(e.key==='Enter') checkPassword(); });
+input.addEventListener('keydown',function(e){ if(e.key==='Enter') checkPassword(); });
 
-/* ===== 验证核心 ===== */
+/* ===== 验证 ===== */
 async function checkPassword(){
-  var data = await getLockData();
+  var data=await getLockData();
   if(isLocked(data)) return;
+  var val=input.value.toUpperCase().trim();
+  if(!val){ hint.textContent='请输入密码'; hint.className='pwd-hint wrong'; return; }
 
-  var val = input.value.toUpperCase().trim();
-  if(val.length === 0){ hint.textContent='请输入密码'; hint.className='pwd-hint wrong'; return; }
-
-  if(val === CORRECT){
+  if(val===CORRECT){
     hint.textContent='✓ 验证通过'; hint.className='pwd-hint success';
-    await saveLockData(0, 0); // 验证成功清零
+    await saveLockData(0,0);
     lockEl.classList.add('unlocked');
-    setTimeout(function(){ main.classList.add('show'); startBgCycle(); pixelNameCanvas(); }, 400);
-  } else {
-    var wrong = data.count + 1;
-    var dur = getLockDuration(wrong);
-    var until = dur > 0 ? Date.now() + dur*1000 : 0;
-    await saveLockData(wrong, until);
-
-    hint.textContent = '密码错误，累计输错 '+wrong+' 次';
-    hint.className = 'pwd-hint wrong';
+    setTimeout(function(){ main.classList.add('show'); startBgCycle(); pixelNameCanvas(); },400);
+  }else{
+    var wrong=data.count+1;
+    var dur=getLockDuration(wrong);
+    var until=dur>0?Date.now()+dur*1000:0;
+    await saveLockData(wrong,until);
+    hint.textContent='密码错误，累计输错 '+wrong+' 次';
+    hint.className='pwd-hint wrong';
     input.classList.add('error'); input.value='';
-    setTimeout(function(){input.classList.remove('error');}, 500);
+    setTimeout(function(){input.classList.remove('error');},500);
     input.focus();
-
-    if(dur > 0){
-      startCountdown(until);
-    }
+    if(dur>0) startCountdown(until);
   }
 }
 
-/* ===== 背景渐变 ===== */
+/* ===== 背景 ===== */
 var bgStarted=false;
 function startBgCycle(){
   if(bgStarted)return; bgStarted=true;
   function rc(){var h=Math.random()<.5?Math.random()*35:200+Math.random()*140;return 'hsl('+h+',75%,38%)';}
   function ch(){document.body.style.backgroundColor=rc();}
-  setTimeout(function(){ch(); setInterval(ch,3000);}, 2000);
+  setTimeout(function(){ch(); setInterval(ch,3000);},2000);
 }
 
-/* ===== 密码门二维码（内容CFTH，不显示文字）===== */
+/* ===== 密码门二维码 ===== */
 var qrGenerated=false;
 function showQR(){
   if(input.disabled) return;
@@ -296,57 +275,10 @@ function showQR(){
 }
 function closeQR(e){if(e&&e.target!==e.currentTarget&&e.type==='click')return;document.getElementById('qrMask').classList.remove('show');}
 
-/* ===== 主页内部二维码（随机+60秒）===== */
-var qrTimer=null, cdTimer=null;
-function showTargetQR(){
-  document.getElementById('optionsPanel').classList.remove('show');
-  var box=document.getElementById('qrBox'), tip=document.getElementById('qrTipExtra');
-  box.innerHTML='';
-  var exp=Date.now()+60000, token=randomToken(16);
-  var url='https://ych1314520.github.io/Ych1314520/verify.html?t='+encodeURIComponent(token)+'&exp='+exp;
-  if(currentType==='douyin'){document.getElementById('qrTitle').innerHTML='抖音扫码<small id="countdownText">剩余 60 秒</small>';}
-  else{document.getElementById('qrTitle').innerHTML='QQ 扫码<small id="countdownText">剩余 60 秒</small>';}
-  tip.innerHTML='每次随机生成，请尽快扫码<br>过期后需重新点"扫码"';
-  new QRCode(box,{text:url,width:188,height:188});
-  clearTimeout(qrTimer); clearInterval(cdTimer);
-  qrTimer=setTimeout(function(){
-    box.innerHTML='<div style="color:#ff1744;font-weight:700;font-size:16px">⛔ 二维码已失效</div>';
-    tip.innerHTML='请点"返回"→再点"扫码"生成新码';
-    var c=document.getElementById('countdownText'); if(c)c.textContent='已过期';
-    clearInterval(cdTimer);
-  },60000);
-  var s=59;
-  cdTimer=setInterval(function(){
-    var c=document.getElementById('countdownText');
-    if(c&&s>0){c.textContent='剩余 '+s+' 秒'; if(s<=10)c.style.color='#ff1744';}
-    if(s<=0)clearInterval(cdTimer); s--;
-  },1000);
-  document.getElementById('qrPanel').classList.add('show');
-}
-function backToOptions(){clearTimeout(qrTimer);clearInterval(cdTimer);document.getElementById('qrPanel').classList.remove('show');document.getElementById('optionsPanel').classList.add('show');}
-
-document.addEventListener('visibilitychange',function(){
-  if(document.hidden){
-    clearTimeout(qrTimer);clearInterval(cdTimer);
-    var box=document.getElementById('qrBox'),tip=document.getElementById('qrTipExtra');
-    if(box&&box.innerHTML!==''){
-      box.innerHTML='<div style="color:#ff1744;font-weight:700;font-size:16px">⛔ 已锁定</div><div style="font-size:12px;color:#888;margin-top:8px">检测到切屏，二维码已清除</div>';
-      tip.innerHTML='请点"返回"→再点"扫码"重新生成';
-      var c=document.getElementById('countdownText');if(c)c.textContent='已锁定';
-    }
-  }
-});
-
-function randomToken(len){
-  var chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
-  var arr=new Uint8Array(len); crypto.getRandomValues(arr);
-  return Array.from(arr,function(b){return chars[b%chars.length];}).join('');
-}
-
-/* ===== 像素名字动画 ===== */
+/* ===== 像素名字 ===== */
 function pixelNameCanvas(){
   var canvas=document.getElementById('nameCanvas'),ctx=canvas.getContext('2d');
-  var text='JS 杨';
+  var text='YCH1314520';
   var dpr=Math.max(1,window.devicePixelRatio||1);
   var cssW=canvas.clientWidth||420,cssH=canvas.clientHeight||52;
   canvas.width=cssW*dpr;canvas.height=cssH*dpr;ctx.scale(dpr,dpr);
@@ -367,30 +299,14 @@ function pixelNameCanvas(){
   requestAnimationFrame(frame);
 }
 
-/* ===== QQ 唤起 ===== */
-var ua=navigator.userAgent||'';
-var isMobile=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
-var DOUYIN_URL='https://v.douyin.com/cToozaNZf4s/';
-var QQ_URL='https://qm.qq.com/q/wTL90DbHqM';
-var QQ_APP='mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
-var QQ_PC='tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3797197884';
-function launchQQ(){
-  if(isMobile){var t=Date.now();location.href=QQ_APP;setTimeout(function(){if(Date.now()-t<2000)location.href=QQ_URL;},1200);return;}
-  var ok=false,bh=function(){ok=true;window.removeEventListener('blur',bh);window.removeEventListener('focus',fh);};
-  var fh=function(){if(!ok){window.removeEventListener('blur',bh);window.removeEventListener('focus',fh);}};
-  window.addEventListener('blur',bh);window.addEventListener('focus',fh);location.href=QQ_PC;
-  setTimeout(function(){if(!ok){window.removeEventListener('blur',bh);window.removeEventListener('focus',fh);location.href=QQ_URL;}},2000);
+/* ===== 跳转 ===== */
+function goDouyin(){ location.href='https://v.douyin.com/cToozaNZf4s/'; }
+function goQQ(){
+  var ua=navigator.userAgent||'';
+  var mobile=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
+  if(mobile){ var t=Date.now(); location.href='mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884'; setTimeout(function(){if(Date.now()-t<2000)location.href='https://qm.qq.com/q/wTL90DbHqM';},1200); }
+  else { location.href='tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3797197884'; setTimeout(function(){location.href='https://qm.qq.com/q/wTL90DbHqM';},2000); }
 }
-var currentType='';
-function openOptions(type){
-  currentType=type;
-  var t=document.getElementById('optionsTitle'),a=document.getElementById('btnApp'),s=document.getElementById('btnScan');
-  if(type==='douyin'){t.innerHTML='抖音<small>网页版 或 扫码</small>';a.textContent='1. 打开抖音网页版';s.textContent='2. 扫码';s.className='panel-btn scan';}
-  else if(type==='qq'){t.innerHTML='QQ<small>唤起App 或 扫码</small>';a.textContent=isMobile?'1. 跳转 QQ（App）':'1. 跳转 QQ（PC）';s.textContent='2. 扫码';s.className='panel-btn scan qq-scan';}
-  document.getElementById('mask').classList.add('show');document.getElementById('optionsPanel').classList.add('show');
-}
-function jumpTarget(){if(currentType==='qq'){launchQQ();}else if(currentType==='douyin'){location.href=DOUYIN_URL;}}
-function closeAll(){document.getElementById('mask').classList.remove('show');document.getElementById('optionsPanel').classList.remove('show');document.getElementById('qrPanel').classList.remove('show');}
 
 document.addEventListener('contextmenu',function(e){e.preventDefault();});
 document.addEventListener('keydown',function(e){
@@ -398,5 +314,4 @@ document.addEventListener('keydown',function(e){
   if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&e.key==='I'))e.preventDefault();
 });
 </script>
-</body>
-</html>
+</body></html>
