@@ -2,391 +2,138 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>JS 杨的专属网站</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<title>访问验证</title>
 <style>
   *{box-sizing:border-box}
   body{
-    background:#0a0a0a;
-    color:#fff;
-    font-family:sans-serif;
-    text-align:center;
-    padding:60px 20px 40px;
-    margin:0;
-    min-height:100vh;
-    overflow-x:hidden;
+    background:#000;color:#fff;font-family:sans-serif;text-align:center;
+    margin:0;min-height:100vh;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;padding:40px 24px 120px;
+    -webkit-user-select:none;user-select:none;
+    -webkit-touch-callout:none;touch-callout:none;
   }
-  .name-wrap{
-    height:64px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin-bottom:24px;
+  .title{font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:2px}
+  .sub{font-size:14px;color:#888;margin-bottom:36px}
+  .pwd-wrapper{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .pwd-input{
+    width:200px;height:52px;font-size:24px;font-weight:700;text-align:center;
+    letter-spacing:8px;border:2px solid #333;border-radius:14px;background:#111;
+    color:#fff;outline:none;transition:border-color .2s ease;-webkit-text-security:disc;
+    -webkit-user-select:auto;user-select:auto;
   }
-  #nameCanvas{
-    width:min(82vw,420px);
-    height:52px;
-    image-rendering:pixelated;
+  .pwd-input:focus{border-color:#fe2c55}
+  .pwd-input.error{border-color:#ff1744;animation:shake .4s ease}
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}
+    40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}
   }
-  .box{display:flex;flex-direction:column;align-items:center;gap:18px;}
-  .btn{
-    width:86%;max-width:360px;padding:22px 18px;border:0;border-radius:18px;
-    font-size:20px;font-weight:700;color:#fff;cursor:pointer;
-    opacity:0;transform:translateY(80px);
-    animation:rise 0.8s ease forwards;position:relative;overflow:hidden;transition:.15s;
+  .verify-btn{
+    height:52px;padding:0 28px;font-size:18px;font-weight:700;border:0;border-radius:14px;
+    background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;cursor:pointer;
+    transition:transform .15s ease,box-shadow .15s ease;white-space:nowrap;
   }
-  .btn:active{transform:translateY(0) scale(.98);}
-  .btn::before,.btn::after{content:'';position:absolute;inset:-50%;z-index:0;pointer-events:none;}
-  .dy::before{
-    background:conic-gradient(from 0deg,#fe2c55,#ff445e,#e6213d,#ff6a88,#fe2c55,#ff1744,#c5002b,#fe2c55);
-    filter:blur(28px) saturate(200%);animation:slimeA 3.2s linear infinite;
+  .verify-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(254,44,85,.35)}
+  .verify-btn:active{transform:translateY(0) scale(.97)}
+  .hint{margin-top:20px;font-size:13px;color:#555;min-height:20px}
+  .hint.wrong{color:#ff1744}
+  .hint.success{color:#00e676}
+
+  .qr-trigger{
+    margin-top:90px;
+    padding:14px 28px;
+    border:0;
+    border-radius:999px;
+    color:#ff5f7a;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    border:1px solid rgba(254,44,85,.45);
+    background:linear-gradient(180deg,rgba(254,44,85,.08),rgba(254,44,85,.02));
   }
-  .dy::after{
-    background:conic-gradient(from 160deg,#ff0a44,#fe2c55,#ff8a9d,#e6213d,#ff445e,#b8002a,#ff6a88,#ff0a44);
-    filter:blur(22px) saturate(190%);animation:slimeB 4.5s linear infinite reverse;
+  .qr-trigger:active{background:rgba(254,44,85,.15)}
+
+  /* 二维码弹窗 */
+  .qr-mask{
+    position:fixed;inset:0;background:rgba(0,0,0,.85);
+    display:none;justify-content:center;align-items:center;z-index:50;
   }
-  .dy-wash{
-    position:absolute;inset:0;
-    background:radial-gradient(circle at 50% 120%,rgba(254,44,85,.5),transparent 55%),
-                radial-gradient(circle at 50% -20%,rgba(255,106,136,.25),transparent 50%);
-    mix-blend-mode:screen;z-index:0;pointer-events:none;animation:dyWash 3.5s ease-in-out infinite alternate;
+  .qr-mask.show{display:flex}
+  .qr-card{
+    background:#111;border-radius:24px;padding:36px 32px;text-align:center;
+    box-shadow:0 10px 50px rgba(0,0,0,.6);
   }
-  @keyframes dyWash{0%{opacity:.8;transform:scale(1)}100%{opacity:1;transform:scale(1.05)}}
-  .qq::before{
-    background:conic-gradient(from 0deg,#009cff,#00d4ff,#006cff,#00fff0,#008cff,#005bff,#00b8ff,#009cff);
-    filter:blur(30px) saturate(220%) brightness(1.05);animation:slimeA 3.6s linear infinite;
+  .qr-card canvas,.qr-card img{border-radius:12px;background:#fff;padding:12px;display:block;margin:0 auto}
+  .qr-card .close-btn{
+    margin-top:20px;padding:12px 40px;border:0;border-radius:12px;
+    background:linear-gradient(135deg,#333,#222);color:#fff;font-size:15px;font-weight:700;cursor:pointer;
   }
-  .qq::after{
-    background:conic-gradient(from 210deg,#12b7f5,#4fc3f7,#006dff,#00eaff,#2b6cff,#00ffd0,#12b7f5);
-    filter:blur(22px) saturate(210%);animation:slimeB 5s linear infinite reverse;
-  }
-  .qq-wash{
-    position:absolute;inset:0;
-    background:radial-gradient(circle at 50% 120%,rgba(0,150,255,.45),transparent 55%),
-                radial-gradient(circle at 50% -20%,rgba(0,255,220,.18),transparent 50%);
-    mix-blend-mode:screen;z-index:0;pointer-events:none;animation:qqWash 4s ease-in-out infinite alternate;
-  }
-  @keyframes qqWash{0%{opacity:.85;transform:scale(1)}100%{opacity:1;transform:scale(1.06)}}
-  @keyframes slimeA{
-    0%{transform:rotate(0deg) scale(1)}25%{transform:rotate(90deg) scale(1.12)}
-    50%{transform:rotate(180deg) scale(.92)}75%{transform:rotate(270deg) scale(1.06)}100%{transform:rotate(360deg) scale(1)}
-  }
-  @keyframes slimeB{
-    0%{transform:rotate(0deg) scale(1.1)}33%{transform:rotate(-120deg) scale(.95)}
-    66%{transform:rotate(-240deg) scale(1.15)}100%{transform:rotate(-360deg) scale(1.1)}
-  }
-  .btn span.label{position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.5);}
-  .dy{animation-delay:.25s;box-shadow:inset 0 0 28px rgba(254,44,85,.35),0 6px 22px rgba(254,44,85,.18);}
-  .qq{animation-delay:.55s;box-shadow:inset 0 0 28px rgba(0,120,255,.35),0 6px 22px rgba(0,90,255,.18);}
-  @keyframes rise{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:translateY(0)}}
-  .tip{margin-top:40px;font-size:12px;color:#555;opacity:0;animation:fade 1s ease .9s forwards;}
-  @keyframes fade{to{opacity:1}}
-  .mask{
-    position:fixed;inset:0;
-    background:rgba(0,0,0,.75);
-    opacity:0;pointer-events:none;
-    transition:opacity .4s ease;
-    z-index:50;
-  }
-  .mask.show{opacity:1;pointer-events:auto;}
-  .slide-panel{
-    position:fixed;
-    left:0;right:0;bottom:0;
-    background:#111;
-    border-radius:24px 24px 0 0;
-    padding:32px 24px 40px;
-    display:flex;flex-direction:column;align-items:center;gap:16px;
-    transform:translateY(100%);
-    opacity:0;
-    transition:transform .7s cubic-bezier(.22,.9,.3,1),opacity .5s ease;
-    z-index:60;
-    box-shadow:0 -10px 50px rgba(0,0,0,.7);
-  }
-  .slide-panel.show{transform:translateY(0);opacity:1;}
-  .grabber{width:44px;height:5px;border-radius:4px;background:#333;position:absolute;top:14px;left:50%;transform:translateX(-50%);}
-  .panel-title{font-size:18px;font-weight:800;margin-top:4px;}
-  .panel-title small{display:block;font-size:12px;color:#777;font-weight:400;margin-top:4px;text-align:center;}
-  .panel-btn{
-    width:100%;max-width:300px;padding:16px;border:0;border-radius:14px;
-    font-size:16px;font-weight:700;color:#fff;cursor:pointer;
-  }
-  .panel-btn.app{background:linear-gradient(135deg,#333,#222);}
-  .panel-btn.scan{background:linear-gradient(135deg,#fe2c55,#ff6a88);}
-  .panel-btn.scan.qq-scan{background:linear-gradient(135deg,#009cff,#12b7f5);}
-  .panel-btn.back{background:#222;color:#aaa;font-size:14px;}
-  .panel-btn.close{background:#222;color:#aaa;font-size:14px;margin-top:6px;}
-  .qr-box{
-    background:#fff;
-    padding:16px;
-    border-radius:18px;
-    width:220px;height:220px;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .qr-tip{font-size:12px;color:#666;text-align:center;line-height:1.6;}
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-<div class="name-wrap">
-  <canvas id="nameCanvas" aria-label="▞▛▖▜▝ ▞▙▛▖▜"></canvas>
-</div>
+  <div class="title">🔒 访问验证</div>
+  <div class="sub">请输入访问密码</div>
 
-<div class="box">
-  <button class="btn dy" onclick="openOptions('douyin')"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
-  <button class="btn qq" onclick="openOptions('qq')"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
-</div>
-<div class="tip">手机端点击跳转网页版，或扫码加好友</div>
+  <div class="pwd-wrapper">
+    <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="●●●●" autocomplete="current-password" inputmode="text" />
+    <button class="verify-btn" onclick="checkPassword()">验证</button>
+  </div>
 
-<div class="mask" id="mask" onclick="closeAll()"></div>
+  <div class="hint" id="hint"></div>
 
-<div class="slide-panel" id="optionsPanel">
-  <div class="grabber"></div>
-  <div class="panel-title" id="optionsTitle">选择方式<small id="optionsSub">跳转 或 扫码</small></div>
-  <button class="panel-btn app" id="btnApp" onclick="jumpTarget()">1. 跳转</button>
-  <button class="panel-btn scan" id="btnScan" onclick="showQR()">2. 扫码</button>
-  <button class="panel-btn close" onclick="closeAll()">取消</button>
-</div>
+  <button class="qr-trigger" onclick="showQR()">没有密码？请扫描下方二维码</button>
 
-<div class="slide-panel" id="qrPanel">
-  <div class="grabber"></div>
-  <div class="panel-title" id="qrTitle">扫码加好友<small id="qrSub">识别二维码跳转</small></div>
-  <div class="qr-box" id="qrBox"></div>
-  <div class="qr-tip">打开对应 App 扫一扫<br>或截图保存后用 App 识别</div>
-  <button class="panel-btn back" onclick="backToOptions()">返回</button>
-  <button class="panel-btn close" onclick="closeAll()">关闭</button>
-</div>
+  <!-- 二维码弹窗：不显示任何密码文字 -->
+  <div class="qr-mask" id="qrMask" onclick="closeQR(event)">
+    <div class="qr-card" onclick="event.stopPropagation()">
+      <div id="qrCode"></div>
+      <button class="close-btn" onclick="closeQR()">关闭</button>
+    </div>
+  </div>
 
 <script src="https://fastly.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-var currentType = '';
-var DOUYIN_URL = 'https://v.douyin.com/cToozaNZf4s/';
-var QQ_URL = 'https://qm.qq.com/q/wTL90DbHqM';
-var QQ_APP  = 'mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
-var QQ_PC   = 'tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3797197884';
+  var CORRECT = 'CFTH';
+  var input = document.getElementById('pwdInput');
+  var hint = document.getElementById('hint');
+  var qrGenerated = false;
 
-var ua = navigator.userAgent || '';
-var isMobile = /Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
+  input.focus();
+  input.addEventListener('keydown', function(e){ if(e.key === 'Enter') checkPassword(); });
 
-(function pixelNameCanvas(){
-  var canvas = document.getElementById('nameCanvas');
-  var ctx = canvas.getContext('2d');
-  var text = '▞▛▖▜▝ ▞▙▛▖▜';
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    if((e.ctrlKey||e.metaKey) && ['c','x','s','u','a','v'].includes(e.key.toLowerCase())) e.preventDefault();
+  });
 
-  var dpr = Math.max(1, window.devicePixelRatio || 1);
-  var cssW = canvas.clientWidth || 420;
-  var cssH = canvas.clientHeight || 52;
-  canvas.width = cssW * dpr;
-  canvas.height = cssH * dpr;
-  ctx.scale(dpr, dpr);
-
-  var off = document.createElement('canvas');
-  off.width = cssW * dpr;
-  off.height = cssH * dpr;
-  var octx = off.getContext('2d');
-  octx.scale(dpr, dpr);
-  octx.clearRect(0,0,cssW,cssH);
-  octx.fillStyle = '#fff';
-  octx.textAlign = 'center';
-  octx.textBaseline = 'middle';
-  octx.font = '700 32px "Courier New","Consolas",monospace';
-  octx.fillText(text, cssW/2, cssH/2);
-
-  var step = 1;
-  var grid = [];
-  for(var y=0;y<cssH;y+=step){
-    for(var x=0;x<cssW;x+=step){
-      var data = octx.getImageData(x*dpr, y*dpr, 1, 1).data;
-      if(data[3] > 80){
-        grid.push({
-          x:x, y:y,
-          size:step,
-          r:255, g:255, b:255,
-          tr:255, tg:255, tb:255,
-          delay: Math.random()*0.4 + (x/cssW)*0.4,
-          jitterX: 0, jitterY: 0,
-          jitterSpeed: 0.15 + Math.random()*0.25,
-          jitterAmount: 0.5 + Math.random()*1.0
-        });
-      }
+  function checkPassword(){
+    var val = input.value.toUpperCase();
+    if(val.length === 0){ hint.textContent='请输入密码'; hint.className='hint wrong'; return; }
+    if(val === CORRECT){
+      hint.textContent='✓ 验证通过'; hint.className='hint success';
+    } else {
+      hint.textContent='密码错误，请重试'; hint.className='hint wrong';
+      input.classList.add('error'); input.value='';
+      setTimeout(function(){ input.classList.remove('error'); }, 500);
+      input.focus();
     }
   }
 
-  var start = null;
-  var pixelDone = false;
-  var lastChange = 0;
-  var CHANGE_INTERVAL = 2000;
-  var TRANSITION_SPEED = 0.04;
-
-  function easeOutCubic(t){ return 1-Math.pow(1-t,3); }
-
-  function setNewTargetColor(){
-    var h = Math.random()*360;
-    var s = 90 + Math.random()*10;
-    var l = 55 + Math.random()*10;
-    var c = hslToRgb(h/360, s/100, l/100);
-    for(var i=0;i<grid.length;i++){
-      grid[i].tr = c[0];
-      grid[i].tg = c[1];
-      grid[i].tb = c[2];
+  function showQR(){
+    var box = document.getElementById('qrCode');
+    if(!qrGenerated){
+      box.innerHTML='';
+      new QRCode(box, { text: 'CFTH', width: 200, height: 200 });
+      qrGenerated = true;
     }
+    document.getElementById('qrMask').classList.add('show');
   }
 
-  function hslToRgb(h, s, l){
-    var r,g,b;
-    if(s === 0){ r=g=b=l; }
-    else{
-      var hue2rgb = function(p,q,t){
-        if(t<0) t+=1;
-        if(t>1) t-=1;
-        if(t<1/6) return p+(q-p)*6*t;
-        if(t<1/2) return q;
-        if(t<2/3) return p+(q-p)*(2/3-t)*6;
-        return p;
-      };
-      var q = l<0.5 ? l*(1+s) : l+s-l*s;
-      var p = 2*l-q;
-      r = hue2rgb(p,q,h+1/3);
-      g = hue2rgb(p,q,h);
-      b = hue2rgb(p,q,h-1/3);
-    }
-    return [Math.round(r*255), Math.round(g*255), Math.round(b*255)];
+  function closeQR(e){
+    if(e && e.target !== e.currentTarget && e.type === 'click') return;
+    document.getElementById('qrMask').classList.remove('show');
   }
-
-  function frame(ts){
-    if(!start) start = ts;
-    var t = (ts-start)/1000;
-    ctx.clearRect(0,0,cssW,cssH);
-
-    if(ts - lastChange > CHANGE_INTERVAL){
-      lastChange = ts;
-      setNewTargetColor();
-    }
-
-    var jitterPhase = ts * 0.003;
-
-    for(var i=0;i<grid.length;i++){
-      var p = grid[i];
-
-      if(!pixelDone){
-        var local = (t - p.delay) / 0.5;
-        if(local < 0) local = 0;
-        if(local > 1) local = 1;
-        var e = easeOutCubic(local);
-        var px = p.x;
-        var py = p.y + (1-e)*20;
-        if(local === 0) continue;
-        ctx.fillStyle = 'rgba(255,255,255,'+e+')';
-        ctx.fillRect(px, py, p.size, p.size);
-      } else {
-        p.r += (p.tr - p.r) * TRANSITION_SPEED;
-        p.g += (p.tg - p.g) * TRANSITION_SPEED;
-        p.b += (p.tb - p.b) * TRANSITION_SPEED;
-
-        var jx = Math.sin(jitterPhase * p.jitterSpeed * 10 + p.x) * p.jitterAmount;
-        var jy = Math.cos(jitterPhase * p.jitterSpeed * 8 + p.y) * p.jitterAmount;
-
-        ctx.fillStyle = 'rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';
-        ctx.fillRect(p.x + jx, p.y + jy, p.size, p.size);
-      }
-    }
-
-    if(!pixelDone && t >= 1.6) pixelDone = true;
-
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-})();
-
-function launchQQ(){
-  if(isMobile){
-    var t = Date.now();
-    location.href = QQ_APP;
-    setTimeout(function(){
-      if(Date.now() - t < 2000) location.href = QQ_URL;
-    }, 1200);
-    return;
-  }
-
-  var launched = false;
-  var blurHandler = function(){
-    launched = true;
-    window.removeEventListener('blur', blurHandler);
-    window.removeEventListener('focus', focusHandler);
-  };
-  var focusHandler = function(){
-    if(!launched){
-      window.removeEventListener('blur', blurHandler);
-      window.removeEventListener('focus', focusHandler);
-    }
-  };
-  window.addEventListener('blur', blurHandler);
-  window.addEventListener('focus', focusHandler);
-
-  location.href = QQ_PC;
-
-  setTimeout(function(){
-    if(!launched){
-      window.removeEventListener('blur', blurHandler);
-      window.removeEventListener('focus', focusHandler);
-      location.href = QQ_URL;
-    }
-  }, 2000);
-}
-
-function openOptions(type){
-  currentType = type;
-  var title = document.getElementById('optionsTitle');
-  var sub = document.getElementById('optionsSub');
-  var btnApp = document.getElementById('btnApp');
-  var btnScan = document.getElementById('btnScan');
-  if(type === 'douyin'){
-    title.innerHTML = '抖音<small>网页版 或 扫码</small>';
-    btnApp.textContent = '1. 打开抖音网页版';
-    btnScan.textContent = '2. 扫码';
-    btnScan.className = 'panel-btn scan';
-  } else if(type === 'qq'){
-    title.innerHTML = 'QQ<small>唤起App 或 扫码</small>';
-    btnApp.textContent = isMobile ? '1. 跳转 QQ（App）' : '1. 跳转 QQ（PC）';
-    btnScan.textContent = '2. 扫码';
-    btnScan.className = 'panel-btn scan qq-scan';
-  }
-  document.getElementById('mask').classList.add('show');
-  document.getElementById('optionsPanel').classList.add('show');
-}
-
-function jumpTarget(){
-  if(currentType === 'qq'){
-    launchQQ();
-  } else if(currentType === 'douyin'){
-    location.href = DOUYIN_URL;
-  }
-}
-
-function showQR(){
-  document.getElementById('optionsPanel').classList.remove('show');
-  var box = document.getElementById('qrBox');
-  var title = document.getElementById('qrTitle');
-  box.innerHTML = '';
-  if(currentType === 'douyin'){
-    title.innerHTML = '抖音扫码<small>打开抖音扫一扫</small>';
-    new QRCode(box, { text: DOUYIN_URL, width:188, height:188 });
-  } else if(currentType === 'qq'){
-    title.innerHTML = 'QQ 扫码<small>打开QQ扫一扫</small>';
-    new QRCode(box, { text: QQ_URL, width:188, height:188 });
-  }
-  document.getElementById('qrPanel').classList.add('show');
-}
-
-function backToOptions(){
-  document.getElementById('qrPanel').classList.remove('show');
-  document.getElementById('optionsPanel').classList.add('show');
-}
-
-function closeAll(){
-  document.getElementById('mask').classList.remove('show');
-  document.getElementById('optionsPanel').classList.remove('show');
-  document.getElementById('qrPanel').classList.remove('show');
-}
 </script>
 </body>
 </html>
