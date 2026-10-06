@@ -3,28 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="description" content="JS 杨的专属网站，抖音主页与 QQ 加好友入口">
 <title>JS 杨的专属网站</title>
 <style>
   *{box-sizing:border-box}
-  body{background:#000;color:#fff;font-family:sans-serif;text-align:center;margin:0;min-height:100vh;overflow-x:hidden;position:relative;transition:background-color 2.5s ease;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-callout:none}
+  html,body{height:100%}
+  body{
+    margin:0;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    text-align:center;min-height:100vh;min-height:100dvh;overflow-x:hidden;overflow-y:auto;position:relative;
+    transition:background-color 2.5s ease;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-callout:none;
+  }
   img{-webkit-user-drag:none;pointer-events:none}
   #bgOverlay{position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(0,0,0,0.4)}
-  #lockScreen{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;background:#000;transition:opacity .6s ease,visibility .6s ease}
+
+  /* ============ 锁屏 ============ */
+  #lockScreen{
+    position:absolute;top:0;left:0;width:100%;min-height:100%;min-height:100dvh;z-index:100;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;
+    background:#000;transition:opacity .6s ease,visibility .6s ease;
+  }
   #lockScreen.unlocked{opacity:0;visibility:hidden;pointer-events:none}
   .lock-title{font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:2px}
   .lock-sub{font-size:14px;color:#888;margin-bottom:36px}
   .pwd-wrapper{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
-
   .pwd-input-wrap{position:relative;display:inline-flex;align-items:center}
-  .pwd-input{width:200px;height:52px;font-size:24px;font-weight:700;text-align:center;letter-spacing:8px;border:2px solid #333;border-radius:14px;background:#111;color:#fff;outline:none;transition:border-color .2s ease;padding-right:42px;-webkit-user-select:auto;user-select:auto}
+  .pwd-input{
+    width:200px;height:52px;font-size:24px;font-weight:700;text-align:center;letter-spacing:8px;
+    border:2px solid #333;border-radius:14px;background:#111;color:#fff;outline:none;
+    transition:border-color .2s ease;padding-right:42px;
+    -webkit-user-select:text;user-select:text;-webkit-appearance:none;appearance:none;
+  }
   .pwd-input:focus{border-color:#fe2c55}
   .pwd-input.error{border-color:#ff1744;animation:shake .4s ease}
   .pwd-input:disabled{opacity:.4;cursor:not-allowed}
-
-  .toggle-pwd{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:0;cursor:pointer;font-size:18px;opacity:.5;transition:opacity .2s ease;padding:0;z-index:2}
+  .toggle-pwd{
+    position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;
+    display:flex;align-items:center;justify-content:center;background:none;border:0;cursor:pointer;
+    font-size:18px;opacity:.5;transition:opacity .2s ease;padding:0;z-index:2;
+  }
   .toggle-pwd:hover{opacity:.9}
   .toggle-pwd:disabled{opacity:.2;cursor:not-allowed}
-
   @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
   .verify-btn{height:52px;padding:0 28px;font-size:18px;font-weight:700;border:0;border-radius:14px;background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;cursor:pointer;white-space:nowrap}
   .verify-btn:disabled{opacity:.4;cursor:not-allowed}
@@ -39,12 +58,33 @@
   .qr-card{background:#111;border-radius:24px;padding:36px 32px;text-align:center;box-shadow:0 10px 50px rgba(0,0,0,.6)}
   .qr-card canvas,.qr-card img{border-radius:12px;background:#fff;padding:12px;display:block;margin:0 auto}
   .qr-card .close-btn{margin-top:20px;padding:12px 40px;border:0;border-radius:12px;background:linear-gradient(135deg,#333,#222);color:#fff;font-size:15px;font-weight:700;cursor:pointer}
-  #mainContent{display:none;padding:60px 20px 80px;min-height:100vh;position:relative;z-index:2}
+
+  /* ============ 主内容 ============ */
+  #mainContent{display:none;min-height:100vh;position:relative;z-index:2}
   #mainContent.show{display:block}
-  .name-wrap{height:64px;display:flex;justify-content:center;align-items:center;margin-bottom:24px}
+
+  /* 竖屏：单列上下结构（默认） */
+  .page{
+    min-height:100vh;padding:56px 20px 80px;
+    display:flex;flex-direction:column;align-items:center;gap:34px;
+    max-width:560px;margin:0 auto;
+  }
+  .name-wrap{height:64px;display:flex;justify-content:center;align-items:center;width:100%}
   #nameCanvas{width:min(82vw,420px);height:52px;image-rendering:pixelated}
-  .box{display:flex;flex-direction:column;align-items:center;gap:18px}
-  .btn{width:86%;max-width:360px;padding:22px 18px;border:0;border-radius:18px;font-size:20px;font-weight:700;color:#fff;cursor:pointer;opacity:0;transform:translateY(80px);animation:rise .8s ease forwards;position:relative;overflow:hidden}
+  .box{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%}
+
+  /* ===== 按钮：flex 双居中，干掉 button 原生偏移 ===== */
+  .btn{
+    width:86%;max-width:360px;height:60px;
+    border:0;border-radius:18px;font-size:20px;font-weight:700;
+    color:#fff;cursor:pointer;position:relative;overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+    /* 核心修复：flex 居中 + 干掉原生样式 */
+    display:inline-flex;align-items:center;justify-content:center;
+    line-height:1;padding:0;margin:0;
+    -webkit-appearance:none;appearance:none;
+    font-family:inherit;
+  }
   .btn:active{transform:translateY(0) scale(.98)}
   .btn::before,.btn::after{content:'';position:absolute;inset:-50%;z-index:0;pointer-events:none}
   .dy::before{background:conic-gradient(from 0deg,#fe2c55,#ff445e,#e6213d,#ff6a88,#fe2c55,#ff1744,#c5002b,#fe2c55);filter:blur(28px) saturate(200%);animation:slimeA 3.2s linear infinite}
@@ -53,28 +93,53 @@
   .qq::before{background:conic-gradient(from 0deg,#009cff,#00d4ff,#006cff,#00fff0,#008cff,#005bff,#00b8ff,#009cff);filter:blur(30px) saturate(220%) brightness(1.05);animation:slimeA 3.6s linear infinite}
   .qq::after{background:conic-gradient(from 210deg,#12b7f5,#4fc3f7,#006dff,#00eaff,#2b6cff,#00ffd0,#12b7f5);filter:blur(22px) saturate(210%);animation:slimeB 5s linear infinite reverse}
   .qq-wash{position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,rgba(0,150,255,.45),transparent 55%),radial-gradient(circle at 50% -20%,rgba(0,255,220,.18),transparent 50%);mix-blend-mode:screen;z-index:0;pointer-events:none;animation:qqWash 4s ease-in-out infinite alternate}
-  .btn span.label{position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.5)}
-  .dy{animation-delay:.25s}
-  .qq{animation-delay:.55s}
+  .btn span.label{
+    position:relative;z-index:2;
+    display:inline-flex;align-items:center;justify-content:center;
+    width:100%;height:100%;
+    text-shadow:0 1px 4px rgba(0,0,0,.5);
+    padding-bottom:1px; /* 抵消中文字体视觉下沉 */
+  }
   @keyframes slimeA{0%{transform:rotate(0) scale(1)}25%{transform:rotate(90deg) scale(1.12)}50%{transform:rotate(180deg) scale(.92)}75%{transform:rotate(270deg) scale(1.06)}100%{transform:rotate(360deg) scale(1)}}
   @keyframes slimeB{0%{transform:rotate(0) scale(1.1)}33%{transform:rotate(-120deg) scale(.95)}66%{transform:rotate(-240deg) scale(1.15)}100%{transform:rotate(-360deg) scale(1.1)}}
   @keyframes dyWash{0%{opacity:.8;transform:scale(1)}100%{opacity:1;transform:scale(1.05)}}
   @keyframes qqWash{0%{opacity:.85;transform:scale(1)}100%{opacity:1;transform:scale(1.06)}}
-  @keyframes rise{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:translateY(0)}}
-  .tip{margin-top:40px;font-size:12px;color:#d0d0d0;opacity:0;animation:fade 1s ease .9s forwards}
-  @keyframes fade{to{opacity:1}}
+  .tip{margin-top:34px;font-size:12px;color:#d0d0d0}
 
-  /* ===== 个人说明块：复用 rise 动画，延迟 1.3s 更晚出现 ===== */
+  /* 说明卡片：竖屏也在下方，带滑入动画 */
   .about{
-    margin:56px auto 0;max-width:420px;padding:24px 20px;
-    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
-    border-radius:18px;text-align:left;
-    opacity:0;transform:translateY(80px);
-    animation:rise 1s ease 1.3s forwards;
+    width:100%;max-width:520px;padding:26px 22px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+    border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.25);backdrop-filter:blur(6px);
+    text-align:left;
+    opacity:0;transform:translateY(50px);animation:fadeUp 1.1s ease forwards;animation-delay:.3s;
   }
-  .about h3{margin:0 0 14px;font-size:15px;color:#fe2c55;letter-spacing:1px;text-align:center}
-  .about p{margin:0 0 12px;font-size:13.5px;line-height:1.9;color:#b8b8b8;text-align:justify}
-  .about p:last-child{margin-bottom:0;color:#8a8a8a;font-size:12.5px;text-align:center;margin-top:16px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)}
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+  .about h2{margin:0 0 14px;text-align:center;font-size:20px;color:#fe2c55;letter-spacing:1px}
+  .about p{margin:0 0 12px;font-size:14.5px;line-height:1.85;color:#d6d6d6;text-align:justify}
+  .about p:last-child{margin:0;color:#9a9a9a;font-size:13px;text-align:center;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)}
+
+  /* ============ 横屏/电脑：左右双栏 ============ */
+  @media (min-width:820px) and (orientation:landscape){
+    .page{
+      flex-direction:row;justify-content:center;align-items:flex-start;
+      gap:56px;max-width:1080px;padding:80px 48px;
+    }
+    .left{flex:1;min-width:280px;display:flex;flex-direction:column;align-items:center}
+    .name-wrap{margin-bottom:30px}
+    .box{align-items:center}
+    .btn{
+      width:260px;max-width:none;height:56px;font-size:19px;
+      display:inline-flex;align-items:center;justify-content:center;line-height:1;
+    }
+    .tip{margin-top:30px}
+    .about{flex:1;min-width:280px;max-width:none;align-self:flex-start;position:sticky;top:60px}
+  }
+  @media (min-width:1100px){
+    .page{gap:72px}
+    .about{padding:30px 28px}
+    .about p{font-size:15px}
+  }
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -86,7 +151,7 @@
   <div class="lock-sub">请输入访问密码</div>
   <div class="pwd-wrapper">
     <div class="pwd-input-wrap">
-      <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="••••" autocomplete="current-password" inputmode="text">
+      <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="••••" autocomplete="off" inputmode="text" enterkeyhint="done">
       <button class="toggle-pwd" id="togglePwd" type="button" onclick="togglePassword()" title="显示密码">👁</button>
     </div>
     <button class="verify-btn" id="verifyBtn" onclick="checkPassword()">验证</button>
@@ -103,23 +168,26 @@
 </div>
 
 <div id="mainContent">
-  <div class="name-wrap">
-    <canvas id="nameCanvas" aria-label=""></canvas>
-  </div>
-  <div class="box">
-    <button class="btn dy" onclick="goDouyin()"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
-    <button class="btn qq" onclick="goQQ()"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
-  </div>
-  <div class="tip">点击按钮直接跳转</div>
+  <div class="page">
+    <section class="left">
+      <div class="name-wrap">
+        <canvas id="nameCanvas" aria-label=""></canvas>
+      </div>
+      <div class="box">
+        <button class="btn dy" onclick="goDouyin()"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
+        <button class="btn qq" onclick="goQQ()"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
+      </div>
+      <div class="tip">点击按钮直接跳转</div>
+    </section>
 
-  <!-- ===== 个人说明 ===== -->
-  <div class="about">
-    <h3>📌 写在前面</h3>
-    <p>本网站是我随手乱写的，纯粹一时兴起，敲敲打打拼出来的一个小玩意儿，没什么高大上的架构，也不打算做成什么正经项目，就是图个乐子，写着玩、看着爽。</p>
-    <p>至于里面的那些链接和联系方式，随缘就好。跟我破产了几字一、100多字、200多字都可以，别太当真，也别太较真，都是随口说说、随手放上去的。我这个人做事一向随性，今天想起来就更新一下，明天懒了可能就搁那儿不动了。</p>
-    <p>所以如果你发现页面很久没变、链接失效、或者按钮点了没反应，先别急着吐槽，很可能只是我又跑去干别的事了。等哪天兴致上来了，说不定就推一版新的，也可能就这么一直放着，谁知道呢。</p>
-    <p>总之，这就是一个属于我自己的小角落，写给自己看，也给碰巧进来的你看看。看得开心就好，别想太多 😄</p>
-    <p>© 随手一写 · 随缘更新</p>
+    <aside class="about">
+      <h2>📌 写在前面</h2>
+      <p>本网站是我随手乱写的，纯粹一时兴起，敲敲打打拼出来的一个小玩意儿，没什么高大上的架构，也不打算做成什么正经项目，就是图个乐子，写着玩、看着爽。</p>
+      <p>至于里面的那些链接和联系方式，随缘就好。跟我破产了几字一、100多字、200多字都可以，别太当真，也别太较真，都是随口说说、随手放上去的。我这个人做事一向随性，今天想起来就更新一下，明天懒了可能就搁那儿不动了。</p>
+      <p>所以如果你发现页面很久没变、链接失效、或者按钮点了没反应，先别急着吐槽，很可能只是我又跑去干别的事了。等哪天兴致上来了，说不定就推一版新的，也可能就这么一直放着，谁知道呢。</p>
+      <p>总之，这就是一个属于我自己的小角落，写给自己看，也给碰巧进来的你看看。看得开心就好，别想太多 😄</p>
+      <p>© 随手一写 · 随缘更新</p>
+    </aside>
   </div>
 </div>
 
@@ -140,6 +208,22 @@ var verifyBtn = document.getElementById('verifyBtn');
 var qrTrigger = document.getElementById('qrTrigger');
 var togglePwd = document.getElementById('togglePwd');
 
+/* ===== 软键盘适配 ===== */
+function scrollInputIntoView(){
+  setTimeout(function(){
+    var rect = input.getBoundingClientRect();
+    if(rect.bottom > window.innerHeight - 60 || rect.top < 0){
+      input.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }, 300);
+}
+input.addEventListener('focus', scrollInputIntoView);
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', function(){
+    if(document.activeElement === input) scrollInputIntoView();
+  });
+}
+
 /* ===== 显示/隐藏密码 ===== */
 var pwdVisible = false;
 function togglePassword(){
@@ -150,7 +234,7 @@ function togglePassword(){
   input.focus();
 }
 
-/* ===== 存储：GitHub 优先，localStorage 降级 ===== */
+/* ===== 存储 ===== */
 function getLocalData(){
   try{ var r=localStorage.getItem('pwdLock'); if(r) return JSON.parse(r); }catch(e){}
   return {count:0,lockUntil:0};
@@ -212,7 +296,8 @@ function startCountdown(lockUntil){
     if(left<=0){
       clearInterval(window._cd);
       input.disabled=false; verifyBtn.disabled=false; qrTrigger.disabled=false; togglePwd.disabled=false;
-      hint.textContent=''; hint.className='pwd-hint'; input.focus();
+      hint.textContent=''; hint.className='pwd-hint';
+      setTimeout(function(){input.focus();},50);
       return;
     }
     var m=Math.floor(left/60), s=left%60;
@@ -225,10 +310,11 @@ function startCountdown(lockUntil){
 (async function init(){
   var data=await getLockData();
   if(isLocked(data)) startCountdown(data.lockUntil);
-  else input.focus();
+  else { setTimeout(function(){input.focus();},120); }
 })();
 
-input.addEventListener('keydown',function(e){ if(e.key==='Enter') checkPassword(); });
+input.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); checkPassword(); } });
+input.addEventListener('input',function(){ if(hint.className==='pwd-hint wrong'){hint.className='pwd-hint';} });
 
 /* ===== 验证 ===== */
 async function checkPassword(){
@@ -250,8 +336,7 @@ async function checkPassword(){
     hint.textContent='密码错误，累计输错 '+wrong+' 次';
     hint.className='pwd-hint wrong';
     input.classList.add('error'); input.value='';
-    setTimeout(function(){input.classList.remove('error');},500);
-    input.focus();
+    setTimeout(function(){input.classList.remove('error');input.focus();},500);
     if(dur>0) startCountdown(until);
   }
 }
@@ -265,7 +350,7 @@ function startBgCycle(){
   setTimeout(function(){ch(); setInterval(ch,3000);},2000);
 }
 
-/* ===== 密码门二维码 ===== */
+/* ===== 二维码 ===== */
 var qrGenerated=false;
 function showQR(){
   if(input.disabled) return;
@@ -314,4 +399,5 @@ document.addEventListener('keydown',function(e){
   if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&e.key==='I'))e.preventDefault();
 });
 </script>
-</body></html>
+</body>
+</html>
