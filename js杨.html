@@ -16,7 +16,6 @@
   img{-webkit-user-drag:none;pointer-events:none}
   #bgOverlay{position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(0,0,0,0.4)}
 
-  /* ===== 密码门 ===== */
   #lockScreen{
     position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
     justify-content:center;align-items:center;padding:40px 24px;background:#000;
@@ -44,23 +43,20 @@
     background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;cursor:pointer;
     transition:transform .15s ease,box-shadow .15s ease;white-space:nowrap;
   }
-  .verify-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(254,44,85,.35)}
-  .verify-btn:active:not(:disabled){transform:translateY(0) scale(.97)}
   .verify-btn:disabled{opacity:.4;cursor:not-allowed}
   .pwd-hint{margin-top:20px;font-size:13px;color:#555;min-height:24px}
   .pwd-hint.wrong{color:#ff1744}
   .pwd-hint.success{color:#00e676}
   .pwd-hint.locked{color:#ff9800;font-size:14px;font-weight:700}
+  .pwd-hint.info{color:#fe2c55}
   .qr-trigger{
     margin-top:60px;padding:14px 28px;border:0;border-radius:999px;
     color:#ff5f7a;font-size:15px;font-weight:700;cursor:pointer;
     border:1px solid rgba(254,44,85,.45);
     background:linear-gradient(180deg,rgba(254,44,85,.08),rgba(254,44,85,.02));
   }
-  .qr-trigger:active{background:rgba(254,44,85,.15)}
   .qr-trigger:disabled{opacity:.3;cursor:not-allowed}
 
-  /* ===== 二维码弹窗 ===== */
   .qr-mask{
     position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:120;
     display:none;justify-content:center;align-items:center;
@@ -76,10 +72,8 @@
     background:linear-gradient(135deg,#333,#222);color:#fff;font-size:15px;font-weight:700;cursor:pointer;
   }
 
-  /* ===== 主页 ===== */
   #mainContent{display:none;padding:60px 20px 40px;min-height:100vh;position:relative;z-index:2}
   #mainContent.show{display:block}
-  @media(min-width:768px){#mainContent{padding:120px 20px 60px}}
   .name-wrap,.box,.tip{position:relative;z-index:2}
   .name-wrap{height:64px;display:flex;justify-content:center;align-items:center;margin-bottom:24px}
   #nameCanvas{width:min(82vw,420px);height:52px;image-rendering:pixelated}
@@ -87,36 +81,21 @@
   .btn{
     width:86%;max-width:360px;padding:22px 18px;border:0;border-radius:18px;
     font-size:20px;font-weight:700;color:#fff;cursor:pointer;opacity:0;
-    transform:translateY(80px);animation:rise .8s ease forwards;position:relative;
-    overflow:hidden;transition:.15s;
+    transform:translateY(80px);animation:rise .8s ease forwards;position:relative;overflow:hidden;
   }
   .btn:active{transform:translateY(0) scale(.98)}
-  @media(min-width:768px){
-    .btn{transition:transform .2s ease,box-shadow .2s ease}
-    .btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 40px rgba(0,0,0,.4)}
-    .btn:active{transform:translateY(0) scale(.98)}
-    .name-wrap{height:80px;margin-bottom:48px}
-    #nameCanvas{width:min(60vw,520px);height:64px}
-    .box{gap:24px}
-    .btn{font-size:22px;padding:26px 24px;border-radius:22px}
-    .tip{margin-top:60px;font-size:14px}
-  }
   .btn::before,.btn::after{content:'';position:absolute;inset:-50%;z-index:0;pointer-events:none}
   .dy::before{background:conic-gradient(from 0deg,#fe2c55,#ff445e,#e6213d,#ff6a88,#fe2c55,#ff1744,#c5002b,#fe2c55);filter:blur(28px) saturate(200%);animation:slimeA 3.2s linear infinite}
   .dy::after{background:conic-gradient(from 160deg,#ff0a44,#fe2c55,#ff8a9d,#e6213d,#ff445e,#b8002a,#ff6a88,#ff0a44);filter:blur(22px) saturate(190%);animation:slimeB 4.5s linear infinite reverse}
   .dy-wash{position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,rgba(254,44,85,.5),transparent 55%),radial-gradient(circle at 50% -20%,rgba(255,106,136,.25),transparent 50%);mix-blend-mode:screen;z-index:0;pointer-events:none;animation:dyWash 3.5s ease-in-out infinite alternate}
-  @keyframes dyWash{0%{opacity:.8;transform:scale(1)}100%{opacity:1;transform:scale(1.05)}}
   .qq::before{background:conic-gradient(from 0deg,#009cff,#00d4ff,#006cff,#00fff0,#008cff,#005bff,#00b8ff,#009cff);filter:blur(30px) saturate(220%) brightness(1.05);animation:slimeA 3.6s linear infinite}
   .qq::after{background:conic-gradient(from 210deg,#12b7f5,#4fc3f7,#006dff,#00eaff,#2b6cff,#00ffd0,#12b7f5);filter:blur(22px) saturate(210%);animation:slimeB 5s linear infinite reverse}
   .qq-wash{position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,rgba(0,150,255,.45),transparent 55%),radial-gradient(circle at 50% -20%,rgba(0,255,220,.18),transparent 50%);mix-blend-mode:screen;z-index:0;pointer-events:none;animation:qqWash 4s ease-in-out infinite alternate}
-  @keyframes qqWash{0%{opacity:.85;transform:scale(1)}100%{opacity:1;transform:scale(1.06)}}
-  @keyframes slimeA{0%{transform:rotate(0) scale(1)}25%{transform:rotate(90deg) scale(1.12)}50%{transform:rotate(180deg) scale(.92)}75%{transform:rotate(270deg) scale(1.06)}100%{transform:rotate(360deg) scale(1)}}
-  @keyframes slimeB{0%{transform:rotate(0) scale(1.1)}33%{transform:rotate(-120deg) scale(.95)}66%{transform:rotate(-240deg) scale(1.15)}100%{transform:rotate(-360deg) scale(1.1)}}
   .btn span.label{position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.5)}
-  .dy{animation-delay:.25s;box-shadow:inset 0 0 28px rgba(254,44,85,.35),0 6px 22px rgba(254,44,85,.18)}
-  .qq{animation-delay:.55s;box-shadow:inset 0 0 28px rgba(0,120,255,.35),0 6px 22px rgba(0,90,255,.18)}
+  .dy{animation-delay:.25s}
+  .qq{animation-delay:.55s}
   @keyframes rise{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:translateY(0)}}
-  .tip{margin-top:40px;font-size:12px;color:#d0d0d0;opacity:0;animation:fade 1s ease .9s forwards;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+  .tip{margin-top:40px;font-size:12px;color:#d0d0d0;opacity:0;animation:fade 1s ease .9s forwards}
   @keyframes fade{to{opacity:1}}
 
   .mask{position:fixed;inset:0;background:rgba(0,0,0,.75);opacity:0;pointer-events:none;transition:opacity .4s ease;z-index:50}
@@ -125,24 +104,16 @@
     position:fixed;left:0;right:0;bottom:0;background:#111;border-radius:24px 24px 0 0;
     padding:32px 24px 40px;display:flex;flex-direction:column;align-items:center;gap:16px;
     transform:translateY(100%);opacity:0;transition:transform .7s cubic-bezier(.22,.9,.3,1),opacity .5s ease;z-index:60;
-    box-shadow:0 -10px 50px rgba(0,0,0,.7);
   }
   .slide-panel.show{transform:translateY(0);opacity:1}
-  @media(min-width:768px){
-    .slide-panel{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-40%) scale(.95);width:420px;border-radius:24px;padding:40px 36px 44px}
-    .slide-panel.show{transform:translate(-50%,-50%) scale(1)}
-    .grabber{display:none}
-  }
   .grabber{width:44px;height:5px;border-radius:4px;background:#333;position:absolute;top:14px;left:50%;transform:translateX(-50%)}
   .panel-title{font-size:18px;font-weight:800;margin-top:4px}
   .panel-title small{display:block;font-size:12px;color:#777;font-weight:400;margin-top:4px;text-align:center}
-  .panel-btn{width:100%;max-width:300px;padding:16px;border:0;border-radius:14px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
-  .panel-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+  .panel-btn{width:100%;max-width:300px;padding:16px;border:0;border-radius:14px;font-size:16px;font-weight:700;color:#fff;cursor:pointer}
   .panel-btn.app{background:linear-gradient(135deg,#333,#222)}
   .panel-btn.scan{background:linear-gradient(135deg,#fe2c55,#ff6a88)}
   .panel-btn.scan.qq-scan{background:linear-gradient(135deg,#009cff,#12b7f5)}
-  .panel-btn.back{background:#222;color:#aaa;font-size:14px}
-  .panel-btn.close{background:#222;color:#aaa;font-size:14px;margin-top:6px}
+  .panel-btn.back,.panel-btn.close{background:#222;color:#aaa;font-size:14px}
   .qr-box{background:#fff;padding:16px;border-radius:18px;width:220px;height:220px;display:flex;align-items:center;justify-content:center}
   .qr-tip{font-size:12px;color:#666;text-align:center;line-height:1.6}
   .secure-tip{font-size:11px;color:#555;margin-top:10px}
@@ -152,7 +123,6 @@
 
 <div id="bgOverlay"></div>
 
-<!-- ===== 密码门 ===== -->
 <div id="lockScreen">
   <div class="lock-title">🔒 访问验证</div>
   <div class="lock-sub">请输入访问密码</div>
@@ -164,7 +134,6 @@
   <button class="qr-trigger" id="qrTrigger" onclick="showQR()">没有密码？请扫描下方二维码</button>
 </div>
 
-<!-- ===== 二维码弹窗 ===== -->
 <div class="qr-mask" id="qrMask" onclick="closeQR(event)">
   <div class="qr-card" onclick="event.stopPropagation()">
     <div id="qrCode"></div>
@@ -172,7 +141,6 @@
   </div>
 </div>
 
-<!-- ===== 主页内容 ===== -->
 <div id="mainContent">
   <div class="name-wrap">
     <canvas id="nameCanvas" aria-label="▞▛▖▜▝ ▞▙▛▖▜"></canvas>
@@ -185,7 +153,6 @@
 </div>
 
 <div class="mask" id="mask" onclick="closeAll()"></div>
-
 <div class="slide-panel" id="optionsPanel">
   <div class="grabber"></div>
   <div class="panel-title" id="optionsTitle">选择方式<small id="optionsSub">跳转 或 扫码</small></div>
@@ -193,7 +160,6 @@
   <button class="panel-btn scan" id="btnScan" onclick="showTargetQR()">2. 扫码</button>
   <button class="panel-btn close" onclick="closeAll()">取消</button>
 </div>
-
 <div class="slide-panel" id="qrPanel">
   <div class="grabber"></div>
   <div class="panel-title" id="qrTitle">扫码<small>每次随机生成</small></div>
@@ -206,65 +172,79 @@
 
 <script src="https://fastly.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-/* ===== 全局防护 ===== */
-document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-document.addEventListener('keydown', function(e){
-  if((e.ctrlKey||e.metaKey) && ['c','x','s','u','a','v','i','j'].includes(e.key.toLowerCase())) e.preventDefault();
-  if(e.key==='F12' || (e.ctrlKey&&e.shiftKey&&e.key==='I')) e.preventDefault();
-});
-document.addEventListener('dragstart', function(e){ e.preventDefault(); });
+/* ===== GitHub API 配置 ===== */
+var GITHUB_TOKEN = 'ghp_你的Token填这里';  // ← 改成你的真实 token
+var GITHUB_REPO = 'Ych1314520/Ych1314520';
+var LOCK_FILE_PATH = 'lock.json';
 
-/* ===== 锁定系统（localStorage 持久化，刷新不重置）===== */
-var CORRECT='CFTH';
-var input=document.getElementById('pwdInput');
-var hint=document.getElementById('pwdHint');
-var lock=document.getElementById('lockScreen');
-var main=document.getElementById('mainContent');
-var verifyBtn=document.getElementById('verifyBtn');
-var qrTrigger=document.getElementById('qrTrigger');
+var CORRECT = 'CFTH';
+var input = document.getElementById('pwdInput');
+var hint = document.getElementById('pwdHint');
+var lock = document.getElementById('lockScreen');
+var main = document.getElementById('mainContent');
+var verifyBtn = document.getElementById('verifyBtn');
+var qrTrigger = document.getElementById('qrTrigger');
 
-// localStorage key
-var KEY_WRONG='pwdWrongCount';
-var KEY_LOCK='pwdLockUntil';
+/* ===== 从 GitHub 读取锁定数据 ===== */
+async function fetchLockData() {
+  try {
+    var res = await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/' + LOCK_FILE_PATH, {
+      headers: { 'Authorization': 'token ' + GITHUB_TOKEN }
+    });
+    if (res.status === 404) return { count: 0, lockUntil: 0, sha: null };
+    var data = await res.json();
+    var content = JSON.parse(atob(data.content));
+    return { count: content.count || 0, lockUntil: content.lockUntil || 0, sha: data.sha };
+  } catch(e) {
+    return { count: 0, lockUntil: 0, sha: null };
+  }
+}
 
-function getWrongCount(){ return Number(localStorage.getItem(KEY_WRONG)) || 0; }
-function setWrongCount(n){ localStorage.setItem(KEY_WRONG, n); }
-function getLockUntil(){ return Number(localStorage.getItem(KEY_LOCK)) || 0; }
-function setLockUntil(ts){ localStorage.setItem(KEY_LOCK, ts); }
+/* ===== 写入锁定数据到 GitHub ===== */
+async function writeLockData(count, lockUntil, sha) {
+  var body = btoa(JSON.stringify({ count: count, lockUntil: lockUntil, updated: Date.now() }));
+  var payload = { message: 'update lock', content: body };
+  if (sha) payload.sha = sha;
+  await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/' + LOCK_FILE_PATH, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'token ' + GITHUB_TOKEN,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+}
 
-function getLockDuration(wrongCount){
-  if(wrongCount >= 15) return 60 * 60;        // 15次+ → 1小时
-  if(wrongCount >= 10) return 5 * 60;          // 10次 → 5分钟
-  if(wrongCount >= 5)  return 1 * 60;          // 5次 → 1分钟
+/* ===== 锁定逻辑 ===== */
+function getLockDuration(wrongCount) {
+  if (wrongCount >= 15) return 60 * 60;
+  if (wrongCount >= 10) return 5 * 60;
+  if (wrongCount >= 5)  return 1 * 60;
   return 0;
 }
 
-function isLocked(){
-  var lockUntil = getLockUntil();
+function isLocked(lockUntil) {
   return lockUntil > Date.now();
 }
 
-function startLock(wrongCount){
-  var duration = getLockDuration(wrongCount);
-  var until = Date.now() + duration * 1000;
-  setLockUntil(until);
-  applyLockUI(duration);
+async function applyLockFromRemote() {
+  var data = await fetchLockData();
+  if (isLocked(data.lockUntil)) {
+    input.disabled = true;
+    verifyBtn.disabled = true;
+    qrTrigger.disabled = true;
+    runCountdown(Math.floor((data.lockUntil - Date.now()) / 1000));
+    return true;
+  }
+  return false;
 }
 
-function applyLockUI(duration){
-  input.disabled = true;
-  verifyBtn.disabled = true;
-  qrTrigger.disabled = true;
-  input.blur();
-  runCountdown(duration);
-}
-
-function runCountdown(duration){
-  var lockUntil = getLockUntil();
+async function runCountdown(seconds) {
   clearInterval(window._lockCountdown);
-  window._lockCountdown = setInterval(function(){
-    var left = Math.floor((lockUntil - Date.now()) / 1000);
-    if(left <= 0){
+  window._lockCountdown = setInterval(async function() {
+    var data = await fetchLockData();
+    var left = Math.floor((data.lockUntil - Date.now()) / 1000);
+    if (left <= 0) {
       clearInterval(window._lockCountdown);
       input.disabled = false;
       verifyBtn.disabled = false;
@@ -276,52 +256,52 @@ function runCountdown(duration){
     }
     var min = Math.floor(left / 60);
     var sec = left % 60;
-    hint.innerHTML = '🚫 输错次数过多，已锁定<br>剩余 ' + (min>0 ? min+'分'+sec+'秒' : sec+'秒');
+    hint.innerHTML = '🚫 累计输错 ' + data.count + ' 次，已锁定<br>剩余 ' + (min > 0 ? min + '分' + sec + '秒' : sec + '秒');
     hint.className = 'pwd-hint locked';
   }, 1000);
 }
 
-// 页面加载时检查是否已锁定
-(function checkLockOnLoad(){
-  if(isLocked()){
-    var lockUntil = getLockUntil();
-    var left = Math.floor((lockUntil - Date.now()) / 1000);
-    applyLockUI(left);
-  } else {
-    input.focus();
-  }
+/* 页面加载检查 */
+(async function init() {
+  var locked = await applyLockFromRemote();
+  if (!locked) input.focus();
 })();
 
 input.addEventListener('keydown', function(e){ if(e.key==='Enter') checkPassword(); });
 
-function checkPassword(){
-  if(isLocked()) return;
+async function checkPassword() {
+  var data = await fetchLockData();
+  if (isLocked(data.lockUntil)) return;
 
-  var val=input.value.toUpperCase();
-  if(val.length===0){hint.textContent='请输入密码';hint.className='pwd-hint wrong';return;}
+  var val = input.value.toUpperCase();
+  if (val.length === 0) { hint.textContent='请输入密码'; hint.className='pwd-hint wrong'; return; }
 
-  if(val===CORRECT){
-    hint.textContent='✓ 验证通过';hint.className='pwd-hint success';
-    // 验证成功 → 清除错误计数和锁定
-    localStorage.removeItem(KEY_WRONG);
-    localStorage.removeItem(KEY_LOCK);
+  if (val === CORRECT) {
+    hint.textContent = '✓ 验证通过'; hint.className = 'pwd-hint success';
+    // 验证成功 → 清零
+    await writeLockData(0, 0, data.sha);
     lock.classList.add('unlocked');
-    setTimeout(function(){main.classList.add('show');startBgCycle();pixelNameCanvas();},400);
+    setTimeout(function(){ main.classList.add('show'); startBgCycle(); pixelNameCanvas(); }, 400);
   } else {
-    var wrong = getWrongCount() + 1;
-    setWrongCount(wrong);
-    hint.textContent='密码错误，已累计输错 '+wrong+' 次';
-    hint.className='pwd-hint wrong';
-    input.classList.add('error');input.value='';
-    setTimeout(function(){input.classList.remove('error');},500);
+    var wrong = data.count + 1;
+    var duration = getLockDuration(wrong);
+    var lockUntil = duration > 0 ? Date.now() + duration * 1000 : 0;
+    await writeLockData(wrong, lockUntil, data.sha);
+
+    hint.textContent = '密码错误，累计输错 ' + wrong + ' 次';
+    hint.className = 'pwd-hint wrong';
+    input.classList.add('error'); input.value = '';
+    setTimeout(function(){ input.classList.remove('error'); }, 500);
     input.focus();
 
-    if(wrong >= 5){
-      startLock(wrong);
+    if (duration > 0) {
+      input.disabled = true; verifyBtn.disabled = true; qrTrigger.disabled = true;
+      runCountdown(duration);
     }
   }
 }
 
+/* ===== 其余功能（背景、二维码、像素名字等）保持不变 ===== */
 var bgStarted=false;
 function startBgCycle(){
   if(bgStarted)return;bgStarted=true;
@@ -330,17 +310,15 @@ function startBgCycle(){
   setTimeout(function(){ch();setInterval(ch,3000);},2000);
 }
 
-/* ===== 密码门二维码（内容 CFTH，不显示文字）===== */
 var qrGenerated=false;
 function showQR(){
-  if(isLocked()) return;
+  if(input.disabled) return;
   var box=document.getElementById('qrCode');
   if(!qrGenerated){box.innerHTML='';new QRCode(box,{text:'CFTH',width:200,height:200});qrGenerated=true;}
   document.getElementById('qrMask').classList.add('show');
 }
 function closeQR(e){if(e&&e.target!==e.currentTarget&&e.type==='click')return;document.getElementById('qrMask').classList.remove('show');}
 
-/* ===== 主页内部二维码：点按钮才生成，随机，60秒失效 ===== */
 var qrTimer=null,cdTimer=null;
 function showTargetQR(){
   document.getElementById('optionsPanel').classList.remove('show');
@@ -348,11 +326,8 @@ function showTargetQR(){
   box.innerHTML='';
   var exp=Date.now()+60000,token=randomToken(16);
   var url='https://ych1314520.github.io/Ych1314520/verify.html?t='+encodeURIComponent(token)+'&exp='+exp;
-  if(currentType==='douyin'){
-    document.getElementById('qrTitle').innerHTML='抖音扫码<small id="countdownText">剩余 60 秒</small>';
-  } else {
-    document.getElementById('qrTitle').innerHTML='QQ 扫码<small id="countdownText">剩余 60 秒</small>';
-  }
+  if(currentType==='douyin'){document.getElementById('qrTitle').innerHTML='抖音扫码<small id="countdownText">剩余 60 秒</small>';}
+  else{document.getElementById('qrTitle').innerHTML='QQ 扫码<small id="countdownText">剩余 60 秒</small>';}
   tip.innerHTML='每次随机生成，请尽快扫码<br>过期后需重新点"扫码"';
   new QRCode(box,{text:url,width:188,height:188});
   clearTimeout(qrTimer);clearInterval(cdTimer);
@@ -390,7 +365,6 @@ function randomToken(len){
   return Array.from(arr,function(b){return chars[b%chars.length];}).join('');
 }
 
-/* ===== 像素名字动画 ===== */
 function pixelNameCanvas(){
   var canvas=document.getElementById('nameCanvas'),ctx=canvas.getContext('2d');
   var text='▞▛▖▜▝ ▞▙▛▖▜';
@@ -408,38 +382,12 @@ function pixelNameCanvas(){
   }}
   var start=null,pd=false,lc=0;
   function e3(t){return 1-Math.pow(1-t,3);}
-  function snt(){
-    var h=Math.random()*360,s=90+Math.random()*10,l=55+Math.random()*10,c=hsl2rgb(h/360,s/100,l/100),i;
-    for(i=0;i<grid.length;i++){grid[i].tr=c[0];grid[i].tg=c[1];grid[i].tb=c[2];}
-  }
-  function hsl2rgb(h,s,l){
-    var r,g,b,q,p,h2=function(p,q,t){if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};
-    if(s===0){r=g=b=l;}else{q=l<.5?l*(1+s):l+s-l*s;p=2*l-q;r=h2(p,q,h+1/3);g=h2(p,q,h);b=h2(p,q,h-1/3);}
-    return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
-  }
-  function frame(ts){
-    if(!start)start=ts;var t=(ts-start)/1000;ctx.clearRect(0,0,cssW,cssH);
-    if(ts-lc>2000){lc=ts;snt();}
-    var jp=ts*.003,i,p;
-    for(i=0;i<grid.length;i++){
-      p=grid[i];
-      if(!pd){
-        var local=(t-p.delay)/.5;if(local<0)local=0;if(local>1)local=1;
-        var ev=e3(local);if(local===0)continue;
-        ctx.fillStyle='rgba(255,255,255,'+ev+')';ctx.fillRect(p.x,p.y+(1-ev)*20,p.size,p.size);
-      } else {
-        p.r+=(p.tr-p.r)*.04;p.g+=(p.tg-p.g)*.04;p.b+=(p.tb-p.b)*.04;
-        var jx=Math.sin(jp*p.jitterSpeed*10+p.x)*p.jitterAmount,jy=Math.cos(jp*p.jitterSpeed*8+p.y)*p.jitterAmount;
-        ctx.fillStyle='rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';ctx.fillRect(p.x+jx,p.y+jy,p.size,p.size);
-      }
-    }
-    if(!pd&&t>=1.6)pd=true;
-    requestAnimationFrame(frame);
-  }
+  function snt(){var h=Math.random()*360,s=90+Math.random()*10,l=55+Math.random()*10,c=hsl2rgb(h/360,s/100,l/100),i;for(i=0;i<grid.length;i++){grid[i].tr=c[0];grid[i].tg=c[1];grid[i].tb=c[2];}}
+  function hsl2rgb(h,s,l){var r,g,b,q,p,h2=function(p,q,t){if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};if(s===0){r=g=b=l;}else{q=l<.5?l*(1+s):l+s-l*s;p=2*l-q;r=h2(p,q,h+1/3);g=h2(p,q,h);b=h2(p,q,h-1/3);}return[Math.round(r*255),Math.round(g*255),Math.round(b*255)];}
+  function frame(ts){if(!start)start=ts;var t=(ts-start)/1000;ctx.clearRect(0,0,cssW,cssH);if(ts-lc>2000){lc=ts;snt();}var jp=ts*.003,i,p;for(i=0;i<grid.length;i++){p=grid[i];if(!pd){var local=(t-p.delay)/.5;if(local<0)local=0;if(local>1)local=1;var ev=e3(local);if(local===0)continue;ctx.fillStyle='rgba(255,255,255,'+ev+')';ctx.fillRect(p.x,p.y+(1-ev)*20,p.size,p.size);}else{p.r+=(p.tr-p.r)*.04;p.g+=(p.tg-p.g)*.04;p.b+=(p.tb-p.b)*.04;var jx=Math.sin(jp*p.jitterSpeed*10+p.x)*p.jitterAmount,jy=Math.cos(jp*p.jitterSpeed*8+p.y)*p.jitterAmount;ctx.fillStyle='rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';ctx.fillRect(p.x+jx,p.y+jy,p.size,p.size);}}if(!pd&&t>=1.6)pd=true;requestAnimationFrame(frame);}
   requestAnimationFrame(frame);
 }
 
-/* ===== QQ 唤起 ===== */
 var ua=navigator.userAgent||'';
 var isMobile=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
 var DOUYIN_URL='https://v.douyin.com/cToozaNZf4s/';
@@ -463,6 +411,12 @@ function openOptions(type){
 }
 function jumpTarget(){if(currentType==='qq'){launchQQ();}else if(currentType==='douyin'){location.href=DOUYIN_URL;}}
 function closeAll(){document.getElementById('mask').classList.remove('show');document.getElementById('optionsPanel').classList.remove('show');document.getElementById('qrPanel').classList.remove('show');}
+
+document.addEventListener('contextmenu',function(e){e.preventDefault();});
+document.addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&['c','x','s','u','a','v','i','j'].includes(e.key.toLowerCase()))e.preventDefault();
+  if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&e.key==='I'))e.preventDefault();
+});
 </script>
 </body>
 </html>
