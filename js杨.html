@@ -3,18 +3,28 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>访问验证</title>
+<title>JS 杨的专属网站</title>
 <style>
   *{box-sizing:border-box}
   body{
     background:#000;color:#fff;font-family:sans-serif;text-align:center;
-    margin:0;min-height:100vh;display:flex;flex-direction:column;
-    justify-content:center;align-items:center;padding:40px 24px 120px;
+    margin:0;min-height:100vh;overflow-x:hidden;position:relative;
+    transition:background-color 2.5s ease;
     -webkit-user-select:none;user-select:none;
     -webkit-touch-callout:none;touch-callout:none;
   }
-  .title{font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:2px}
-  .sub{font-size:14px;color:#888;margin-bottom:36px}
+  img{-webkit-user-drag:none;pointer-events:none}
+  #bgOverlay{position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(0,0,0,0.4)}
+
+  /* ===== 密码门 ===== */
+  #lockScreen{
+    position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;padding:40px 24px;background:#000;
+    transition:opacity .6s ease,visibility .6s ease;
+  }
+  #lockScreen.unlocked{opacity:0;visibility:hidden;pointer-events:none}
+  .lock-title{font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:2px}
+  .lock-sub{font-size:14px;color:#888;margin-bottom:36px}
   .pwd-wrapper{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
   .pwd-input{
     width:200px;height:52px;font-size:24px;font-weight:700;text-align:center;
@@ -35,28 +45,21 @@
   }
   .verify-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(254,44,85,.35)}
   .verify-btn:active{transform:translateY(0) scale(.97)}
-  .hint{margin-top:20px;font-size:13px;color:#555;min-height:20px}
-  .hint.wrong{color:#ff1744}
-  .hint.success{color:#00e676}
-
+  .pwd-hint{margin-top:20px;font-size:13px;color:#555;min-height:20px}
+  .pwd-hint.wrong{color:#ff1744}
+  .pwd-hint.success{color:#00e676}
   .qr-trigger{
-    margin-top:90px;
-    padding:14px 28px;
-    border:0;
-    border-radius:999px;
-    color:#ff5f7a;
-    font-size:15px;
-    font-weight:700;
-    cursor:pointer;
+    margin-top:60px;padding:14px 28px;border:0;border-radius:999px;
+    color:#ff5f7a;font-size:15px;font-weight:700;cursor:pointer;
     border:1px solid rgba(254,44,85,.45);
     background:linear-gradient(180deg,rgba(254,44,85,.08),rgba(254,44,85,.02));
   }
   .qr-trigger:active{background:rgba(254,44,85,.15)}
 
-  /* 二维码弹窗 */
+  /* ===== 二维码弹窗 ===== */
   .qr-mask{
-    position:fixed;inset:0;background:rgba(0,0,0,.85);
-    display:none;justify-content:center;align-items:center;z-index:50;
+    position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:120;
+    display:none;justify-content:center;align-items:center;
   }
   .qr-mask.show{display:flex}
   .qr-card{
@@ -68,72 +71,311 @@
     margin-top:20px;padding:12px 40px;border:0;border-radius:12px;
     background:linear-gradient(135deg,#333,#222);color:#fff;font-size:15px;font-weight:700;cursor:pointer;
   }
+
+  /* ===== 主页 ===== */
+  #mainContent{display:none;padding:60px 20px 40px;min-height:100vh;position:relative;z-index:2}
+  #mainContent.show{display:block}
+  @media(min-width:768px){#mainContent{padding:120px 20px 60px}}
+  .name-wrap,.box,.tip{position:relative;z-index:2}
+  .name-wrap{height:64px;display:flex;justify-content:center;align-items:center;margin-bottom:24px}
+  #nameCanvas{width:min(82vw,420px);height:52px;image-rendering:pixelated}
+  .box{display:flex;flex-direction:column;align-items:center;gap:18px}
+  .btn{
+    width:86%;max-width:360px;padding:22px 18px;border:0;border-radius:18px;
+    font-size:20px;font-weight:700;color:#fff;cursor:pointer;opacity:0;
+    transform:translateY(80px);animation:rise .8s ease forwards;position:relative;
+    overflow:hidden;transition:.15s;
+  }
+  .btn:active{transform:translateY(0) scale(.98)}
+  @media(min-width:768px){
+    .btn{transition:transform .2s ease,box-shadow .2s ease}
+    .btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+    .btn:active{transform:translateY(0) scale(.98)}
+    .name-wrap{height:80px;margin-bottom:48px}
+    #nameCanvas{width:min(60vw,520px);height:64px}
+    .box{gap:24px}
+    .btn{font-size:22px;padding:26px 24px;border-radius:22px}
+    .tip{margin-top:60px;font-size:14px}
+  }
+  .btn::before,.btn::after{content:'';position:absolute;inset:-50%;z-index:0;pointer-events:none}
+  .dy::before{background:conic-gradient(from 0deg,#fe2c55,#ff445e,#e6213d,#ff6a88,#fe2c55,#ff1744,#c5002b,#fe2c55);filter:blur(28px) saturate(200%);animation:slimeA 3.2s linear infinite}
+  .dy::after{background:conic-gradient(from 160deg,#ff0a44,#fe2c55,#ff8a9d,#e6213d,#ff445e,#b8002a,#ff6a88,#ff0a44);filter:blur(22px) saturate(190%);animation:slimeB 4.5s linear infinite reverse}
+  .dy-wash{position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,rgba(254,44,85,.5),transparent 55%),radial-gradient(circle at 50% -20%,rgba(255,106,136,.25),transparent 50%);mix-blend-mode:screen;z-index:0;pointer-events:none;animation:dyWash 3.5s ease-in-out infinite alternate}
+  @keyframes dyWash{0%{opacity:.8;transform:scale(1)}100%{opacity:1;transform:scale(1.05)}}
+  .qq::before{background:conic-gradient(from 0deg,#009cff,#00d4ff,#006cff,#00fff0,#008cff,#005bff,#00b8ff,#009cff);filter:blur(30px) saturate(220%) brightness(1.05);animation:slimeA 3.6s linear infinite}
+  .qq::after{background:conic-gradient(from 210deg,#12b7f5,#4fc3f7,#006dff,#00eaff,#2b6cff,#00ffd0,#12b7f5);filter:blur(22px) saturate(210%);animation:slimeB 5s linear infinite reverse}
+  .qq-wash{position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,rgba(0,150,255,.45),transparent 55%),radial-gradient(circle at 50% -20%,rgba(0,255,220,.18),transparent 50%);mix-blend-mode:screen;z-index:0;pointer-events:none;animation:qqWash 4s ease-in-out infinite alternate}
+  @keyframes qqWash{0%{opacity:.85;transform:scale(1)}100%{opacity:1;transform:scale(1.06)}}
+  @keyframes slimeA{0%{transform:rotate(0) scale(1)}25%{transform:rotate(90deg) scale(1.12)}50%{transform:rotate(180deg) scale(.92)}75%{transform:rotate(270deg) scale(1.06)}100%{transform:rotate(360deg) scale(1)}}
+  @keyframes slimeB{0%{transform:rotate(0) scale(1.1)}33%{transform:rotate(-120deg) scale(.95)}66%{transform:rotate(-240deg) scale(1.15)}100%{transform:rotate(-360deg) scale(1.1)}}
+  .btn span.label{position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+  .dy{animation-delay:.25s;box-shadow:inset 0 0 28px rgba(254,44,85,.35),0 6px 22px rgba(254,44,85,.18)}
+  .qq{animation-delay:.55s;box-shadow:inset 0 0 28px rgba(0,120,255,.35),0 6px 22px rgba(0,90,255,.18)}
+  @keyframes rise{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:translateY(0)}}
+  .tip{margin-top:40px;font-size:12px;color:#d0d0d0;opacity:0;animation:fade 1s ease .9s forwards;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+  @keyframes fade{to{opacity:1}}
+
+  .mask{position:fixed;inset:0;background:rgba(0,0,0,.75);opacity:0;pointer-events:none;transition:opacity .4s ease;z-index:50}
+  .mask.show{opacity:1;pointer-events:auto}
+  .slide-panel{
+    position:fixed;left:0;right:0;bottom:0;background:#111;border-radius:24px 24px 0 0;
+    padding:32px 24px 40px;display:flex;flex-direction:column;align-items:center;gap:16px;
+    transform:translateY(100%);opacity:0;transition:transform .7s cubic-bezier(.22,.9,.3,1),opacity .5s ease;z-index:60;
+    box-shadow:0 -10px 50px rgba(0,0,0,.7);
+  }
+  .slide-panel.show{transform:translateY(0);opacity:1}
+  @media(min-width:768px){
+    .slide-panel{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-40%) scale(.95);width:420px;border-radius:24px;padding:40px 36px 44px}
+    .slide-panel.show{transform:translate(-50%,-50%) scale(1)}
+    .grabber{display:none}
+  }
+  .grabber{width:44px;height:5px;border-radius:4px;background:#333;position:absolute;top:14px;left:50%;transform:translateX(-50%)}
+  .panel-title{font-size:18px;font-weight:800;margin-top:4px}
+  .panel-title small{display:block;font-size:12px;color:#777;font-weight:400;margin-top:4px;text-align:center}
+  .panel-btn{width:100%;max-width:300px;padding:16px;border:0;border-radius:14px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+  .panel-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+  .panel-btn.app{background:linear-gradient(135deg,#333,#222)}
+  .panel-btn.scan{background:linear-gradient(135deg,#fe2c55,#ff6a88)}
+  .panel-btn.scan.qq-scan{background:linear-gradient(135deg,#009cff,#12b7f5)}
+  .panel-btn.back{background:#222;color:#aaa;font-size:14px}
+  .panel-btn.close{background:#222;color:#aaa;font-size:14px;margin-top:6px}
+  .qr-box{background:#fff;padding:16px;border-radius:18px;width:220px;height:220px;display:flex;align-items:center;justify-content:center}
+  .qr-tip{font-size:12px;color:#666;text-align:center;line-height:1.6}
+  .secure-tip{font-size:11px;color:#555;margin-top:10px}
 </style>
 </head>
 <body oncontextmenu="return false;">
 
-  <div class="title">🔒 访问验证</div>
-  <div class="sub">请输入访问密码</div>
+<div id="bgOverlay"></div>
 
+<!-- ===== 密码门 ===== -->
+<div id="lockScreen">
+  <div class="lock-title">🔒 访问验证</div>
+  <div class="lock-sub">请输入访问密码</div>
   <div class="pwd-wrapper">
     <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="●●●●" autocomplete="current-password" inputmode="text" />
     <button class="verify-btn" onclick="checkPassword()">验证</button>
   </div>
-
-  <div class="hint" id="hint"></div>
-
+  <div class="pwd-hint" id="pwdHint"></div>
   <button class="qr-trigger" onclick="showQR()">没有密码？请扫描下方二维码</button>
+</div>
 
-  <!-- 二维码弹窗：不显示任何密码文字 -->
-  <div class="qr-mask" id="qrMask" onclick="closeQR(event)">
-    <div class="qr-card" onclick="event.stopPropagation()">
-      <div id="qrCode"></div>
-      <button class="close-btn" onclick="closeQR()">关闭</button>
-    </div>
+<!-- ===== 二维码弹窗 ===== -->
+<div class="qr-mask" id="qrMask" onclick="closeQR(event)">
+  <div class="qr-card" onclick="event.stopPropagation()">
+    <div id="qrCode"></div>
+    <button class="close-btn" onclick="closeQR()">关闭</button>
   </div>
+</div>
+
+<!-- ===== 主页内容 ===== -->
+<div id="mainContent">
+  <div class="name-wrap">
+    <canvas id="nameCanvas" aria-label="▞▛▖▜▝ ▞▙▛▖▜"></canvas>
+  </div>
+  <div class="box">
+    <button class="btn dy" onclick="openOptions('douyin')"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
+    <button class="btn qq" onclick="openOptions('qq')"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
+  </div>
+  <div class="tip">手机端点击跳转网页版，或扫码加好友</div>
+</div>
+
+<div class="mask" id="mask" onclick="closeAll()"></div>
+
+<div class="slide-panel" id="optionsPanel">
+  <div class="grabber"></div>
+  <div class="panel-title" id="optionsTitle">选择方式<small id="optionsSub">跳转 或 扫码</small></div>
+  <button class="panel-btn app" id="btnApp" onclick="jumpTarget()">1. 跳转</button>
+  <button class="panel-btn scan" id="btnScan" onclick="showTargetQR()">2. 扫码</button>
+  <button class="panel-btn close" onclick="closeAll()">取消</button>
+</div>
+
+<div class="slide-panel" id="qrPanel">
+  <div class="grabber"></div>
+  <div class="panel-title" id="qrTitle">扫码<small>每次随机生成</small></div>
+  <div class="qr-box" id="qrBox"></div>
+  <div class="qr-tip" id="qrTipExtra"></div>
+  <div class="secure-tip">🔐 内容受保护，禁止截图/录屏</div>
+  <button class="panel-btn back" onclick="backToOptions()">返回</button>
+  <button class="panel-btn close" onclick="closeAll()">关闭</button>
+</div>
 
 <script src="https://fastly.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-  var CORRECT = 'CFTH';
-  var input = document.getElementById('pwdInput');
-  var hint = document.getElementById('hint');
-  var qrGenerated = false;
+/* ===== 全局防护 ===== */
+document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+document.addEventListener('keydown', function(e){
+  if((e.ctrlKey||e.metaKey) && ['c','x','s','u','a','v','i','j'].includes(e.key.toLowerCase())) e.preventDefault();
+  if(e.key==='F12' || (e.ctrlKey&&e.shiftKey&&e.key==='I')) e.preventDefault();
+});
+document.addEventListener('dragstart', function(e){ e.preventDefault(); });
 
-  input.focus();
-  input.addEventListener('keydown', function(e){ if(e.key === 'Enter') checkPassword(); });
+/* ===== 密码验证 ===== */
+var CORRECT='CFTH';
+var input=document.getElementById('pwdInput');
+var hint=document.getElementById('pwdHint');
+var lock=document.getElementById('lockScreen');
+var main=document.getElementById('mainContent');
+input.focus();
+input.addEventListener('keydown', function(e){ if(e.key==='Enter') checkPassword(); });
 
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if((e.ctrlKey||e.metaKey) && ['c','x','s','u','a','v'].includes(e.key.toLowerCase())) e.preventDefault();
-  });
+function checkPassword(){
+  var val=input.value.toUpperCase();
+  if(val.length===0){hint.textContent='请输入密码';hint.className='pwd-hint wrong';return;}
+  if(val===CORRECT){
+    hint.textContent='✓ 验证通过';hint.className='pwd-hint success';
+    lock.classList.add('unlocked');
+    setTimeout(function(){main.classList.add('show');startBgCycle();pixelNameCanvas();},400);
+  } else {
+    hint.textContent='密码错误，请重试';hint.className='pwd-hint wrong';
+    input.classList.add('error');input.value='';
+    setTimeout(function(){input.classList.remove('error');},500);
+    input.focus();
+  }
+}
 
-  function checkPassword(){
-    var val = input.value.toUpperCase();
-    if(val.length === 0){ hint.textContent='请输入密码'; hint.className='hint wrong'; return; }
-    if(val === CORRECT){
-      hint.textContent='✓ 验证通过'; hint.className='hint success';
-    } else {
-      hint.textContent='密码错误，请重试'; hint.className='hint wrong';
-      input.classList.add('error'); input.value='';
-      setTimeout(function(){ input.classList.remove('error'); }, 500);
-      input.focus();
+var bgStarted=false;
+function startBgCycle(){
+  if(bgStarted)return;bgStarted=true;
+  function rc(){var w=Math.random()<.5,h=w?Math.random()*35:200+Math.random()*140;return 'hsl('+h+',75%,38%)';}
+  function ch(){document.body.style.backgroundColor=rc();}
+  setTimeout(function(){ch();setInterval(ch,3000);},2000);
+}
+
+/* ===== 密码门二维码（内容 CFTH，不显示文字）===== */
+var qrGenerated=false;
+function showQR(){
+  var box=document.getElementById('qrCode');
+  if(!qrGenerated){box.innerHTML='';new QRCode(box,{text:'CFTH',width:200,height:200});qrGenerated=true;}
+  document.getElementById('qrMask').classList.add('show');
+}
+function closeQR(e){if(e&&e.target!==e.currentTarget&&e.type==='click')return;document.getElementById('qrMask').classList.remove('show');}
+
+/* ===== 主页内部二维码：点按钮才生成，随机，60秒失效 ===== */
+var qrTimer=null,cdTimer=null;
+function showTargetQR(){
+  document.getElementById('optionsPanel').classList.remove('show');
+  var box=document.getElementById('qrBox'),tip=document.getElementById('qrTipExtra');
+  box.innerHTML='';
+  var exp=Date.now()+60000,token=randomToken(16);
+  var url='https://ych1314520.github.io/Ych1314520/verify.html?t='+encodeURIComponent(token)+'&exp='+exp;
+  var cd=document.getElementById('countdownText');if(cd){cd.style.color='';cd.textContent='剩余 60 秒';}
+  if(currentType==='douyin'){
+    document.getElementById('qrTitle').innerHTML='抖音扫码<small id="countdownText">剩余 60 秒</small>';
+  } else {
+    document.getElementById('qrTitle').innerHTML='QQ 扫码<small id="countdownText">剩余 60 秒</small>';
+  }
+  tip.innerHTML='每次随机生成，请尽快扫码<br>过期后需重新点"扫码"';
+  new QRCode(box,{text:url,width:188,height:188});
+  clearTimeout(qrTimer);clearInterval(cdTimer);
+  qrTimer=setTimeout(function(){
+    box.innerHTML='<div style="color:#ff1744;font-weight:700;font-size:16px">⛔ 二维码已失效</div>';
+    tip.innerHTML='请点"返回"→再点"扫码"生成新码';
+    var c=document.getElementById('countdownText');if(c)c.textContent='已过期';
+    clearInterval(cdTimer);
+  },60000);
+  var s=59;
+  cdTimer=setInterval(function(){
+    var c=document.getElementById('countdownText');
+    if(c&&s>0){c.textContent='剩余 '+s+' 秒';if(s<=10)c.style.color='#ff1744';}
+    if(s<=0)clearInterval(cdTimer);s--;
+  },1000);
+  document.getElementById('qrPanel').classList.add('show');
+}
+function backToOptions(){clearTimeout(qrTimer);clearInterval(cdTimer);document.getElementById('qrPanel').classList.remove('show');document.getElementById('optionsPanel').classList.add('show');}
+
+/* 切屏清空 */
+document.addEventListener('visibilitychange',function(){
+  if(document.hidden){
+    clearTimeout(qrTimer);clearInterval(cdTimer);
+    var box=document.getElementById('qrBox'),tip=document.getElementById('qrTipExtra');
+    if(box&&box.innerHTML!==''){
+      box.innerHTML='<div style="color:#ff1744;font-weight:700;font-size:16px">⛔ 已锁定</div><div style="font-size:12px;color:#888;margin-top:8px">检测到切屏，二维码已清除</div>';
+      tip.innerHTML='请点"返回"→再点"扫码"重新生成';
+      var c=document.getElementById('countdownText');if(c)c.textContent='已锁定';
     }
   }
+});
 
-  function showQR(){
-    var box = document.getElementById('qrCode');
-    if(!qrGenerated){
-      box.innerHTML='';
-      new QRCode(box, { text: 'CFTH', width: 200, height: 200 });
-      qrGenerated = true;
+function randomToken(len){
+  var chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+  var arr=new Uint8Array(len);crypto.getRandomValues(arr);
+  return Array.from(arr,function(b){return chars[b%chars.length];}).join('');
+}
+
+/* ===== 像素名字动画 ===== */
+function pixelNameCanvas(){
+  var canvas=document.getElementById('nameCanvas'),ctx=canvas.getContext('2d');
+  var text='▞▛▖▜▝ ▞▙▛▖▜';
+  var dpr=Math.max(1,window.devicePixelRatio||1);
+  var cssW=canvas.clientWidth||420,cssH=canvas.clientHeight||52;
+  canvas.width=cssW*dpr;canvas.height=cssH*dpr;ctx.scale(dpr,dpr);
+  var off=document.createElement('canvas');off.width=cssW*dpr;off.height=cssH*dpr;
+  var o=off.getContext('2d');o.scale(dpr,dpr);o.clearRect(0,0,cssW,cssH);
+  o.fillStyle='#fff';o.textAlign='center';o.textBaseline='middle';
+  o.font='700 32px "Courier New","Consolas",monospace';o.fillText(text,cssW/2,cssH/2);
+  var step=1,grid=[],x,y,data;
+  for(y=0;y<cssH;y+=step){for(x=0;x<cssW;x+=step){
+    data=o.getImageData(x*dpr,y*dpr,1,1).data;
+    if(data[3]>80)grid.push({x:x,y:y,size:step,r:255,g:255,b:255,tr:255,tg:255,tb:255,delay:Math.random()*.4+(x/cssW)*.4,jitterSpeed:.15+Math.random()*.25,jitterAmount:.5+Math.random()*1});
+  }}
+  var start=null,pd=false,lc=0;
+  function e3(t){return 1-Math.pow(1-t,3);}
+  function snt(){
+    var h=Math.random()*360,s=90+Math.random()*10,l=55+Math.random()*10,c=hsl2rgb(h/360,s/100,l/100),i;
+    for(i=0;i<grid.length;i++){grid[i].tr=c[0];grid[i].tg=c[1];grid[i].tb=c[2];}
+  }
+  function hsl2rgb(h,s,l){
+    var r,g,b,q,p,h2=function(p,q,t){if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};
+    if(s===0){r=g=b=l;}else{q=l<.5?l*(1+s):l+s-l*s;p=2*l-q;r=h2(p,q,h+1/3);g=h2(p,q,h);b=h2(p,q,h-1/3);}
+    return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
+  }
+  function frame(ts){
+    if(!start)start=ts;var t=(ts-start)/1000;ctx.clearRect(0,0,cssW,cssH);
+    if(ts-lc>2000){lc=ts;snt();}
+    var jp=ts*.003,i,p;
+    for(i=0;i<grid.length;i++){
+      p=grid[i];
+      if(!pd){
+        var local=(t-p.delay)/.5;if(local<0)local=0;if(local>1)local=1;
+        var ev=e3(local);if(local===0)continue;
+        ctx.fillStyle='rgba(255,255,255,'+ev+')';ctx.fillRect(p.x,p.y+(1-ev)*20,p.size,p.size);
+      } else {
+        p.r+=(p.tr-p.r)*.04;p.g+=(p.tg-p.g)*.04;p.b+=(p.tb-p.b)*.04;
+        var jx=Math.sin(jp*p.jitterSpeed*10+p.x)*p.jitterAmount,jy=Math.cos(jp*p.jitterSpeed*8+p.y)*p.jitterAmount;
+        ctx.fillStyle='rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';ctx.fillRect(p.x+jx,p.y+jy,p.size,p.size);
+      }
     }
-    document.getElementById('qrMask').classList.add('show');
+    if(!pd&&t>=1.6)pd=true;
+    requestAnimationFrame(frame);
   }
+  requestAnimationFrame(frame);
+}
 
-  function closeQR(e){
-    if(e && e.target !== e.currentTarget && e.type === 'click') return;
-    document.getElementById('qrMask').classList.remove('show');
-  }
+/* ===== QQ 唤起 ===== */
+var ua=navigator.userAgent||'';
+var isMobile=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
+var DOUYIN_URL='https://v.douyin.com/cToozaNZf4s/';
+var QQ_URL='https://qm.qq.com/q/wTL90DbHqM';
+var QQ_APP='mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
+var QQ_PC='tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3797197884';
+function launchQQ(){
+  if(isMobile){var t=Date.now();location.href=QQ_APP;setTimeout(function(){if(Date.now()-t<2000)location.href=QQ_URL;},1200);return;}
+  var ok=false,bh=function(){ok=true;window.removeEventListener('blur',bh);window.removeEventListener('focus',fh);};
+  var fh=function(){if(!ok){window.removeEventListener('blur',bh);window.removeEventListener('focus',fh);}};
+  window.addEventListener('blur',bh);window.addEventListener('focus',fh);location.href=QQ_PC;
+  setTimeout(function(){if(!ok){window.removeEventListener('blur',bh);window.removeEventListener('focus',fh);location.href=QQ_URL;}},2000);
+}
+var currentType='';
+function openOptions(type){
+  currentType=type;
+  var t=document.getElementById('optionsTitle'),a=document.getElementById('btnApp'),s=document.getElementById('btnScan');
+  if(type==='douyin'){t.innerHTML='抖音<small>网页版 或 扫码</small>';a.textContent='1. 打开抖音网页版';s.textContent='2. 扫码';s.className='panel-btn scan';}
+  else if(type==='qq'){t.innerHTML='QQ<small>唤起App 或 扫码</small>';a.textContent=isMobile?'1. 跳转 QQ（App）':'1. 跳转 QQ（PC）';s.textContent='2. 扫码';s.className='panel-btn scan qq-scan';}
+  document.getElementById('mask').classList.add('show');document.getElementById('optionsPanel').classList.add('show');
+}
+function jumpTarget(){if(currentType==='qq'){launchQQ();}else if(currentType==='douyin'){location.href=DOUYIN_URL;}}
+function closeAll(){document.getElementById('mask').classList.remove('show');document.getElementById('optionsPanel').classList.remove('show');document.getElementById('qrPanel').classList.remove('show');}
 </script>
 </body>
 </html>
