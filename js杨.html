@@ -9,19 +9,19 @@
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    text-align:center;min-height:100vh;min-height:100dvh;overflow-x:hidden;overflow-y:auto;position:relative;
-    transition:background-color 2.5s ease;
-    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-callout:none;
+	margin:0;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+	text-align:center;min-height:100vh;min-height:100dvh;overflow-x:hidden;overflow-y:auto;position:relative;
+	transition:background-color 2.5s ease;
+	-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-callout:none;
   }
   img{-webkit-user-drag:none;pointer-events:none}
   #bgOverlay{position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(0,0,0,0.4)}
 
   /* ============ 锁屏 ============ */
   #lockScreen{
-    position:absolute;top:0;left:0;width:100%;min-height:100%;min-height:100dvh;z-index:100;
-    display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;
-    background:#000;transition:opacity .6s ease,visibility .6s ease;
+	position:absolute;top:0;left:0;width:100%;min-height:100%;min-height:100dvh;z-index:100;
+	display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;
+	background:#000;transition:opacity .6s ease,visibility .6s ease;
   }
   #lockScreen.unlocked{opacity:0;visibility:hidden;pointer-events:none}
   .lock-title{font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:2px}
@@ -29,18 +29,18 @@
   .pwd-wrapper{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
   .pwd-input-wrap{position:relative;display:inline-flex;align-items:center}
   .pwd-input{
-    width:200px;height:52px;font-size:24px;font-weight:700;text-align:center;letter-spacing:8px;
-    border:2px solid #333;border-radius:14px;background:#111;color:#fff;outline:none;
-    transition:border-color .2s ease;padding-right:42px;
-    -webkit-user-select:text;user-select:text;-webkit-appearance:none;appearance:none;
+	width:200px;height:52px;font-size:24px;font-weight:700;text-align:center;letter-spacing:8px;
+	border:2px solid #333;border-radius:14px;background:#111;color:#fff;outline:none;
+	transition:border-color .2s ease;padding-right:42px;
+	-webkit-user-select:text;user-select:text;-webkit-appearance:none;appearance:none;
   }
   .pwd-input:focus{border-color:#fe2c55}
   .pwd-input.error{border-color:#ff1744;animation:shake .4s ease}
   .pwd-input:disabled{opacity:.4;cursor:not-allowed}
   .toggle-pwd{
-    position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;
-    display:flex;align-items:center;justify-content:center;background:none;border:0;cursor:pointer;
-    font-size:18px;opacity:.5;transition:opacity .2s ease;padding:0;z-index:2;
+	position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;
+	display:flex;align-items:center;justify-content:center;background:none;border:0;cursor:pointer;
+	font-size:18px;opacity:.5;transition:opacity .2s ease;padding:0;z-index:2;
   }
   .toggle-pwd:hover{opacity:.9}
   .toggle-pwd:disabled{opacity:.2;cursor:not-allowed}
@@ -50,40 +50,84 @@
   .pwd-hint{margin-top:20px;font-size:13px;color:#555;min-height:24px}
   .pwd-hint.wrong{color:#ff1744}
   .pwd-hint.success{color:#00e676}
-  .pwd-hint.locked{color:#ff9800;font-size:14px;font-weight:700}
+  .pwd-hint.remain{color:#ff9800;font-size:14px;font-weight:700}
+  .pwd-hint.permanent{color:#ff0000;font-size:16px;font-weight:800;animation:pulse 1s ease infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+  /* ===== 答题区 ===== */
+  .quiz-zone{
+	margin-top:28px;width:100%;max-width:380px;
+	padding:22px 18px;border-radius:16px;
+	background:rgba(255,40,40,.06);border:1px solid rgba(255,0,0,.2);
+	display:none;flex-direction:column;align-items:center;gap:12px;
+  }
+  .quiz-zone.show{display:flex}
+  .quiz-title{font-size:15px;font-weight:700;color:#ff4444;margin-bottom:4px}
+  .quiz-q{font-size:14px;color:#ccc;line-height:1.7}
+  .quiz-input-wrap{display:flex;gap:8px;width:100%;align-items:center}
+  .quiz-input{
+	flex:1;height:44px;font-size:15px;padding:0 14px;
+	border:1.5px solid #444;border-radius:10px;background:#111;color:#fff;outline:none;
+	text-align:center;
+  }
+  .quiz-input:focus{border-color:#fe2c55}
+  .quiz-input:disabled{opacity:.4}
+  .quiz-submit{
+	height:44px;padding:0 18px;font-size:14px;font-weight:700;
+	border:0;border-radius:10px;background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;cursor:pointer;white-space:nowrap;
+  }
+  .quiz-submit:disabled{opacity:.4;cursor:not-allowed}
+  .quiz-hint{font-size:12px;min-height:18px;color:#888}
+  .quiz-hint.correct{color:#00e676}
+  .quiz-hint.wrong{color:#ff1744}
+
   .qr-trigger{margin-top:60px;padding:14px 28px;border:0;border-radius:999px;color:#ff5f7a;font-size:15px;font-weight:700;cursor:pointer;border:1px solid rgba(254,44,85,.45);background:linear-gradient(180deg,rgba(254,44,85,.08),rgba(254,44,85,.02))}
   .qr-trigger:disabled{opacity:.3;cursor:not-allowed}
-  .qr-mask{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:120;display:none;justify-content:center;align-items:center}
-  .qr-mask.show{display:flex}
-  .qr-card{background:#111;border-radius:24px;padding:36px 32px;text-align:center;box-shadow:0 10px 50px rgba(0,0,0,.6)}
-  .qr-card canvas,.qr-card img{border-radius:12px;background:#fff;padding:12px;display:block;margin:0 auto}
-  .qr-card .close-btn{margin-top:20px;padding:12px 40px;border:0;border-radius:12px;background:linear-gradient(135deg,#333,#222);color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+
+  /* ===== HTML 内置弹窗 ===== */
+  .modal-mask{
+	position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);
+	display:none;justify-content:center;align-items:center;padding:24px;
+  }
+  .modal-mask.show{display:flex}
+  .modal-card{
+	background:#141414;border:1px solid rgba(254,44,85,.35);border-radius:18px;
+	width:100%;max-width:340px;padding:26px 20px;text-align:center;
+	box-shadow:0 10px 40px rgba(254,44,85,.18);
+  }
+  .modal-icon{font-size:40px;margin-bottom:12px}
+  .modal-title{font-size:18px;font-weight:800;color:#fe2c55;margin-bottom:10px;letter-spacing:1px}
+  .modal-body{font-size:14px;color:#d0d0d0;line-height:1.9;margin-bottom:22px;white-space:pre-line}
+  .modal-body b{color:#fff}
+  .modal-btns{display:flex;gap:12px}
+  .modal-btn{
+	flex:1;height:46px;border:0;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;
+  }
+  .modal-btn.cancel{background:#222;color:#ccc}
+  .modal-btn.ok{background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff}
 
   /* ============ 主内容 ============ */
   #mainContent{display:none;min-height:100vh;position:relative;z-index:2}
   #mainContent.show{display:block}
 
-  /* 竖屏：单列上下结构（默认） */
   .page{
-    min-height:100vh;padding:56px 20px 80px;
-    display:flex;flex-direction:column;align-items:center;gap:34px;
-    max-width:560px;margin:0 auto;
+	min-height:100vh;padding:56px 20px 80px;
+	display:flex;flex-direction:column;align-items:center;gap:34px;
+	max-width:560px;margin:0 auto;
   }
   .name-wrap{height:64px;display:flex;justify-content:center;align-items:center;width:100%}
   #nameCanvas{width:min(82vw,420px);height:52px;image-rendering:pixelated}
   .box{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%}
 
-  /* ===== 按钮：flex 双居中，干掉 button 原生偏移 ===== */
   .btn{
-    width:86%;max-width:360px;height:60px;
-    border:0;border-radius:18px;font-size:20px;font-weight:700;
-    color:#fff;cursor:pointer;position:relative;overflow:hidden;
-    -webkit-tap-highlight-color:transparent;
-    /* 核心修复：flex 居中 + 干掉原生样式 */
-    display:inline-flex;align-items:center;justify-content:center;
-    line-height:1;padding:0;margin:0;
-    -webkit-appearance:none;appearance:none;
-    font-family:inherit;
+	width:86%;max-width:360px;height:60px;
+	border:0;border-radius:18px;font-size:20px;font-weight:700;
+	color:#fff;cursor:pointer;position:relative;overflow:hidden;
+	-webkit-tap-highlight-color:transparent;
+	display:inline-flex;align-items:center;justify-content:center;
+	line-height:1;padding:0;margin:0;
+	-webkit-appearance:none;appearance:none;
+	font-family:inherit;
   }
   .btn:active{transform:translateY(0) scale(.98)}
   .btn::before,.btn::after{content:'';position:absolute;inset:-50%;z-index:0;pointer-events:none}
@@ -94,11 +138,11 @@
   .qq::after{background:conic-gradient(from 210deg,#12b7f5,#4fc3f7,#006dff,#00eaff,#2b6cff,#00ffd0,#12b7f5);filter:blur(22px) saturate(210%);animation:slimeB 5s linear infinite reverse}
   .qq-wash{position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,rgba(0,150,255,.45),transparent 55%),radial-gradient(circle at 50% -20%,rgba(0,255,220,.18),transparent 50%);mix-blend-mode:screen;z-index:0;pointer-events:none;animation:qqWash 4s ease-in-out infinite alternate}
   .btn span.label{
-    position:relative;z-index:2;
-    display:inline-flex;align-items:center;justify-content:center;
-    width:100%;height:100%;
-    text-shadow:0 1px 4px rgba(0,0,0,.5);
-    padding-bottom:1px; /* 抵消中文字体视觉下沉 */
+	position:relative;z-index:2;
+	display:inline-flex;align-items:center;justify-content:center;
+	width:100%;height:100%;
+	text-shadow:0 1px 4px rgba(0,0,0,.5);
+	padding-bottom:1px;
   }
   @keyframes slimeA{0%{transform:rotate(0) scale(1)}25%{transform:rotate(90deg) scale(1.12)}50%{transform:rotate(180deg) scale(.92)}75%{transform:rotate(270deg) scale(1.06)}100%{transform:rotate(360deg) scale(1)}}
   @keyframes slimeB{0%{transform:rotate(0) scale(1.1)}33%{transform:rotate(-120deg) scale(.95)}66%{transform:rotate(-240deg) scale(1.15)}100%{transform:rotate(-360deg) scale(1.1)}}
@@ -106,39 +150,31 @@
   @keyframes qqWash{0%{opacity:.85;transform:scale(1)}100%{opacity:1;transform:scale(1.06)}}
   .tip{margin-top:34px;font-size:12px;color:#d0d0d0}
 
-  /* 说明卡片：竖屏也在下方，带滑入动画 */
   .about{
-    width:100%;max-width:520px;padding:26px 22px;
-    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
-    border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.25);backdrop-filter:blur(6px);
-    text-align:left;
-    opacity:0;transform:translateY(50px);animation:fadeUp 1.1s ease forwards;animation-delay:.3s;
+	width:100%;max-width:520px;padding:26px 22px;
+	background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+	border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.25);backdrop-filter:blur(6px);
+	text-align:left;
+	opacity:0;transform:translateY(50px);animation:fadeUp 1.1s ease forwards;animation-delay:.3s;
   }
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
   .about h2{margin:0 0 14px;text-align:center;font-size:20px;color:#fe2c55;letter-spacing:1px}
   .about p{margin:0 0 12px;font-size:14.5px;line-height:1.85;color:#d6d6d6;text-align:justify}
   .about p:last-child{margin:0;color:#9a9a9a;font-size:13px;text-align:center;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)}
 
-  /* ============ 横屏/电脑：左右双栏 ============ */
   @media (min-width:820px) and (orientation:landscape){
-    .page{
-      flex-direction:row;justify-content:center;align-items:flex-start;
-      gap:56px;max-width:1080px;padding:80px 48px;
-    }
-    .left{flex:1;min-width:280px;display:flex;flex-direction:column;align-items:center}
-    .name-wrap{margin-bottom:30px}
-    .box{align-items:center}
-    .btn{
-      width:260px;max-width:none;height:56px;font-size:19px;
-      display:inline-flex;align-items:center;justify-content:center;line-height:1;
-    }
-    .tip{margin-top:30px}
-    .about{flex:1;min-width:280px;max-width:none;align-self:flex-start;position:sticky;top:60px}
+	.page{flex-direction:row;justify-content:center;align-items:flex-start;gap:56px;max-width:1080px;padding:80px 48px}
+	.left{flex:1;min-width:280px;display:flex;flex-direction:column;align-items:center}
+	.name-wrap{margin-bottom:30px}
+	.box{align-items:center}
+	.btn{width:260px;max-width:none;height:56px;font-size:19px;display:inline-flex;align-items:center;justify-content:center;line-height:1}
+	.tip{margin-top:30px}
+	.about{flex:1;min-width:280px;max-width:none;align-self:flex-start;position:sticky;top:60px}
   }
   @media (min-width:1100px){
-    .page{gap:72px}
-    .about{padding:30px 28px}
-    .about p{font-size:15px}
+	.page{gap:72px}
+	.about{padding:30px 28px}
+	.about p{font-size:15px}
   }
 </style>
 </head>
@@ -146,48 +182,53 @@
 
 <div id="bgOverlay"></div>
 
+<!-- ===== HTML 内置弹窗 ===== -->
+<div class="modal-mask" id="finalModal">
+  <div class="modal-card">
+	<div class="modal-icon">⚠️</div>
+	<div class="modal-title">最终警告</div>
+	<div class="modal-body" id="finalModalBody"></div>
+	<div class="modal-btns">
+	  <button class="modal-btn cancel" id="finalCancel">再想想</button>
+	  <button class="modal-btn ok" id="finalOk">我准备好了</button>
+	</div>
+  </div>
+</div>
+
 <div id="lockScreen">
   <div class="lock-title">🔒访问密码</div>
   <div class="lock-sub">请输入访问密码</div>
   <div class="pwd-wrapper">
-    <div class="pwd-input-wrap">
-      <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="••••" autocomplete="off" inputmode="text" enterkeyhint="done">
-      <button class="toggle-pwd" id="togglePwd" type="button" onclick="togglePassword()" title="显示密码">👁</button>
-    </div>
-    <button class="verify-btn" id="verifyBtn" onclick="checkPassword()">验证</button>
+	<div class="pwd-input-wrap">
+	  <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="••••" autocomplete="off" inputmode="text" enterkeyhint="done">
+	  <button class="toggle-pwd" id="togglePwd" type="button" onclick="togglePassword()" title="显示密码">👁</button>
+	</div>
+	<button class="verify-btn" id="verifyBtn" onclick="checkPassword()">验证</button>
   </div>
   <div class="pwd-hint" id="pwdHint"></div>
-  <button class="qr-trigger" id="qrTrigger" onclick="showQR()">没有密码？请扫描下方二维码</button>
-</div>
-
-<div class="qr-mask" id="qrMask" onclick="closeQR(event)">
-  <div class="qr-card" onclick="event.stopPropagation()">
-    <div id="qrCode"></div>
-    <button class="close-btn" onclick="closeQR()">关闭</button>
-  </div>
 </div>
 
 <div id="mainContent">
   <div class="page">
-    <section class="left">
-      <div class="name-wrap">
-        <canvas id="nameCanvas" aria-label=""></canvas>
-      </div>
-      <div class="box">
-        <button class="btn dy" onclick="goDouyin()"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
-        <button class="btn qq" onclick="goQQ()"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
-      </div>
-      <div class="tip">点击按钮直接跳转</div>
-    </section>
+	<section class="left">
+	  <div class="name-wrap">
+		<canvas id="nameCanvas" aria-label=""></canvas>
+	  </div>
+	  <div class="box">
+		<button class="btn dy" onclick="goDouyin()"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
+		<button class="btn qq" onclick="goQQ()"><span class="qq-wash"></span><span class="label">QQ 加好友</span></button>
+	  </div>
+	  <div class="tip">点击按钮直接跳转</div>
+	</section>
 
-    <aside class="about">
-      <h2>📌 写在前面</h2>
-      <p>本网站是我随手乱写的，纯粹一时兴起，敲敲打打拼出来的一个小玩意儿，没什么高大上的架构，也不打算做成什么正经项目，就是图个乐子，写着玩、看着爽。</p>
-      <p>至于里面的那些链接和联系方式，随缘就好。跟我破产了几字一、100多字、200多字都可以，别太当真，也别太较真，都是随口说说、随手放上去的。我这个人做事一向随性，今天想起来就更新一下，明天懒了可能就搁那儿不动了。</p>
-      <p>所以如果你发现页面很久没变、链接失效、或者按钮点了没反应，先别急着吐槽，很可能只是我又跑去干别的事了。等哪天兴致上来了，说不定就推一版新的，也可能就这么一直放着，谁知道呢。</p>
-      <p>总之，这就是一个属于我自己的小角落，写给自己看，也给碰巧进来的你看看。看得开心就好，别想太多 😄</p>
-      <p>© 随手一写 · 随缘更新</p>
-    </aside>
+	<aside class="about">
+	  <h2>📌 写在前面</h2>
+	  <p>本网站是我随手乱写的，纯粹一时兴起，敲敲打打拼出来的一个小玩意儿，没什么高大上的架构，也不打算做成什么正经项目，就是图个乐子，写着玩、看着爽。</p>
+	  <p>至于里面的那些链接和联系方式，随缘就好。跟我破产了几字一、100多字、200多字都可以，别太当真，也别太较真，都是随口说说、随手放上去的。我这个人做事一向随性，今天想起来就更新一下，明天懒了可能就搁那儿不动了。</p>
+	  <p>所以如果你发现页面很久没变、链接失效、或者按钮点了没反应，先别急着吐槽，很可能只是我又跑去干别的事了。等哪天兴致上来了，说不定就推一版新的，也可能就这么一直放着，谁知道呢。</p>
+	  <p>总之，这就是一个属于我自己的小角落，写给自己看，也给碰巧进来的你看看。看得开心就好，别想太多 😄</p>
+	  <p>© 随手一写 · 随缘更新</p>
+	</aside>
   </div>
 </div>
 
@@ -200,27 +241,55 @@ var LOCK_FILE_PATH = 'lock.json';
 var USE_GITHUB = GITHUB_TOKEN.indexOf('ghp_') === 0 && GITHUB_TOKEN !== 'ghp_你的Token填这里';
 
 var CORRECT = 'CFTH';
+var MAX_WRONG = 15;
 var input = document.getElementById('pwdInput');
 var hint = document.getElementById('pwdHint');
 var lockEl = document.getElementById('lockScreen');
 var main = document.getElementById('mainContent');
 var verifyBtn = document.getElementById('verifyBtn');
-var qrTrigger = document.getElementById('qrTrigger');
 var togglePwd = document.getElementById('togglePwd');
+
+/* ===== HTML 内置弹窗控制 ===== */
+var finalModal = document.getElementById('finalModal');
+var finalModalBody = document.getElementById('finalModalBody');
+var pendingSubmit = false; // 标记用户点"我准备好了"后是否真正提交
+
+function showFinalModal(dataCount){
+  finalModalBody.innerHTML =
+    '你当前已累计输错 <b>'+dataCount+'</b> 次。\n\n'+
+    '本次输错将累计满 <b>'+MAX_WRONG+'</b> 次，触发无期徒刑锁定。\n'+
+    '永久封禁，不可解除，不可重置，不可申诉。';
+  pendingSubmit = false;
+  finalModal.classList.add('show');
+}
+
+document.getElementById('finalCancel').addEventListener('click', function(){
+  finalModal.classList.remove('show');
+  hint.textContent='已取消，你还可以再想想密码';
+  hint.className='pwd-hint';
+  pendingSubmit = false;
+});
+
+document.getElementById('finalOk').addEventListener('click', function(){
+  finalModal.classList.remove('show');
+  pendingSubmit = true;
+  // 用户点了"我准备好了"，才真正执行验证提交
+  doCheckPassword();
+});
 
 /* ===== 软键盘适配 ===== */
 function scrollInputIntoView(){
   setTimeout(function(){
-    var rect = input.getBoundingClientRect();
-    if(rect.bottom > window.innerHeight - 60 || rect.top < 0){
-      input.scrollIntoView({behavior:'smooth', block:'center'});
-    }
+	var rect = input.getBoundingClientRect();
+	if(rect.bottom > window.innerHeight - 60 || rect.top < 0){
+	  input.scrollIntoView({behavior:'smooth', block:'center'});
+	}
   }, 300);
 }
 input.addEventListener('focus', scrollInputIntoView);
 if(window.visualViewport){
   window.visualViewport.addEventListener('resize', function(){
-    if(document.activeElement === input) scrollInputIntoView();
+	if(document.activeElement === input) scrollInputIntoView();
   });
 }
 
@@ -237,33 +306,33 @@ function togglePassword(){
 /* ===== 存储 ===== */
 function getLocalData(){
   try{ var r=localStorage.getItem('pwdLock'); if(r) return JSON.parse(r); }catch(e){}
-  return {count:0,lockUntil:0};
+  return {count:0,permanent:false};
 }
 function setLocalData(d){ try{ localStorage.setItem('pwdLock',JSON.stringify(d)); }catch(e){} }
 
 async function getRemoteData(){
   if(!USE_GITHUB) return null;
   try{
-    var res=await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+LOCK_FILE_PATH,{
-      headers:{'Authorization':'token '+GITHUB_TOKEN}
-    });
-    if(res.status===404) return {count:0,lockUntil:0,sha:null};
-    if(!res.ok) return null;
-    var data=await res.json();
-    var content=JSON.parse(atob(data.content));
-    return {count:content.count||0,lockUntil:content.lockUntil||0,sha:data.sha};
+	var res=await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+LOCK_FILE_PATH,{
+	  headers:{'Authorization':'token '+GITHUB_TOKEN}
+	});
+	if(res.status===404) return {count:0,permanent:false,sha:null};
+	if(!res.ok) return null;
+	var data=await res.json();
+	var content=JSON.parse(atob(data.content));
+	return {count:content.count||0,permanent:content.permanent||false,sha:data.sha};
   }catch(e){ return null; }
 }
 async function setRemoteData(d,sha){
   if(!USE_GITHUB) return;
   try{
-    var body=btoa(JSON.stringify({count:d.count,lockUntil:d.lockUntil,updated:Date.now()}));
-    var p={message:'lock update',content:body}; if(sha)p.sha=sha;
-    await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+LOCK_FILE_PATH,{
-      method:'PUT',
-      headers:{'Authorization':'token '+GITHUB_TOKEN,'Content-Type':'application/json'},
-      body:JSON.stringify(p)
-    });
+	var body=btoa(JSON.stringify({count:d.count,permanent:d.permanent||false,updated:Date.now()}));
+	var p={message:'lock update',content:body}; if(sha)p.sha=sha;
+	await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+LOCK_FILE_PATH,{
+	  method:'PUT',
+	  headers:{'Authorization':'token '+GITHUB_TOKEN,'Content-Type':'application/json'},
+	  body:JSON.stringify(p)
+	});
   }catch(e){}
 }
 async function getLockData(){
@@ -271,73 +340,128 @@ async function getLockData(){
   if(r){ setLocalData(r); return r; }
   return getLocalData();
 }
-async function saveLockData(count,lockUntil){
-  setLocalData({count:count,lockUntil:lockUntil});
+async function saveLockData(count,permanent){
+  setLocalData({count:count,permanent:permanent||false});
   var r=await getRemoteData();
-  await setRemoteData({count:count,lockUntil:lockUntil},r?r.sha:null);
-}
-
-/* ===== 锁定规则 ===== */
-function getLockDuration(c){
-  if(c>=15) return 3600;
-  if(c>=10) return 300;
-  if(c>=5)  return 60;
-  return 0;
-}
-function isLocked(d){ return d && d.lockUntil > Date.now(); }
-
-/* ===== 倒计时 ===== */
-function startCountdown(lockUntil){
-  input.disabled=true; verifyBtn.disabled=true; qrTrigger.disabled=true; togglePwd.disabled=true; input.blur();
-  clearInterval(window._cd);
-  window._cd=setInterval(async function(){
-    var data=await getLockData();
-    var left=Math.floor((data.lockUntil-Date.now())/1000);
-    if(left<=0){
-      clearInterval(window._cd);
-      input.disabled=false; verifyBtn.disabled=false; qrTrigger.disabled=false; togglePwd.disabled=false;
-      hint.textContent=''; hint.className='pwd-hint';
-      setTimeout(function(){input.focus();},50);
-      return;
-    }
-    var m=Math.floor(left/60), s=left%60;
-    hint.innerHTML='🚫 累计输错 '+data.count+' 次，已锁定<br>剩余 '+(m>0?m+'分'+s+'秒':s+'秒');
-    hint.className='pwd-hint locked';
-  },1000);
+  await setRemoteData({count:count,permanent:permanent||false},r?r.sha:null);
 }
 
 /* ===== 页面加载 ===== */
 (async function init(){
   var data=await getLockData();
-  if(isLocked(data)) startCountdown(data.lockUntil);
-  else { setTimeout(function(){input.focus();},120); }
+  if(data.permanent){
+	showPermanentLock();
+	return;
+  }
+  setTimeout(function(){input.focus();},120);
 })();
 
 input.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); checkPassword(); } });
 input.addEventListener('input',function(){ if(hint.className==='pwd-hint wrong'){hint.className='pwd-hint';} });
 
-/* ===== 验证 ===== */
+/* ===== 永封界面 ===== */
+function showPermanentLock(){
+  input.disabled=true; verifyBtn.disabled=true; togglePwd.disabled=true;
+  document.querySelector('.lock-title').style.display='none';
+  document.querySelector('.lock-sub').style.display='none';
+  document.querySelector('.pwd-wrapper').style.display='none';
+  document.getElementById('pwdHint').style.display='none';
+
+  lockEl.innerHTML='<div style="text-align:center;padding:40px 24px;">'+
+	'<div style="font-size:56px;margin-bottom:20px;">已拒绝</div>'+
+	'<div class="lock-title" style="color:#ff0000;display:block;">访问已被永久拒绝</div>'+
+	'<div class="lock-sub" style="display:block;">累计输错 '+MAX_WRONG+' 次，已达无期徒刑标准</div>'+
+	'<div class="pwd-hint permanent" style="margin-top:16px;margin-bottom:20px;">本页面已永久锁定，不再接受任何访问</div>'+
+	'</div>';
+
+  // 答题区
+  var qz=document.createElement('div');
+  qz.className='quiz-zone show';
+  qz.style.margin='0 auto';
+  qz.innerHTML=
+	'<div class="quiz-title">已被永久封禁</div>'+
+	'<div class="quiz-q">被封了请答题：<br>题目：作者做这个网站有什么用途？</div>'+
+	'<div class="quiz-input-wrap">'+
+	'<input class="quiz-input" id="quizInput2" type="text" placeholder="请输入答案" autocomplete="off" maxlength="30" style="flex:1;height:44px;font-size:15px;padding:0 14px;border:1.5px solid #444;border-radius:10px;background:#111;color:#fff;outline:none;text-align:center;">'+
+	'<button class="quiz-submit" id="quizSubmit2" onclick="checkQuiz()" style="height:44px;padding:0 18px;font-size:14px;font-weight:700;border:0;border-radius:10px;background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;cursor:pointer;white-space:nowrap;">提交</button>'+
+	'</div>'+
+	'<div class="quiz-hint" id="quizHint2"></div>';
+  lockEl.appendChild(qz);
+
+  document.getElementById('quizInput2').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); checkQuiz(); } });
+}
+
+/* ===== 答题验证（答错可重答） ===== */
+function checkQuiz(){
+  var qi = document.getElementById('quizInput2');
+  var qh = document.getElementById('quizHint2');
+  var val = (qi.value||'').trim().toLowerCase();
+
+  if(val.indexOf('加好友') !== -1){
+	qh.textContent = '✓ 答案正确！正在解除封禁...';
+	qh.className = 'quiz-hint correct';
+	qi.disabled = true;
+	document.getElementById('quizSubmit2').disabled = true;
+
+	saveLockData(0, false).then(function(){
+	  setTimeout(function(){ location.reload(); }, 1500);
+	});
+	return;
+  }
+
+  // 答错 → 不禁用、不清空、提示、光标回来
+  qh.textContent = '✗ 答案错误，再想想吧～';
+  qh.className = 'quiz-hint wrong';
+  qi.disabled = false;
+  document.getElementById('quizSubmit2').disabled = false;
+  qi.focus();
+}
+
+/* ===== 验证（入口，第14次时弹 HTML 弹窗） ===== */
 async function checkPassword(){
   var data=await getLockData();
-  if(isLocked(data)) return;
+  if(data.permanent){ showPermanentLock(); return; }
+
   var val=input.value.toUpperCase().trim();
   if(!val){ hint.textContent='请输入密码'; hint.className='pwd-hint wrong'; return; }
 
+  // 第14次 → 弹 HTML 内置弹窗
+  if(data.count >= MAX_WRONG - 1){
+	showFinalModal(data.count);
+	return; // 先弹窗，等用户选；点了"我准备好了"再真正提交
+  }
+
+  // 没到警告次数，直接提交
+  doCheckPassword();
+}
+
+/* ===== 真正执行验证 ===== */
+async function doCheckPassword(){
+  var data=await getLockData();
+  if(data.permanent){ showPermanentLock(); return; }
+
+  var val=input.value.toUpperCase().trim();
+
   if(val===CORRECT){
-    hint.textContent='✓ 验证通过'; hint.className='pwd-hint success';
-    await saveLockData(0,0);
-    lockEl.classList.add('unlocked');
-    setTimeout(function(){ main.classList.add('show'); startBgCycle(); pixelNameCanvas(); },400);
+	hint.textContent='✓ 验证通过'; hint.className='pwd-hint success';
+	await saveLockData(0,false);
+	lockEl.classList.add('unlocked');
+	setTimeout(function(){ main.classList.add('show'); startBgCycle(); pixelNameCanvas(); },400);
   }else{
-    var wrong=data.count+1;
-    var dur=getLockDuration(wrong);
-    var until=dur>0?Date.now()+dur*1000:0;
-    await saveLockData(wrong,until);
-    hint.textContent='密码错误，累计输错 '+wrong+' 次';
-    hint.className='pwd-hint wrong';
-    input.classList.add('error'); input.value='';
-    setTimeout(function(){input.classList.remove('error');input.focus();},500);
-    if(dur>0) startCountdown(until);
+	var wrong=data.count+1;
+	var isPermanent = wrong >= MAX_WRONG;
+
+	await saveLockData(wrong, isPermanent);
+
+	if(isPermanent){
+	  showPermanentLock();
+	}else{
+	  var remain = MAX_WRONG - wrong;
+	  hint.innerHTML='密码错误，累计输错 '+wrong+' 次<br>再错 '+remain+' 次将触发无期徒刑';
+	  hint.className='pwd-hint remain';
+	  input.classList.add('error'); input.value='';
+	  setTimeout(function(){input.classList.remove('error');input.focus();},500);
+	}
   }
 }
 
@@ -349,16 +473,6 @@ function startBgCycle(){
   function ch(){document.body.style.backgroundColor=rc();}
   setTimeout(function(){ch(); setInterval(ch,3000);},2000);
 }
-
-/* ===== 二维码 ===== */
-var qrGenerated=false;
-function showQR(){
-  if(input.disabled) return;
-  var box=document.getElementById('qrCode');
-  if(!qrGenerated){box.innerHTML=''; new QRCode(box,{text:'CFTH',width:200,height:200}); qrGenerated=true;}
-  document.getElementById('qrMask').classList.add('show');
-}
-function closeQR(e){if(e&&e.target!==e.currentTarget&&e.type==='click')return;document.getElementById('qrMask').classList.remove('show');}
 
 /* ===== 像素名字 ===== */
 function pixelNameCanvas(){
@@ -373,8 +487,8 @@ function pixelNameCanvas(){
   o.font='700 40px "Courier New","Consolas",monospace';o.fillText(text,cssW/2,cssH/2);
   var step=1,grid=[],x,y,data;
   for(y=0;y<cssH;y+=step){for(x=0;x<cssW;x+=step){
-    data=o.getImageData(x*dpr,y*dpr,1,1).data;
-    if(data[3]>80)grid.push({x:x,y:y,size:step,r:255,g:255,b:255,tr:255,tg:255,tb:255,delay:Math.random()*.4+(x/cssW)*.4,jitterSpeed:.15+Math.random()*.25,jitterAmount:.5+Math.random()*1});
+	data=o.getImageData(x*dpr,y*dpr,1,1).data;
+	if(data[3]>80)grid.push({x:x,y:y,size:step,r:255,g:255,b:255,tr:255,tg:255,tb:255,delay:Math.random()*.4+(x/cssW)*.4,jitterSpeed:.15+Math.random()*.25,jitterAmount:.5+Math.random()*1});
   }}
   var start=null,pd=false,lc=0;
   function e3(t){return 1-Math.pow(1-t,3);}
