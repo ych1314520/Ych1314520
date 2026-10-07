@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hello</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Courier New', monospace;
+    color: #e0e0e0;
+  }
+
+  .typing {
+    font-size: 2rem;
+    letter-spacing: 0.15em;
+  }
+
+  .typing span {
+    border-right: 2px solid #e0e0e0;
+    padding-right: 4px;
+    animation: blink 0.7s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { border-color: #e0e0e0; }
+    50% { border-color: transparent; }
+  }
+
+  .enter-btn {
+    margin-top: 60px;
+    padding: 14px 48px;
+    border: 1px solid #e0e0e0;
+    background: transparent;
+    color: #e0e0e0;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .enter-btn:hover {
+    background: #e0e0e0;
+    color: #0a0a0a;
+  }
+</style>
+</head>
+<body>
+
+<div class="typing">
+  <span id="text"></span>
+</div>
+
+<button class="enter-btn" onclick="location.href='https://github.com/ych1314520/Ych1314520/releases'">进 入</button>
+
+<script>
+  let j = 0, isDeleting = false;
+  const el = document.getElementById('text');
+  const current = 'hello.';
+
+  function type() {
+    if (!isDeleting) {
+      el.textContent = current.slice(0, ++j);
+      if (j === current.length) {
+        isDeleting = true;
+        setTimeout(type, 1200);
+        return;
+      }
+    } else {
+      el.textContent = current.slice(0, --j);
+      if (j === 0) isDeleting = false;
+    }
+    setTimeout(type, isDeleting ? 60 : 140);
+  }
+
+  type();
+</script>
+
+</body>
+</html>
