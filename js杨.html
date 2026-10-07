@@ -17,7 +17,6 @@
   img{-webkit-user-drag:none;pointer-events:none}
   #bgOverlay{position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(0,0,0,0.4)}
 
-  /* ============ 锁屏 ============ */
   #lockScreen{
 	position:absolute;top:0;left:0;width:100%;min-height:100%;min-height:100dvh;z-index:100;
 	display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;
@@ -54,7 +53,6 @@
   .pwd-hint.permanent{color:#ff0000;font-size:16px;font-weight:800;animation:pulse 1s ease infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
-  /* ===== 答题区 ===== */
   .quiz-zone{
 	margin-top:28px;width:100%;max-width:380px;
 	padding:22px 18px;border-radius:16px;
@@ -81,10 +79,6 @@
   .quiz-hint.correct{color:#00e676}
   .quiz-hint.wrong{color:#ff1744}
 
-  .qr-trigger{margin-top:60px;padding:14px 28px;border:0;border-radius:999px;color:#ff5f7a;font-size:15px;font-weight:700;cursor:pointer;border:1px solid rgba(254,44,85,.45);background:linear-gradient(180deg,rgba(254,44,85,.08),rgba(254,44,85,.02))}
-  .qr-trigger:disabled{opacity:.3;cursor:not-allowed}
-
-  /* ===== HTML 内置弹窗 ===== */
   .modal-mask{
 	position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);
 	display:none;justify-content:center;align-items:center;padding:24px;
@@ -106,7 +100,6 @@
   .modal-btn.cancel{background:#222;color:#ccc}
   .modal-btn.ok{background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff}
 
-  /* ============ 主内容 ============ */
   #mainContent{display:none;min-height:100vh;position:relative;z-index:2}
   #mainContent.show{display:block}
 
@@ -126,8 +119,7 @@
 	-webkit-tap-highlight-color:transparent;
 	display:inline-flex;align-items:center;justify-content:center;
 	line-height:1;padding:0;margin:0;
-	-webkit-appearance:none;appearance:none;
-	font-family:inherit;
+	-webkit-appearance:none;appearance:none;font-family:inherit;
   }
   .btn:active{transform:translateY(0) scale(.98)}
   .btn::before,.btn::after{content:'';position:absolute;inset:-50%;z-index:0;pointer-events:none}
@@ -141,8 +133,7 @@
 	position:relative;z-index:2;
 	display:inline-flex;align-items:center;justify-content:center;
 	width:100%;height:100%;
-	text-shadow:0 1px 4px rgba(0,0,0,.5);
-	padding-bottom:1px;
+	text-shadow:0 1px 4px rgba(0,0,0,.5);padding-bottom:1px;
   }
   @keyframes slimeA{0%{transform:rotate(0) scale(1)}25%{transform:rotate(90deg) scale(1.12)}50%{transform:rotate(180deg) scale(.92)}75%{transform:rotate(270deg) scale(1.06)}100%{transform:rotate(360deg) scale(1)}}
   @keyframes slimeB{0%{transform:rotate(0) scale(1.1)}33%{transform:rotate(-120deg) scale(.95)}66%{transform:rotate(-240deg) scale(1.15)}100%{transform:rotate(-360deg) scale(1.1)}}
@@ -159,15 +150,22 @@
   }
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
   .about h2{margin:0 0 14px;text-align:center;font-size:20px;color:#fe2c55;letter-spacing:1px}
-  .about p{margin:0 0 12px;font-size:14.5px;line-height:1.85;color:#d6d6d6;text-align:justify}
+  .about p{margin:0 0 12px;font-size:14.5px;line-height:1.85;color:#d6d6d6;text-align:justify;min-height:1.85em}
   .about p:last-child{margin:0;color:#9a9a9a;font-size:13px;text-align:center;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)}
+
+  .type-cursor{
+	display:inline-block;width:2px;height:1em;background:#fe2c55;
+	animation:blink 1s step-end infinite;
+	vertical-align:text-bottom;margin-left:2px;
+  }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
   @media (min-width:820px) and (orientation:landscape){
 	.page{flex-direction:row;justify-content:center;align-items:flex-start;gap:56px;max-width:1080px;padding:80px 48px}
 	.left{flex:1;min-width:280px;display:flex;flex-direction:column;align-items:center}
 	.name-wrap{margin-bottom:30px}
 	.box{align-items:center}
-	.btn{width:260px;max-width:none;height:56px;font-size:19px;display:inline-flex;align-items:center;justify-content:center;line-height:1}
+	.btn{width:260px;max-width:none;height:56px;font-size:19px}
 	.tip{margin-top:30px}
 	.about{flex:1;min-width:280px;max-width:none;align-self:flex-start;position:sticky;top:60px}
   }
@@ -182,7 +180,6 @@
 
 <div id="bgOverlay"></div>
 
-<!-- ===== HTML 内置弹窗 ===== -->
 <div class="modal-mask" id="finalModal">
   <div class="modal-card">
 	<div class="modal-icon">⚠️</div>
@@ -223,17 +220,67 @@
 
 	<aside class="about">
 	  <h2>📌 写在前面</h2>
-	  <p>本网站是我随手乱写的，纯粹一时兴起，敲敲打打拼出来的一个小玩意儿，没什么高大上的架构，也不打算做成什么正经项目，就是图个乐子，写着玩、看着爽。</p>
-	  <p>至于里面的那些链接和联系方式，随缘就好。跟我破产了几字一、100多字、200多字都可以，别太当真，也别太较真，都是随口说说、随手放上去的。我这个人做事一向随性，今天想起来就更新一下，明天懒了可能就搁那儿不动了。</p>
-	  <p>所以如果你发现页面很久没变、链接失效、或者按钮点了没反应，先别急着吐槽，很可能只是我又跑去干别的事了。等哪天兴致上来了，说不定就推一版新的，也可能就这么一直放着，谁知道呢。</p>
-	  <p>总之，这就是一个属于我自己的小角落，写给自己看，也给碰巧进来的你看看。看得开心就好，别想太多 😄</p>
-	  <p>© 随手一写 · 随缘更新</p>
+	  <div id="typeArea"></div>
+	  <p style="margin:0;color:#9a9a9a;font-size:13px;text-align:center;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)">© 随手一写 · 随缘更新</p>
 	</aside>
   </div>
 </div>
 
 <script src="https://fastly.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
+/* ===== 打字机 ===== */
+var TYPE_TEXTS = [
+  "本网站是我随手乱写的，纯粹一时兴起，敲敲打打拼出来的一个小玩意儿，没什么高大上的架构，也不打算做成什么正经项目，就是图个乐子，写着玩、看着爽。",
+  "至于里面的那些链接和联系方式，随缘就好。跟我破产了几字一、100多字、200多字都可以，别太当真，也别太较真，都是随口说说、随手放上去的。我这个人做事一向随性，今天想起来就更新一下，明天懒了可能就搁那儿不动了。",
+  "所以如果你发现页面很久没变、链接失效、或者按钮点了没反应，先别急着吐槽，很可能只是我又跑去干别的事了。等哪天兴致上来了，说不定就推一版新的，也可能就这么一直放着，谁知道呢。",
+  "总之，这就是一个属于我自己的小角落，写给自己看，也给碰巧进来的你看看。看得开心就好，别想太多 😄"
+];
+
+var typeArea = document.getElementById('typeArea');
+var typeQueue = TYPE_TEXTS.slice();
+var currentPIndex = 0;
+var currentCharIndex = 0;
+var currentP = null;
+var cursor = null;
+var typeSpeed = 55;
+
+function startTypewriter(){
+  currentP = document.createElement('p');
+  typeArea.appendChild(currentP);
+  cursor = document.createElement('span');
+  cursor.className = 'type-cursor';
+  currentP.appendChild(cursor);
+  typeNextChar();
+}
+
+function typeNextChar(){
+  var text = typeQueue[currentPIndex];
+  if(currentCharIndex < text.length){
+	var charNode = document.createTextNode(text.charAt(currentCharIndex));
+	currentP.insertBefore(charNode, cursor);
+	currentCharIndex++;
+	var jitter = typeSpeed + (Math.random() * 40 - 20);
+	setTimeout(typeNextChar, jitter);
+  } else {
+	// 当前段打完，光标立刻移除
+	if(cursor) cursor.remove();
+	cursor = null;
+	currentCharIndex = 0;
+	currentPIndex++;
+	if(currentPIndex < typeQueue.length){
+	  var br = document.createElement('br');
+	  typeArea.appendChild(br);
+	  currentP = document.createElement('p');
+	  typeArea.appendChild(currentP);
+	  // 下一段新建光标
+	  cursor = document.createElement('span');
+	  cursor.className = 'type-cursor';
+	  currentP.appendChild(cursor);
+	  setTimeout(typeNextChar, 400);
+	}
+  }
+}
+
 /* ===== 配置 ===== */
 var GITHUB_TOKEN = 'ghp_你的Token填这里';
 var GITHUB_REPO = 'Ych1314520/Ych1314520';
@@ -249,10 +296,9 @@ var main = document.getElementById('mainContent');
 var verifyBtn = document.getElementById('verifyBtn');
 var togglePwd = document.getElementById('togglePwd');
 
-/* ===== HTML 内置弹窗控制 ===== */
 var finalModal = document.getElementById('finalModal');
 var finalModalBody = document.getElementById('finalModalBody');
-var pendingSubmit = false; // 标记用户点"我准备好了"后是否真正提交
+var pendingSubmit = false;
 
 function showFinalModal(dataCount){
   finalModalBody.innerHTML =
@@ -273,11 +319,9 @@ document.getElementById('finalCancel').addEventListener('click', function(){
 document.getElementById('finalOk').addEventListener('click', function(){
   finalModal.classList.remove('show');
   pendingSubmit = true;
-  // 用户点了"我准备好了"，才真正执行验证提交
   doCheckPassword();
 });
 
-/* ===== 软键盘适配 ===== */
 function scrollInputIntoView(){
   setTimeout(function(){
 	var rect = input.getBoundingClientRect();
@@ -293,7 +337,6 @@ if(window.visualViewport){
   });
 }
 
-/* ===== 显示/隐藏密码 ===== */
 var pwdVisible = false;
 function togglePassword(){
   pwdVisible = !pwdVisible;
@@ -303,7 +346,6 @@ function togglePassword(){
   input.focus();
 }
 
-/* ===== 存储 ===== */
 function getLocalData(){
   try{ var r=localStorage.getItem('pwdLock'); if(r) return JSON.parse(r); }catch(e){}
   return {count:0,permanent:false};
@@ -346,7 +388,6 @@ async function saveLockData(count,permanent){
   await setRemoteData({count:count,permanent:permanent||false},r?r.sha:null);
 }
 
-/* ===== 页面加载 ===== */
 (async function init(){
   var data=await getLockData();
   if(data.permanent){
@@ -359,7 +400,6 @@ async function saveLockData(count,permanent){
 input.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); checkPassword(); } });
 input.addEventListener('input',function(){ if(hint.className==='pwd-hint wrong'){hint.className='pwd-hint';} });
 
-/* ===== 永封界面 ===== */
 function showPermanentLock(){
   input.disabled=true; verifyBtn.disabled=true; togglePwd.disabled=true;
   document.querySelector('.lock-title').style.display='none';
@@ -374,7 +414,6 @@ function showPermanentLock(){
 	'<div class="pwd-hint permanent" style="margin-top:16px;margin-bottom:20px;">本页面已永久锁定，不再接受任何访问</div>'+
 	'</div>';
 
-  // 答题区
   var qz=document.createElement('div');
   qz.className='quiz-zone show';
   qz.style.margin='0 auto';
@@ -391,7 +430,6 @@ function showPermanentLock(){
   document.getElementById('quizInput2').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); checkQuiz(); } });
 }
 
-/* ===== 答题验证（答错可重答） ===== */
 function checkQuiz(){
   var qi = document.getElementById('quizInput2');
   var qh = document.getElementById('quizHint2');
@@ -409,7 +447,6 @@ function checkQuiz(){
 	return;
   }
 
-  // 答错 → 不禁用、不清空、提示、光标回来
   qh.textContent = '✗ 答案错误，再想想吧～';
   qh.className = 'quiz-hint wrong';
   qi.disabled = false;
@@ -417,7 +454,6 @@ function checkQuiz(){
   qi.focus();
 }
 
-/* ===== 验证（入口，第14次时弹 HTML 弹窗） ===== */
 async function checkPassword(){
   var data=await getLockData();
   if(data.permanent){ showPermanentLock(); return; }
@@ -425,17 +461,14 @@ async function checkPassword(){
   var val=input.value.toUpperCase().trim();
   if(!val){ hint.textContent='请输入密码'; hint.className='pwd-hint wrong'; return; }
 
-  // 第14次 → 弹 HTML 内置弹窗
   if(data.count >= MAX_WRONG - 1){
 	showFinalModal(data.count);
-	return; // 先弹窗，等用户选；点了"我准备好了"再真正提交
+	return;
   }
 
-  // 没到警告次数，直接提交
   doCheckPassword();
 }
 
-/* ===== 真正执行验证 ===== */
 async function doCheckPassword(){
   var data=await getLockData();
   if(data.permanent){ showPermanentLock(); return; }
@@ -446,7 +479,7 @@ async function doCheckPassword(){
 	hint.textContent='✓ 验证通过'; hint.className='pwd-hint success';
 	await saveLockData(0,false);
 	lockEl.classList.add('unlocked');
-	setTimeout(function(){ main.classList.add('show'); startBgCycle(); pixelNameCanvas(); },400);
+	setTimeout(function(){ main.classList.add('show'); startBgCycle(); pixelNameCanvas(); startTypewriter(); },400);
   }else{
 	var wrong=data.count+1;
 	var isPermanent = wrong >= MAX_WRONG;
@@ -465,7 +498,6 @@ async function doCheckPassword(){
   }
 }
 
-/* ===== 背景 ===== */
 var bgStarted=false;
 function startBgCycle(){
   if(bgStarted)return; bgStarted=true;
@@ -474,7 +506,6 @@ function startBgCycle(){
   setTimeout(function(){ch(); setInterval(ch,3000);},2000);
 }
 
-/* ===== 像素名字 ===== */
 function pixelNameCanvas(){
   var canvas=document.getElementById('nameCanvas'),ctx=canvas.getContext('2d');
   var text='YCH1314520';
@@ -498,7 +529,6 @@ function pixelNameCanvas(){
   requestAnimationFrame(frame);
 }
 
-/* ===== 跳转 ===== */
 function goDouyin(){ location.href='https://v.douyin.com/cToozaNZf4s/'; }
 function goQQ(){
   var ua=navigator.userAgent||'';
