@@ -3,49 +3,73 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>进入QQ群</title>
+<title>加入群 / 频道</title>
 <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #f5f5f5;
+    gap: 20px;
+    background: #0f0f1a;
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei";
   }
   .btn {
-    padding: 14px 40px;
-    background: #12b7f5;
-    color: #fff;
-    font-size: 18px;
+    width: 240px;
+    padding: 16px 0;
     border: none;
-    border-radius: 999px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(18,183,245,.4);
+    cursor: pointer;
+    transition: transform .1s;
+  }
+  .btn:active { transform: scale(.95); }
+  .btn-group {
+    background: linear-gradient(135deg, #12b7f5, #0a8fd8);
+    box-shadow: 0 4px 20px rgba(18,183,245,.35);
+  }
+  .btn-channel {
+    background: linear-gradient(135deg, #7c5cff, #5a3fcf);
+    box-shadow: 0 4px 20px rgba(124,92,255,.35);
+  }
+  .tip {
+    color: #666;
+    font-size: 12px;
+    margin-top: 4px;
   }
 </style>
 </head>
 <body>
-  <a class="btn"
+
+  <a class="btn btn-group"
      href="mqqapi://card/show_pslcard?src_type=internal&version=1&uin=1063807305&card_type=group&source=external">
-    进入
+    加入 QQ 群
   </a>
 
-  <script>
-    // 兜底：如果 800ms 后还在页面，就跳你原来的 QQ 群网页分享页
-    let left = false;
-    setTimeout(function () {
-      if (!left) {
-        location.href = "https://qun.qq.com/universal-share/share?ac=1&authKey=Qv1N8NmpMUFlkeeYY1Gh1fyMpO0gyB2mVCjwJrUO6nOCU%2BbP3jA3lDlhoK0Ofjyd&busi_data=eyJncm91cENvZGUiOiIxMDYzODA3MzA1IiwidG9rZW4iOiJJcklZWUtrdE9mT0xRTHFISDFVdjNyR3ZnMHRERlZYdjlBalFSRDJCRWVyVXVoK2xBQjNNWmt5RDdFaWYzQUVvIiwidWluIjoiMzc5NzE5Nzg4NCJ9&data=YhYPJjQuncGbLXnhbqCX6ZUyTG3LfAa_-6YJuENMYVoQO9aRamq69R2I9V7VaprJxJmIu2p2-AglD80w9Jpe6Q&svctype=4&tempid=h5_group_info";
-      }
-    }, 800);
+  <a class="btn btn-channel"
+     href="mqqapi://qchannel/feed/pull?feedId=xxx&channel_id=xxx">
+    加入 QQ 频道
+  </a>
 
-    // 尝试唤起
-    document.querySelector('.btn').addEventListener('click', function () {
-      left = true;
-      location.href = "mqqapi://card/show_pslcard?src_type=internal&version=1&uin=1063807305&card_type=group&source=external";
+  <div class="tip">需手机浏览器或 QQ 内打开，微信会拦截</div>
+
+  <script>
+    // 频道按钮：优先尝试 mqqapi 拉起，失败则 fallback 到网页邀请链接
+    document.querySelector('.btn-channel').addEventListener('click', function (e) {
+      // 先尝试拉起 QQ 频道
+      location.href = "mqqapi://qchannel/detail?channel_id=你的频道ID";
+      // 3秒后没走掉就跳网页版
+      setTimeout(function () {
+        location.href = "https://pd.qq.com/s/gzx4rxbsb?b=9";
+      }, 2500);
     });
   </script>
+
 </body>
 </html>
