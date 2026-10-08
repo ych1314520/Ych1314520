@@ -162,38 +162,38 @@
   <div class="lock-title">🔒访问密码</div>
   <div class="lock-sub">请输入访问密码</div>
   <div class="pwd-wrapper">
-    <div class="pwd-input-wrap">
-      <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="••••" autocomplete="off" inputmode="text" enterkeyhint="done">
-      <button class="toggle-pwd" id="togglePwd" type="button" onclick="togglePassword()" title="显示密码">👁</button>
-    </div>
-    <button class="verify-btn" id="verifyBtn" onclick="checkPassword()">验证</button>
+	<div class="pwd-input-wrap">
+	  <input class="pwd-input" id="pwdInput" type="password" maxlength="4" placeholder="••••" autocomplete="off" inputmode="text" enterkeyhint="done">
+	  <button class="toggle-pwd" id="togglePwd" type="button" onclick="togglePassword()" title="显示密码">👁</button>
+	</div>
+	<button class="verify-btn" id="verifyBtn" onclick="checkPassword()">验证</button>
   </div>
   <div class="pwd-hint" id="pwdHint"></div>
 </div>
 
 <div id="mainContent">
   <div class="page">
-    <section class="left">
-      <div class="name-wrap">
-        <canvas id="nameCanvas" aria-label=""></canvas>
-      </div>
-      <div class="box">
-        <button class="btn dy" id="btnDy" onclick="goDouyin()"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
-        <button class="btn qq" id="btnQq" onclick="handleQQClick()"><span class="qq-wash"></span><span class="label">QQ 主页 <span class="arrow" id="qqArrow" onclick="event.stopPropagation();toggleSubBtns(event);" ontouchstart="event.stopPropagation();toggleSubBtns(event);"></span></span></button>
+	<section class="left">
+	  <div class="name-wrap">
+		<canvas id="nameCanvas" aria-label=""></canvas>
+	  </div>
+	  <div class="box">
+		<button class="btn dy" id="btnDy" onclick="goDouyin()"><span class="dy-wash"></span><span class="label">抖音主页</span></button>
+		<button class="btn qq" id="btnQq" onclick="handleQQClick()"><span class="qq-wash"></span><span class="label">QQ 主页 <span class="arrow" id="qqArrow" onclick="event.stopPropagation();toggleSubBtns(event);" ontouchstart="event.stopPropagation();toggleSubBtns(event);"></span></span></button>
 
-        <div class="sub-btns" id="subBtns">
-          <button class="sub-btn sub-group-btn" id="subGroupBtn" onclick="joinQQGroup()">加入QQ群聊</button>
-          <button class="sub-btn sub-channel-btn" id="subChannelBtn" onclick="joinQQChannel()">加入QQ频道【日常截图罢了】</button>
-        </div>
-      </div>
-      <div class="tip" id="tipText">点击按钮直接跳转</div>
-    </section>
+		<div class="sub-btns" id="subBtns">
+		  <button class="sub-btn sub-group-btn" id="subGroupBtn" onclick="joinQQGroup()">加入QQ群聊</button>
+		  <button class="sub-btn sub-channel-btn" id="subChannelBtn" onclick="joinQQChannel()">加入QQ频道</button>
+		</div>
+	  </div>
+	  <div class="tip" id="tipText">点击按钮直接跳转</div>
+	</section>
 
-    <aside class="about">
-      <h2>📌 写在前面</h2>
-      <div id="typeArea"></div>
-      <p style="margin:0;color:#9a9a9a;font-size:13px;text-align:center;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)">© 随手一写 · 随缘更新</p>
-    </aside>
+	<aside class="about">
+	  <h2>📌 写在前面</h2>
+	  <div id="typeArea"></div>
+	  <p style="margin:0;color:#9a9a9a;font-size:13px;text-align:center;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)">© 随手一写 · 随缘更新</p>
+	</aside>
   </div>
 </div>
 
@@ -222,22 +222,22 @@ function startTypewriter(){
 function typeNextChar(){
   var text = typeQueue[currentPIndex];
   if(currentCharIndex < text.length){
-    var charNode = document.createTextNode(text.charAt(currentCharIndex));
-    currentP.insertBefore(charNode, cursor); currentCharIndex++;
-    var jitter = typeSpeed + (Math.random() * 40 - 20);
-    setTimeout(typeNextChar, jitter);
+	var charNode = document.createTextNode(text.charAt(currentCharIndex));
+	currentP.insertBefore(charNode, cursor); currentCharIndex++;
+	var jitter = typeSpeed + (Math.random() * 40 - 20);
+	setTimeout(typeNextChar, jitter);
   } else {
-    if(cursor) cursor.remove(); cursor = null; currentCharIndex = 0; currentPIndex++;
-    if(currentPIndex < typeQueue.length){
-      typeArea.appendChild(document.createElement('br'));
-      currentP = document.createElement('p'); currentP.className = 'type-para';
-      typeArea.appendChild(currentP);
-      cursor = document.createElement('span'); cursor.className = 'type-cursor';
-      currentP.appendChild(cursor);
-      var paraEl = currentP;
-      requestAnimationFrame(function(){ setTimeout(function(){ paraEl.classList.add('show'); }, 50); });
-      setTimeout(typeNextChar, 400);
-    }
+	if(cursor) cursor.remove(); cursor = null; currentCharIndex = 0; currentPIndex++;
+	if(currentPIndex < typeQueue.length){
+	  typeArea.appendChild(document.createElement('br'));
+	  currentP = document.createElement('p'); currentP.className = 'type-para';
+	  typeArea.appendChild(currentP);
+	  cursor = document.createElement('span'); cursor.className = 'type-cursor';
+	  currentP.appendChild(cursor);
+	  var paraEl = currentP;
+	  requestAnimationFrame(function(){ setTimeout(function(){ paraEl.classList.add('show'); }, 50); });
+	  setTimeout(typeNextChar, 400);
+	}
   }
 }
 
@@ -257,8 +257,8 @@ var subOpen = false;
 
 function scrollInputIntoView(){
   setTimeout(function(){
-    var rect = input.getBoundingClientRect();
-    if(rect.bottom > window.innerHeight - 60 || rect.top < 0) input.scrollIntoView({behavior:'smooth', block:'center'});
+	var rect = input.getBoundingClientRect();
+	if(rect.bottom > window.innerHeight - 60 || rect.top < 0) input.scrollIntoView({behavior:'smooth', block:'center'});
   }, 300);
 }
 input.addEventListener('focus', scrollInputIntoView);
@@ -271,19 +271,19 @@ function checkPassword(){
   var val = input.value.toUpperCase().trim();
   if(!val){ hint.textContent='请输入密码'; hint.className='pwd-hint wrong'; return; }
   if(val === CORRECT){
-    hint.textContent='✓ 验证通过'; hint.className='pwd-hint success';
-    lockEl.classList.add('unlocked');
-    setTimeout(function(){
-      main.classList.add('show');
-      btnDy.classList.add('show');
-      btnQq.classList.add('show');
-      tipText.classList.add('show');
-      startBgCycle(); pixelNameCanvas(); startTypewriter();
-    }, 400);
+	hint.textContent='✓ 验证通过'; hint.className='pwd-hint success';
+	lockEl.classList.add('unlocked');
+	setTimeout(function(){
+	  main.classList.add('show');
+	  btnDy.classList.add('show');
+	  btnQq.classList.add('show');
+	  tipText.classList.add('show');
+	  startBgCycle(); pixelNameCanvas(); startTypewriter();
+	}, 400);
   } else {
-    hint.textContent = '密码错误，再想想吧'; hint.className='pwd-hint wrong';
-    input.classList.add('error'); input.value='';
-    setTimeout(function(){ input.classList.remove('error'); input.focus(); }, 500);
+	hint.textContent = '密码错误，再想想吧'; hint.className='pwd-hint wrong';
+	input.classList.add('error'); input.value='';
+	setTimeout(function(){ input.classList.remove('error'); input.focus(); }, 500);
   }
 }
 
@@ -305,8 +305,8 @@ function pixelNameCanvas(){
   o.font='700 40px "Courier New","Consolas",monospace';o.fillText(text,cssW/2,cssH/2);
   var step=1,grid=[],x,y,data;
   for(y=0;y<cssH;y+=step){for(x=0;x<cssW;x+=step){
-    data=o.getImageData(x*dpr,y*dpr,1,1).data;
-    if(data[3]>80)grid.push({x:x,y:y,size:step,r:255,g:255,b:255,tr:255,tg:255,tb:255,delay:Math.random()*.4+(x/cssW)*.4,jitterSpeed:.15+Math.random()*.25,jitterAmount:.5+Math.random()*1});
+	data=o.getImageData(x*dpr,y*dpr,1,1).data;
+	if(data[3]>80)grid.push({x:x,y:y,size:step,r:255,g:255,b:255,tr:255,tg:255,tb:255,delay:Math.random()*.4+(x/cssW)*.4,jitterSpeed:.15+Math.random()*.25,jitterAmount:.5+Math.random()*1});
   }}
   var start=null,pd=false,lc=0;
   function e3(t){return 1-Math.pow(1-t,3);}
@@ -321,16 +321,16 @@ function goDouyin(){ location.href='https://v.douyin.com/cToozaNZf4s/'; }
 
 function handleQQClick(){
   if(subOpen){
-    var ua=navigator.userAgent||'';
-    var mobile=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
-    if(mobile){
-      var t=Date.now();
-      location.href='mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
-      setTimeout(function(){ if(Date.now()-t<2000) location.href='https://qm.qq.com/q/wTL90DbHqM'; },1200);
-    } else {
-      location.href='tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3797197884';
-      setTimeout(function(){ location.href='https://qm.qq.com/q/wTL90DbHqM'; },2000);
-    }
+	var ua=navigator.userAgent||'';
+	var mobile=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
+	if(mobile){
+	  var t=Date.now();
+	  location.href='mqq://card/show_pslcard?src_type=internal&version=1&uin=3797197884';
+	  setTimeout(function(){ if(Date.now()-t<2000) location.href='https://qm.qq.com/q/wTL90DbHqM'; },1200);
+	} else {
+	  location.href='tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3797197884';
+	  setTimeout(function(){ location.href='https://qm.qq.com/q/wTL90DbHqM'; },2000);
+	}
   }
 }
 
@@ -338,15 +338,15 @@ function toggleSubBtns(e){
   if(e){ e.stopPropagation(); e.preventDefault(); }
   subOpen = !subOpen;
   if(subOpen){
-    subBtns.classList.add('show');
-    qqArrow.classList.add('open');
-    setTimeout(function(){ subGroupBtn.classList.add('show'); }, 30);
-    setTimeout(function(){ subChannelBtn.classList.add('show'); }, 30);
+	subBtns.classList.add('show');
+	qqArrow.classList.add('open');
+	setTimeout(function(){ subGroupBtn.classList.add('show'); }, 30);
+	setTimeout(function(){ subChannelBtn.classList.add('show'); }, 30);
   } else {
-    subGroupBtn.classList.remove('show');
-    subChannelBtn.classList.remove('show');
-    qqArrow.classList.remove('open');
-    setTimeout(function(){ subBtns.classList.remove('show'); }, 400);
+	subGroupBtn.classList.remove('show');
+	subChannelBtn.classList.remove('show');
+	qqArrow.classList.remove('open');
+	setTimeout(function(){ subBtns.classList.remove('show'); }, 400);
   }
 }
 
@@ -354,12 +354,12 @@ function joinQQGroup(){
   var ua=navigator.userAgent||'';
   var mobile=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
   if(mobile){
-    var t=Date.now();
-    location.href='mqqapi://card/show_pslcard?src_type=internal&version=1&uin=1063807305&card_type=group&source=external';
-    setTimeout(function(){if(Date.now()-t<2000) location.href='https://qun.qq.com/universal-share/share?ac=1&authKey=Qv1N8NmpMUFlkeeYY1Gh1fyMpO0gyB2mVCjwJrUO6nOCU%2BbP3jA3lDlhoK0Ofjyd&busi_data=eyJncm91cENvZGUiOiIxMDYzODA3MzA1IiwidG9rZW4iOiJJcklZWUtrdE9mT0xRTHFISDFVdjNyR3ZnMHRERlZYdjlBalFSRDJCRWVyVXVoK2xBQjNNWmt5RDdFaWYzQUVvIiwidWluIjoiMzc5NzE5Nzg4NCJ9&data=YhYPJjQuncGbLXnhbqCX6ZUyTG3LfAa_-6YJuENMYVoQO9aRamq69R2I9V7VaprJxJmIu2p2-AglD80w9Jpe6Q&svctype=4&tempid=h5_group_info';},1200);
+	var t=Date.now();
+	location.href='mqqapi://card/show_pslcard?src_type=internal&version=1&uin=1063807305&card_type=group&source=external';
+	setTimeout(function(){if(Date.now()-t<2000) location.href='https://qun.qq.com/universal-share/share?ac=1&authKey=Qv1N8NmpMUFlkeeYY1Gh1fyMpO0gyB2mVCjwJrUO6nOCU%2BbP3jA3lDlhoK0Ofjyd&busi_data=eyJncm91cENvZGUiOiIxMDYzODA3MzA1IiwidG9rZW4iOiJJcklZWUtrdE9mT0xRTHFISDFVdjNyR3ZnMHRERlZYdjlBalFSRDJCRWVyVXVoK2xBQjNNWmt5RDdFaWYzQUVvIiwidWluIjoiMzc5NzE5Nzg4NCJ9&data=YhYPJjQuncGbLXnhbqCX6ZUyTG3LfAa_-6YJuENMYVoQO9aRamq69R2I9V7VaprJxJmIu2p2-AglD80w9Jpe6Q&svctype=4&tempid=h5_group_info';},1200);
   } else {
-    location.href='mqqapi://card/show_pslcard?src_type=internal&version=1&uin=1063807305&card_type=group&source=external';
-    setTimeout(function(){location.href='https://qun.qq.com/universal-share/share?ac=1&authKey=Qv1N8NmpMUFlkeeYY1Gh1fyMpO0gyB2mVCjwJrUO6nOCU%2BbP3jA3lDlhoK0Ofjyd&busi_data=eyJncm91cENvZGUiOiIxMDYzODA3MzA1IiwidG9rZW4iOiJJcklZWUtrdE9mT0xRTHFISDFVdjNyR3ZnMHRERlZYdjlBalFSRDJCRWVyVXVoK2xBQjNNWmt5RDdFaWYzQUVvIiwidWluIjoiMzc5NzE5Nzg4NCJ9&data=YhYPJjQuncGbLXnhbqCX6ZUyTG3LfAa_-6YJuENMYVoQO9aRamq69R2I9V7VaprJxJmIu2p2-AglD80w9Jpe6Q&svctype=4&tempid=h5_group_info';},2000);
+	location.href='mqqapi://card/show_pslcard?src_type=internal&version=1&uin=1063807305&card_type=group&source=external';
+	setTimeout(function(){location.href='https://qun.qq.com/universal-share/share?ac=1&authKey=Qv1N8NmpMUFlkeeYY1Gh1fyMpO0gyB2mVCjwJrUO6nOCU%2BbP3jA3lDlhoK0Ofjyd&busi_data=eyJncm91cENvZGUiOiIxMDYzODA3MzA1IiwidG9rZW4iOiJJcklZWUtrdE9mT0xRTHFISDFVdjNyR3ZnMHRERlZYdjlBalFSRDJCRWVyVXVoK2xBQjNNWmt5RDdFaWYzQUVvIiwidWluIjoiMzc5NzE5Nzg4NCJ9&data=YhYPJjQuncGbLXnhbqCX6ZUyTG3LfAa_-6YJuENMYVoQO9aRamq69R2I9V7VaprJxJmIu2p2-AglD80w9Jpe6Q&svctype=4&tempid=h5_group_info';},2000);
   }
 }
 
@@ -376,11 +376,11 @@ function joinQQChannel(){
 
   // 方法B：iframe 补一刀（防止某些浏览器拦截 location 改 scheme）
   setTimeout(function(){
-    var ifr = document.createElement('iframe');
-    ifr.style.display = 'none';
-    ifr.src = scheme;
-    document.body.appendChild(ifr);
-    setTimeout(function(){ if(ifr && ifr.parentNode) ifr.parentNode.removeChild(ifr); }, 1500);
+	var ifr = document.createElement('iframe');
+	ifr.style.display = 'none';
+	ifr.src = scheme;
+	document.body.appendChild(ifr);
+	setTimeout(function(){ if(ifr && ifr.parentNode) ifr.parentNode.removeChild(ifr); }, 1500);
   }, 300);
 }
 
