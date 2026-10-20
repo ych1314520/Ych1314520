@@ -11,19 +11,13 @@ body {
   background: #0d0d12; color: #fff; min-height: 100vh; overflow-x: hidden;
   font-size: 13px;
 }
-
 #bgImg { position: fixed; inset: 0; z-index: 0; background-size: cover; background-position: center; display: none; }
 #bgVideo { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
 #bgScrim { position: fixed; inset: 0; z-index: 1; background: rgba(10,10,16,0.4); }
-
 #appUI { position: relative; z-index: 2; padding: 50px 14px 30px; transition: opacity 0.25s ease; }
-/* 关键：纯明时穿透 */
 #appUI.no-pointer { pointer-events: none; }
-
 .container { max-width: 420px; margin: 0 auto; }
-
 h1 { text-align: center; font-size: 17px; font-weight: 700; margin-bottom: 14px; letter-spacing: .3px; }
-
 .glass {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(24px) saturate(200%);
@@ -32,7 +26,6 @@ h1 { text-align: center; font-size: 17px; font-weight: 700; margin-bottom: 14px;
   border-radius: 18px; padding: 14px; margin-bottom: 10px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
-
 .label { font-size: 11px; opacity: 0.7; margin-bottom: 8px; text-align: center; }
 .input-row { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
 .input-box { flex: 1; }
@@ -44,21 +37,18 @@ h1 { text-align: center; font-size: 17px; font-weight: 700; margin-bottom: 14px;
 .sep { opacity: 0.5; font-size: 14px; }
 .hint { font-size: 10px; opacity: 0.6; text-align: center; margin: 6px 0; min-height: 12px; }
 .hint.modified { color: #ff9f0a; }
-
 .glass-btn {
   width: 100%; padding: 12px; border-radius: 12px; border: none;
   background: rgba(255,255,255,0.16); color: #fff; font-size: 14px; font-weight: 600;
   margin-top: 8px; cursor: pointer; transition: 0.15s;
 }
 .glass-btn:active { background: rgba(255,255,255,0.26); transform: scale(0.98); }
-
 .ghost-btn {
   width: 100%; padding: 10px; border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.18); background: transparent; color: #fff;
   font-size: 12px; margin-top: 6px; cursor: pointer;
 }
 input[type=file] { display: none; }
-
 .precision-value { font-size: 28px; font-weight: 700; text-align: center; margin: 4px 0; font-variant-numeric: tabular-nums; }
 .precision-label { text-align: center; font-size: 10px; opacity: 0.6; }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
@@ -68,7 +58,6 @@ input[type=file] { display: none; }
 .birthday { text-align: center; padding: 12px; }
 .birthday-label { font-size: 11px; opacity: 0.6; margin-bottom: 3px; }
 .birthday-value { font-size: 17px; font-weight: 600; }
-
 #settingsBtn {
   position: fixed; top: 12px; right: 12px; z-index: 100;
   width: 36px; height: 36px; border-radius: 50%;
@@ -76,14 +65,14 @@ input[type=file] { display: none; }
   border: 1px solid rgba(255,255,255,0.22);
   display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer;
 }
-
+#settingsBtn svg { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+#settingsBtn:hover svg { transform: rotate(30deg); }
 #settingsPanel {
   position: fixed; inset: 0; z-index: 200;
   background: rgba(0,0,0,0.45); display: none; align-items: center; justify-content: center;
   backdrop-filter: blur(6px);
 }
 #settingsPanel.show { display: flex; }
-
 .settings-card {
   background: rgba(255,255,255,0.72);
   backdrop-filter: blur(50px) saturate(220%);
@@ -92,64 +81,37 @@ input[type=file] { display: none; }
   width: 300px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0,0,0,0.35);
 }
 .settings-card h3 { font-size: 17px; font-weight: 700; color: #000; margin-bottom: 16px; }
-
+.lang-row { margin-bottom: 12px; }
+.lang-row label { font-size: 13px; font-weight: 500; color: #000; display: block; margin-bottom: 6px; }
+.lang-select {
+  width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.8); font-size: 14px; color: #000; outline: none;
+  -webkit-appearance: none; appearance: none;
+}
 .slider-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .slider-name { font-size: 13px; font-weight: 500; color: #000; }
 .slider-val { font-size: 13px; font-weight: 600; color: #007aff; }
-
 .slider-track {
   position: relative; height: 5px; background: rgba(120,120,128,0.22);
   border-radius: 2.5px; cursor: pointer; touch-action: none; margin: 26px 0;
 }
 .slider-fill { position: absolute; left: 0; top: 0; height: 100%; background: #007aff; border-radius: 2.5px; pointer-events: none; }
-
 .slider-thumb {
   position: absolute; top: 50%;
-  width: 34px; height: 22px;
-  background: #ffffff;
-  border-radius: 11px;
+  width: 34px; height: 22px; background: #ffffff; border-radius: 11px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.22);
-  transform: translate(-50%, -50%) scale(1);
-  cursor: grab;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  transform: translate(-50%, -50%) scale(1); cursor: grab;
   transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s, box-shadow 0.15s;
   z-index: 2;
 }
-.slider-thumb::before {
-  content: ''; position: absolute; inset: 1.5px;
-  border-radius: inherit;
-  border: 1px solid rgba(255,255,255,0.55);
-  opacity: 0; transition: opacity 0.15s; pointer-events: none;
-}
-.slider-thumb::after {
-  content: ''; position: absolute;
-  top: 2px; left: 6px; right: 6px; height: 5px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.7);
-  opacity: 0; transition: opacity 0.15s; pointer-events: none;
-}
-.slider-thumb.pressing {
-  transform: translate(-50%, -50%) scale(0.88);
-  background: #f0f0f0;
-}
+.slider-thumb.pressing { transform: translate(-50%, -50%) scale(0.88); background: #f0f0f0; }
 .slider-thumb.active {
-  background: rgba(255,255,255,0) !important;
-  border: none !important;
-  box-shadow: none !important;
+  background: rgba(255,255,255,0) !important; border: none !important; box-shadow: none !important;
   backdrop-filter: blur(2px) saturate(180%) brightness(1.25);
   -webkit-backdrop-filter: blur(2px) saturate(180%) brightness(1.25);
-  cursor: grabbing;
-  transform: translate(-50%, -50%) scale(1);
-  transition: width 0.1s ease-out, background 0.15s, box-shadow 0.15s;
+  cursor: grabbing; transform: translate(-50%, -50%) scale(1);
 }
-.slider-thumb.active::before { opacity: 1; }
-.slider-thumb.active::after { opacity: 1; }
-.slider-thumb.releasing {
-  transform: translate(-50%, -50%) scale(1.08);
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
+.slider-thumb.releasing { transform: translate(-50%, -50%) scale(1.08); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.18s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .close-btn {
   width: 100%; padding: 12px; border-radius: 12px; border: none;
   background: rgba(120,120,128,0.16); color: #000;
@@ -162,67 +124,207 @@ input[type=file] { display: none; }
 <div id="bgImg"></div>
 <video id="bgVideo" playsinline muted loop preload="metadata"></video>
 <div id="bgScrim"></div>
-
-<div id="settingsBtn">⚙️</div>
-
+<div id="settingsBtn">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+    <path d="M2 12h20"/>
+  </svg>
+</div>
 <div id="settingsPanel">
   <div class="settings-card">
-	<h3>设置</h3>
-	<div class="slider-row">
-	  <div class="slider-head">
-		<span class="slider-name">界面透明度</span>
-		<span class="slider-val" id="vUI">100%</span>
-	  </div>
-	  <div class="slider-track" id="trUI">
-		<div class="slider-fill"></div>
-		<div class="slider-thumb" data-val="100"></div>
-	  </div>
-	</div>
-	<button class="close-btn" id="closeSet">关闭</button>
+    <h3 id="tSettings">设置</h3>
+    <div class="lang-row">
+      <label id="tLangLabel" style="display:flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          <path d="M2 12h20"/>
+        </svg>
+        <span>语言 / Language</span>
+      </label>
+      <select class="lang-select" id="langSelect">
+        <option value="zh">🇨🇳 中文</option>
+        <option value="en">🇺🇸 English</option>
+        <option value="ja">🇯🇵 日本語</option>
+        <option value="ko">🇰🇷 한국어</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="ru">🇷🇺 Русский</option>
+        <option value="pt">🇵🇹 Português</option>
+        <option value="it">🇮🇹 Italiano</option>
+        <option value="ar">🇸🇦 العربية</option>
+        <option value="nl">🇳🇱 Nederlands</option>
+        <option value="hi">🇮🇳 हिन्दी</option>
+        <option value="bn">🇧🇩 বাংলা</option>
+        <option value="tr">🇹🇷 Türkçe</option>
+        <option value="vi">🇻🇳 Tiếng Việt</option>
+        <option value="th">🇹🇭 ไทย</option>
+        <option value="id">🇮🇩 Bahasa Indonesia</option>
+        <option value="ms">🇲🇾 Bahasa Melayu</option>
+        <option value="pl">🇵🇱 Polski</option>
+        <option value="uk">🇺🇦 Українська</option>
+        <option value="sv">🇸🇪 Svenska</option>
+        <option value="no">🇳🇴 Norsk</option>
+        <option value="da">🇩🇰 Dansk</option>
+        <option value="fi">🇫🇮 Suomi</option>
+        <option value="el">🇬🇷 Ελληνικά</option>
+        <option value="he">🇮🇱 עברית</option>
+        <option value="cs">🇨🇿 Čeština</option>
+        <option value="hu">🇭🇺 Magyar</option>
+        <option value="ro">🇷🇴 Română</option>
+        <option value="bg">🇧🇬 Български</option>
+        <option value="sk">🇸🇰 Slovenčina</option>
+        <option value="hr">🇭🇷 Hrvatski</option>
+        <option value="sl">🇸🇮 Slovenski</option>
+        <option value="fa">🇮🇷 فارسی</option>
+        <option value="ur">🇵🇰 اردو</option>
+        <option value="sw">🇰🇪 Kiswahili</option>
+        <option value="ta">🇮🇳 தமிழ்</option>
+        <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
+        <option value="mr">🇮🇳 मराठी</option>
+      </select>
+    </div>
+    <div class="slider-row">
+      <div class="slider-head">
+        <span class="slider-name" id="tOpacity">界面透明度</span>
+        <span class="slider-val" id="vUI">100%</span>
+      </div>
+      <div class="slider-track" id="trUI">
+        <div class="slider-fill"></div>
+        <div class="slider-thumb" data-val="100"></div>
+      </div>
+    </div>
+    <button class="close-btn" id="closeSet">关闭</button>
   </div>
 </div>
-
 <div id="appUI">
 <div class="container">
-  <h1>高精度年龄计算器</h1>
+  <h1 id="tTitle">高精度年龄计算器</h1>
   <div class="glass">
-	<div class="label">出生日期（默认今天往前16年，每天自动更新）</div>
-	<div class="input-row">
-	  <div class="input-box"><input type="tel" id="yearInput" maxlength="4" placeholder="年" inputmode="numeric"></div>
-	  <span class="sep">-</span>
-	  <div class="input-box"><input type="tel" id="monthInput" maxlength="2" placeholder="月" inputmode="numeric"></div>
-	  <span class="sep">-</span>
-	  <div class="input-box"><input type="tel" id="dayInput" maxlength="2" placeholder="日" inputmode="numeric"></div>
-	</div>
-	<div class="hint" id="hint">默认今天往前16年，已自动计算</div>
-	<button class="glass-btn" onclick="startCalc()">开始计算</button>
-	<button class="ghost-btn" onclick="document.getElementById('pickBg').click()">从相册选照片或视频当背景</button>
-	<input type="file" id="pickBg" accept="image/*,video/*">
+    <div class="label" id="tBirthLabel">出生日期（默认今天往前16年，每天自动更新）</div>
+    <div class="input-row">
+      <div class="input-box"><input type="tel" id="yearInput" maxlength="4" placeholder="年" inputmode="numeric"></div>
+      <span class="sep">-</span>
+      <div class="input-box"><input type="tel" id="monthInput" maxlength="2" placeholder="月" inputmode="numeric"></div>
+      <span class="sep">-</span>
+      <div class="input-box"><input type="tel" id="dayInput" maxlength="2" placeholder="日" inputmode="numeric"></div>
+    </div>
+    <div class="hint" id="hint">默认今天往前16年，已自动计算</div>
+    <button class="glass-btn" id="tStartBtn" onclick="startCalc()">开始计算</button>
+    <button class="ghost-btn" id="tPickBg" onclick="document.getElementById('pickBg').click()">从相册选照片或视频当背景</button>
+    <input type="file" id="pickBg" accept="image/*,video/*">
   </div>
   <div class="glass result">
-	<div id="preciseAge" class="precision-value">--</div>
-	<div class="precision-label">岁（精度 16 位小数，实时刷新）</div>
+    <div id="preciseAge" class="precision-value">--</div>
+    <div class="precision-label" id="tYearsUnit">岁（精度 16 位小数，实时刷新）</div>
   </div>
   <div class="glass">
-	<div style="font-size:11px;opacity:0.7;margin-bottom:2px;">详细数据</div>
-	<div class="grid">
-	  <div class="item"><div class="item-num" id="rYears">--</div><div class="item-unit">年</div></div>
-	  <div class="item"><div class="item-num" id="rMonths">--</div><div class="item-unit">月</div></div>
-	  <div class="item"><div class="item-num" id="rDays">--</div><div class="item-unit">天</div></div>
-	  <div class="item"><div class="item-num" id="rHours">--</div><div class="item-unit">小时</div></div>
-	  <div class="item"><div class="item-num" id="rMinutes">--</div><div class="item-unit">分钟</div></div>
-	  <div class="item"><div class="item-num" id="rSeconds">--</div><div class="item-unit">秒</div></div>
-	</div>
+    <div style="font-size:11px;opacity:0.7;margin-bottom:2px;" id="tDetail">详细数据</div>
+    <div class="grid">
+      <div class="item"><div class="item-num" id="rYears">--</div><div class="item-unit" id="tIY">年</div></div>
+      <div class="item"><div class="item-num" id="rMonths">--</div><div class="item-unit" id="tIM">月</div></div>
+      <div class="item"><div class="item-num" id="rDays">--</div><div class="item-unit" id="tID">天</div></div>
+      <div class="item"><div class="item-num" id="rHours">--</div><div class="item-unit" id="tIH">小时</div></div>
+      <div class="item"><div class="item-num" id="rMinutes">--</div><div class="item-unit" id="tIMi">分钟</div></div>
+      <div class="item"><div class="item-num" id="rSeconds">--</div><div class="item-unit" id="tIS">秒</div></div>
+    </div>
   </div>
   <div class="glass birthday">
-	<div class="birthday-label">距离下一个生日</div>
-	<div id="nextBirthday" class="birthday-value">--</div>
+    <div class="birthday-label" id="tNextBD">距离下一个生日</div>
+    <div id="nextBirthday" class="birthday-value">--</div>
   </div>
 </div>
 </div>
-
 <script>
-/* 滑块 */
+const i18n = {
+  zh: { title:"高精度年龄计算器", birthLabel:"出生日期（默认今天往前16年，每天自动更新）", yearPH:"年", monthPH:"月", dayPH:"日", defaultHint:"默认今天往前16年，已自动计算", manualHint:"请手动点开始计算", modifiedHint:"已修改日期，请点击「开始计算」", startBtn:"开始计算", pickBg:"从相册选照片或视频当背景", yearsUnit:"岁（精度 16 位小数，实时刷新）", detail:"详细数据", itemYear:"年", itemMonth:"月", itemDay:"天", itemHour:"小时", itemMin:"分钟", itemSec:"秒", nextBirthday:"距离下一个生日", birthdayDone:"🎉 生日快乐！", settings:"设置", langLabel:"语言 / Language", opacity:"界面透明度", close:"关闭", invalidDate:"日期不合法", yearTooEarly:"年份不能早于1900年", fillAll:"请输入完整日期", futureDate:"请选择今天之前的日期", notExist:"日期不存在，请检查", calculated:"已计算" },
+  en: { title:"Precision Age Calculator", birthLabel:"Birth date (default: 16 years ago, auto-update daily)", yearPH:"YYYY", monthPH:"MM", dayPH:"DD", defaultHint:"Default: 16 years ago, auto-calculated", manualHint:"Please tap to calculate", modifiedHint:"Date modified, tap Calculate", startBtn:"Start Calculate", pickBg:"Pick photo/video as background", yearsUnit:"years (16 decimals, real-time)", detail:"Details", itemYear:"Y", itemMonth:"M", itemDay:"D", itemHour:"H", itemMin:"Min", itemSec:"Sec", nextBirthday:"Next birthday in", birthdayDone:"🎉 Happy Birthday!", settings:"Settings", langLabel:"Language", opacity:"UI Opacity", close:"Close", invalidDate:"Invalid date", yearTooEarly:"Year must be 1900 or later", fillAll:"Please enter full date", futureDate:"Please select a date before today", notExist:"Date does not exist", calculated:"Calculated" },
+  ja: { title:"高精度年齢計算機", birthLabel:"生年月日（デフォルト：16年前、毎日自動更新）", yearPH:"年", monthPH:"月", dayPH:"日", defaultHint:"デフォルト：16年前、自動計算済み", manualHint:"計算ボタンを押してください", modifiedHint:"日付変更済、計算してください", startBtn:"計算開始", pickBg:"背景に写真/動画を選択", yearsUnit:"歳（小数点16桁、リアルタイム）", detail:"詳細データ", itemYear:"年", itemMonth:"ヶ月", itemDay:"日", itemHour:"時間", itemMin:"分", itemSec:"秒", nextBirthday:"次の誕生日まで", birthdayDone:"🎉 お誕生日おめでとう！", settings:"設定", langLabel:"言語 / Language", opacity:"透明度", close:"閉じる", invalidDate:"日付が不正です", yearTooEarly:"1900年以降を入力", fillAll:"日付を入力してください", futureDate:"今日以前の日付を選択", notExist:"存在しない日付です", calculated:"計算済み" },
+  ko: { title:"정밀 나이 계산기", birthLabel:"생년월일 (기본: 16년 전, 매일 자동 갱신)", yearPH:"년", monthPH:"월", dayPH:"일", defaultHint:"기본: 16년 전, 자동 계산됨", manualHint:"계산 버튼을 누르세요", modifiedHint:"날짜 변경됨, 계산하세요", startBtn:"계산 시작", pickBg:"배경 사진/동영상 선택", yearsUnit:"세 (소수점 16자리, 실시간)", detail:"상세 데이터", itemYear:"년", itemMonth:"개월", itemDay:"일", itemHour:"시간", itemMin:"분", itemSec:"초", nextBirthday:"다음 생일까지", birthdayDone:"🎉 생일 축하합니다!", settings:"설정", langLabel:"언어 / Language", opacity:"투명도", close:"닫기", invalidDate:"잘못된 날짜", yearTooEarly:"1900년 이후여야 함", fillAll:"날짜를 입력하세요", futureDate:"오늘 이전 날짜를 선택하세요", notExist:"존재하지 않는 날짜", calculated:"계산됨" },
+  es: { title:"Calculadora de Edad Precisa", birthLabel:"Fecha de nacimiento (por defecto: hace 16 años, actualización diaria)", yearPH:"AAAA", monthPH:"MM", dayPH:"DD", defaultHint:"Por defecto: hace 16 años, calculado", manualHint:"Toque para calcular", modifiedHint:"Fecha modificada, toque Calcular", startBtn:"Calcular", pickBg:"Elegir foto/video de fondo", yearsUnit:"años (16 decimales, tiempo real)", detail:"Detalles", itemYear:"a", itemMonth:"m", itemDay:"d", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Próximo cumpleaños en", birthdayDone:"🎉 ¡Feliz cumpleaños!", settings:"Configuración", langLabel:"Idioma / Language", opacity:"Opacidad", close:"Cerrar", invalidDate:"Fecha inválida", yearTooEarly:"El año debe ser 1900 o posterior", fillAll:"Ingrese fecha completa", futureDate:"Seleccione fecha anterior a hoy", notExist:"La fecha no existe", calculated:"Calculado" },
+  fr: { title:"Calculateur d'Âge Précis", birthLabel:"Date de naissance (défaut : il y a 16 ans, mise à jour quotidienne)", yearPH:"AAAA", monthPH:"MM", dayPH:"JJ", defaultHint:"Défaut : il y a 16 ans, calculé", manualHint:"Appuyez pour calculer", modifiedHint:"Date modifiée, appuyez sur Calculer", startBtn:"Calculer", pickBg:"Choisir photo/vidéo de fond", yearsUnit:"ans (16 décimales, temps réel)", detail:"Détails", itemYear:"a", itemMonth:"m", itemDay:"j", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Prochain anniversaire dans", birthdayDone:"🎉 Bon anniversaire !", settings:"Paramètres", langLabel:"Langue / Language", opacity:"Opacité", close:"Fermer", invalidDate:"Date invalide", yearTooEarly:"Année doit être ≥ 1900", fillAll:"Veuillez saisir la date", futureDate:"Sélectionnez une date antérieure à aujourd'hui", notExist:"Date inexistante", calculated:"Calculé" },
+  de: { title:"Präziser Altersrechner", birthLabel:"Geburtsdatum (Standard: vor 16 Jahren, täglich aktualisiert)", yearPH:"JJJJ", monthPH:"MM", dayPH:"TT", defaultHint:"Standard: vor 16 Jahren, berechnet", manualHint:"Zum Berechnen tippen", modifiedHint:"Datum geändert, auf Berechnen tippen", startBtn:"Berechnen", pickBg:"Foto/Video als Hintergrund wählen", yearsUnit:"Jahre (16 Dezimalstellen, Echtzeit)", detail:"Details", itemYear:"J", itemMonth:"M", itemDay:"T", itemHour:"Std", itemMin:"Min", itemSec:"Sek", nextBirthday:"Nächster Geburtstag in", birthdayDone:"🎉 Alles Gute!", settings:"Einstellungen", langLabel:"Sprache / Language", opacity:"Transparenz", close:"Schließen", invalidDate:"Ungültiges Datum", yearTooEarly:"Jahr muss 1900 oder später sein", fillAll:"Bitte Datum eingeben", futureDate:"Bitte Datum vor heute wählen", notExist:"Datum existiert nicht", calculated:"Berechnet" },
+  ru: { title:"Точный Калькулятор Возраста", birthLabel:"Дата рождения (по умолчанию: 16 лет назад, обновляется ежедневно)", yearPH:"ГГГГ", monthPH:"ММ", dayPH:"ДД", defaultHint:"По умолчанию: 16 лет назад, рассчитано", manualHint:"Нажмите для расчета", modifiedHint:"Дата изменена, нажмите Рассчитать", startBtn:"Рассчитать", pickBg:"Выбрать фото/видео фон", yearsUnit:"лет (16 знаков, в реальном времени)", detail:"Подробности", itemYear:"г", itemMonth:"м", itemDay:"д", itemHour:"ч", itemMin:"мин", itemSec:"сек", nextBirthday:"До следующего ДР", birthdayDone:"🎉 С Днем Рождения!", settings:"Настройки", langLabel:"Язык / Language", opacity:"Прозрачность", close:"Закрыть", invalidDate:"Неверная дата", yearTooEarly:"Год должен быть 1900 или позже", fillAll:"Введите полную дату", futureDate:"Выберите дату до сегодняшнего дня", notExist:"Дата не существует", calculated:"Рассчитано" },
+  pt: { title:"Calculadora de Idade Precisa", birthLabel:"Data de nascimento (padrão: 16 anos atrás, atualização diária)", yearPH:"AAAA", monthPH:"MM", dayPH:"DD", defaultHint:"Padrão: 16 anos atrás, calculado", manualHint:"Toque para calcular", modifiedHint:"Data modificada, toque Calcular", startBtn:"Calcular", pickBg:"Escolher foto/vídeo de fundo", yearsUnit:"anos (16 decimais, tempo real)", detail:"Detalhes", itemYear:"a", itemMonth:"m", itemDay:"d", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Próximo aniversário em", birthdayDone:"🎉 Feliz aniversário!", settings:"Configurações", langLabel:"Idioma / Language", opacity:"Opacidade", close:"Fechar", invalidDate:"Data inválida", yearTooEarly:"Ano deve ser 1900 ou posterior", fillAll:"Digite a data completa", futureDate:"Selecione data anterior a hoje", notExist:"Data inexistente", calculated:"Calculado" },
+  it: { title:"Calcolatrice Età Precisa", birthLabel:"Data di nascita (predefinito: 16 anni fa, aggiornamento giornaliero)", yearPH:"AAAA", monthPH:"MM", dayPH:"GG", defaultHint:"Predefinito: 16 anni fa, calcolato", manualHint:"Tocca per calcolare", modifiedHint:"Data modificata, tocca Calcola", startBtn:"Calcola", pickBg:"Scegli foto/video sfondo", yearsUnit:"anni (16 decimali, tempo reale)", detail:"Dettagli", itemYear:"a", itemMonth:"m", itemDay:"g", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Prossimo compleanno tra", birthdayDone:"🎉 Buon compleanno!", settings:"Impostazioni", langLabel:"Lingua / Language", opacity:"Opacità", close:"Chiudi", invalidDate:"Data non valida", yearTooEarly:"Anno deve essere 1900 o successivo", fillAll:"Inserisci data completa", futureDate:"Seleziona data precedente a oggi", notExist:"Data inesistente", calculated:"Calcolato" },
+  ar: { title:"حاسبة العمر الدقيقة", birthLabel:"تاريخ الميلاد (الافتراضي: قبل 16 عامًا، تحديث يومي)", yearPH:"سنة", monthPH:"شهر", dayPH:"يوم", defaultHint:"الافتراضي: قبل 16 عامًا، تم الحساب", manualHint:"اضغط للحساب", modifiedHint:"تم تعديل التاريخ، اضغط احسب", startBtn:"احسب", pickBg:"اختر صورة/فيديو كخلفية", yearsUnit:"سنة (16 رقمًا، لحظي)", detail:"تفاصيل", itemYear:"س", itemMonth:"ش", itemDay:"ي", itemHour:"سا", itemMin:"د", itemSec:"ث", nextBirthday:"العيد القادم بعد", birthdayDone:"🎉 عيد ميلاد سعيد!", settings:"الإعدادات", langLabel:"اللغة / Language", opacity:"شفافية الواجهة", close:"إغلاق", invalidDate:"تاريخ غير صالح", yearTooEarly:"السنة يجب أن تكون 1900 أو بعدها", fillAll:"أدخل التاريخ كاملاً", futureDate:"اختر تاريخًا قبل اليوم", notExist:"التاريخ غير موجود", calculated:"تم الحساب" },
+  nl: { title:"Nauwkeurige Leeftijdscalculator", birthLabel:"Geboortedatum (standaard: 16 jaar geleden, dagelijks bijgewerkt)", yearPH:"JJJJ", monthPH:"MM", dayPH:"DD", defaultHint:"Standaard: 16 jaar geleden, berekend", manualHint:"Tik om te berekenen", modifiedHint:"Datum gewijzigd, tik Berekenen", startBtn:"Berekenen", pickBg:"Kies foto/video als achtergrond", yearsUnit:"jaar (16 decimalen, realtime)", detail:"Details", itemYear:"j", itemMonth:"m", itemDay:"d", itemHour:"u", itemMin:"min", itemSec:"s", nextBirthday:"Volgende verjaardag over", birthdayDone:"🎉 Gefeliciteerd!", settings:"Instellingen", langLabel:"Taal / Language", opacity:"Doorzichtigheid", close:"Sluiten", invalidDate:"Ongeldige datum", yearTooEarly:"Jaar moet 1900 of later zijn", fillAll:"Voer volledige datum in", futureDate:"Kies een datum vóór vandaag", notExist:"Datum bestaat niet", calculated:"Berekend" },
+  hi: { title:"सटीक आयु कैलकुलेटर", birthLabel:"जन्म तिथि (डिफ़ॉल्ट: 16 वर्ष पहले, दैनिक अपडेट)", yearPH:"वर्ष", monthPH:"माह", dayPH:"दिन", defaultHint:"डिफ़ॉल्ट: 16 वर्ष पहले, गणना हो गई", manualHint:"गणना करने के लिए दबाएं", modifiedHint:"तिथि बदली गई, गणना दबाएं", startBtn:"गणना करें", pickBg:"पृष्ठभूमि के लिए फ़ोटो/वीडियो चुनें", yearsUnit:"वर्ष (16 दशमलव, वास्तविक समय)", detail:"विवरण", itemYear:"वर्ष", itemMonth:"माह", itemDay:"दिन", itemHour:"घं", itemMin:"मिन", itemSec:"सेक", nextBirthday:"अगला जन्मदिन", birthdayDone:"🎉 जन्मदिन मुबारक!", settings:"सेटिंग्स", langLabel:"भाषा / Language", opacity:"पारदर्शिता", close:"बंद करें", invalidDate:"अमान्य तिथि", yearTooEarly:"वर्ष 1900 या उसके बाद होना चाहिए", fillAll:"पूरी तिथि दर्ज करें", futureDate:"आज से पहले की तिथि चुनें", notExist:"तिथि मौजूद नहीं", calculated:"गणना हो गई" },
+  bn: { title:"নির্ভুল বয়স ক্যালকুলেটর", birthLabel:"জন্ম তারিখ (ডিফল্ট: ১৬ বছর আগে, প্রতিদিন আপডেট)", yearPH:"বছর", monthPH:"মাস", dayPH:"দিন", defaultHint:"ডিফল্ট: ১৬ বছর আগে, গণনা করা", manualHint:"গণনা করতে চাপুন", modifiedHint:"তারিখ পরিবর্তিত, গণনা চাপুন", startBtn:"গণনা করুন", pickBg:"ব্যাকগ্রাউন্ডে ছবি/ভিডিও বাছুন", yearsUnit:"বছর (১৬ দশমিক, রিয়েল-টাইম)", detail:"বিবরণ", itemYear:"বছর", itemMonth:"মাস", itemDay:"দিন", itemHour:"ঘ", itemMin:"মি", itemSec:"সে", nextBirthday:"পরবর্তী জন্মদিন", birthdayDone:"🎉 শুভ জন্মদিন!", settings:"সেটিংস", langLabel:"ভাষা / Language", opacity:"স্বচ্ছতা", close:"বন্ধ করুন", invalidDate:"অবৈধ তারিখ", yearTooEarly:"বছর ১৯০০ বা তার পরে হতে হবে", fillAll:"সম্পূর্ণ তারিখ লিখুন", futureDate:"আজ থেকে আগের তারিখ বাছুন", notExist:"তারিখ বিদ্যমান নেই", calculated:"গণনা করা" },
+  tr: { title:"Hassas Yaş Hesaplayıcı", birthLabel:"Doğum tarihi (varsayılan: 16 yıl önce, günlük güncelleme)", yearPH:"YYYY", monthPH:"AA", dayPH:"GG", defaultHint:"Varsayılan: 16 yıl önce, hesaplandı", manualHint:"Hesaplamak için dokunun", modifiedHint:"Tarih değiştirildi, Hesapla'ya tıkla", startBtn:"Hesapla", pickBg:"Arka plan için fotoğraf/video seç", yearsUnit:"yıl (16 ondalık, gerçek zamanlı)", detail:"Ayrıntılar", itemYear:"y", itemMonth:"a", itemDay:"g", itemHour:"s", itemMin:"dk", itemSec:"sn", nextBirthday:"Sonraki doğum gününe", birthdayDone:"🎉 Doğum günün kutlu olsun!", settings:"Ayarlar", langLabel:"Dil / Language", opacity:"Saydamlık", close:"Kapat", invalidDate:"Geçersiz tarih", yearTooEarly:"Yıl 1900 veya sonrası olmalı", fillAll:"Tam tarihi girin", futureDate:"Bugünden önceki bir tarih seçin", notExist:"Tarih mevcut değil", calculated:"Hesaplandı" },
+  vi: { title:"Máy Tính Tuổi Chính Xác", birthLabel:"Ngày sinh (mặc định: 16 năm trước, tự động cập nhật hàng ngày)", yearPH:"Năm", monthPH:"Tháng", dayPH:"Ngày", defaultHint:"Mặc định: 16 năm trước, đã tính", manualHint:"Nhấn để tính", modifiedHint:"Ngày đã đổi, nhấn Tính", startBtn:"Tính", pickBg:"Chọn ảnh/video làm nền", yearsUnit:"tuổi (16 chữ số, thời gian thực)", detail:"Chi tiết", itemYear:"năm", itemMonth:"tháng", itemDay:"ngày", itemHour:"giờ", itemMin:"phút", itemSec:"giây", nextBirthday:"Đến sinh nhật tiếp theo", birthdayDone:"🎉 Chúc mừng sinh nhật!", settings:"Cài đặt", langLabel:"Ngôn ngữ / Language", opacity:"Độ trong suốt", close:"Đóng", invalidDate:"Ngày không hợp lệ", yearTooEarly:"Năm phải từ 1900 trở lên", fillAll:"Nhập đầy đủ ngày", futureDate:"Chọn ngày trước hôm nay", notExist:"Ngày không tồn tại", calculated:"Đã tính" },
+  th: { title:"เครื่องคำนวณอายุแม่นยำ", birthLabel:"วันเกิด (ค่าเริ่มต้น: 16 ปีที่แล้ว อัปเดตทุกวัน)", yearPH:"ปี", monthPH:"เดือน", dayPH:"วัน", defaultHint:"ค่าเริ่มต้น: 16 ปีที่แล้ว คำนวณแล้ว", manualHint:"แตะเพื่อคำนวณ", modifiedHint:"วันที่เปลี่ยนแล้ว แตะคำนวณ", startBtn:"คำนวณ", pickBg:"เลือกรูป/วิดีโอเป็นพื้นหลัง", yearsUnit:"ปี (16 ทศนิยม แบบเรียลไทม์)", detail:"รายละเอียด", itemYear:"ปี", itemMonth:"เดือน", itemDay:"วัน", itemHour:"ชม.", itemMin:"น.", itemSec:"วิ.", nextBirthday:"ถึงวันเกิดถัดไป", birthdayDone:"🎉 สุขสันต์วันเกิด!", settings:"ตั้งค่า", langLabel:"ภาษา / Language", opacity:"ความโปร่งใส", close:"ปิด", invalidDate:"วันที่ไม่ถูกต้อง", yearTooEarly:"ปีต้องเป็น 1900 หรือหลังจากนั้น", fillAll:"กรุณากรอกวันที่ครบถ้วน", futureDate:"เลือกวันที่ก่อนวันนี้", notExist:"วันที่ไม่มีอยู่จริง", calculated:"คำนวณแล้ว" },
+  id: { title:"Kalkulator Usia Presisi", birthLabel:"Tanggal lahir (default: 16 tahun lalu, pembaruan harian)", yearPH:"YYYY", monthPH:"MM", dayPH:"DD", defaultHint:"Default: 16 tahun lalu, dihitung", manualHint:"Ketuk untuk menghitung", modifiedHint:"Tanggal diubah, ketuk Hitung", startBtn:"Hitung", pickBg:"Pilih foto/video sebagai latar", yearsUnit:"tahun (16 desimal, waktu nyata)", detail:"Detail", itemYear:"thn", itemMonth:"bln", itemDay:"hr", itemHour:"j", itemMin:"m", itemSec:"dt", nextBirthday:"Ulang tahun berikutnya dalam", birthdayDone:"🎉 Selamat ulang tahun!", settings:"Pengaturan", langLabel:"Bahasa / Language", opacity:"Transparansi", close:"Tutup", invalidDate:"Tanggal tidak valid", yearTooEarly:"Tahun harus 1900 atau setelahnya", fillAll:"Masukkan tanggal lengkap", futureDate:"Pilih tanggal sebelum hari ini", notExist:"Tanggal tidak ada", calculated:"Dihitung" },
+  ms: { title:"Kalkulator Umur Tepat", birthLabel:"Tarikh lahir (lalai: 16 tahun lalu, kemas kini harian)", yearPH:"YYYY", monthPH:"MM", dayPH:"DD", defaultHint:"Lalai: 16 tahun lalu, dikira", manualHint:"Ketik untuk kira", modifiedHint:"Tarikh diubah, ketik Kira", startBtn:"Kira", pickBg:"Pilih foto/video sebagai latar", yearsUnit:"tahun (16 titik perpuluhan, masa nyata)", detail:"Butiran", itemYear:"thn", itemMonth:"bln", itemDay:"hr", itemHour:"j", itemMin:"m", itemSec:"s", nextBirthday:"Hari lahir seterusnya dalam", birthdayDone:"🎉 Selamat hari lahir!", settings:"Tetapan", langLabel:"Bahasa / Language", opacity:"Ketelusan", close:"Tutup", invalidDate:"Tarikh tidak sah", yearTooEarly:"Tahun mesti 1900 atau selepas", fillAll:"Masukkan tarikh penuh", futureDate:"Pilih tarikh sebelum hari ini", notExist:"Tarikh tidak wujud", calculated:"Dikira" },
+  pl: { title:"Precyzyjny Kalkulator Wiek", birthLabel:"Data urodzenia (domyślnie: 16 lat temu, aktualizacja codzienna)", yearPH:"RRRR", monthPH:"MM", dayPH:"DD", defaultHint:"Domyślnie: 16 lat temu, obliczono", manualHint:"Dotknij, aby obliczyć", modifiedHint:"Data zmieniona, dotknij Oblicz", startBtn:"Oblicz", pickBg:"Wybierz zdjęcie/wideo jako tło", yearsUnit:"lat (16 miejsc, czas rzeczywisty)", detail:"Szczegóły", itemYear:"l", itemMonth:"m", itemDay:"d", itemHour:"g", itemMin:"min", itemSec:"s", nextBirthday:"Następne urodziny za", birthdayDone:"🎉 Wszystkiego najlepszego!", settings:"Ustawienia", langLabel:"Język / Language", opacity:"Przezroczystość", close:"Zamknij", invalidDate:"Nieprawidłowa data", yearTooEarly:"Rok musi być 1900 lub później", fillAll:"Wprowadź pełną datę", futureDate:"Wybierz datę przed dzisiejszą", notExist:"Data nie istnieje", calculated:"Obliczono" },
+  uk: { title:"Точний Калькулятор Віку", birthLabel:"Дата народження (за замовчуванням: 16 років тому, щоденне оновлення)", yearPH:"РРРР", monthPH:"ММ", dayPH:"ДД", defaultHint:"За замовчуванням: 16 років тому, розраховано", manualHint:"Натисніть для розрахунку", modifiedHint:"Дату змінено, натисніть Розрахувати", startBtn:"Розрахувати", pickBg:"Вибрати фото/відео як фон", yearsUnit:"років (16 знаків, у реальному часі)", detail:"Деталі", itemYear:"р", itemMonth:"м", itemDay:"д", itemHour:"г", itemMin:"хв", itemSec:"с", nextBirthday:"До наступного ДН", birthdayDone:"🎉 З Днем Народження!", settings:"Налаштування", langLabel:"Мова / Language", opacity:"Прозорість", close:"Закрити", invalidDate:"Неправильна дата", yearTooEarly:"Рік має бути 1900 або пізніше", fillAll:"Введіть повну дату", futureDate:"Виберіть дату до сьогоднішньої", notExist:"Дата не існує", calculated:"Розраховано" },
+  sv: { title:"Precisionsåldersräknare", birthLabel:"Födelsedatum (standard: för 16 år sedan, daglig uppdatering)", yearPH:"ÅÅÅÅ", monthPH:"MM", dayPH:"DD", defaultHint:"Standard: för 16 år sedan, beräknat", manualHint:"Tryck för att beräkna", modifiedHint:"Datum ändrat, tryck Beräkna", startBtn:"Beräkna", pickBg:"Välj foto/video som bakgrund", yearsUnit:"år (16 decimaler, realtid)", detail:"Detaljer", itemYear:"år", itemMonth:"mån", itemDay:"dag", itemHour:"t", itemMin:"min", itemSec:"s", nextBirthday:"Nästa födelsedag om", birthdayDone:"🎉 Grattis på födelsedagen!", settings:"Inställningar", langLabel:"Språk / Language", opacity:"Genomskinlighet", close:"Stäng", invalidDate:"Ogiltigt datum", yearTooEarly:"Året måste vara 1900 eller senare", fillAll:"Ange fullständigt datum", futureDate:"Välj ett datum före idag", notExist:"Datumet finns inte", calculated:"Beräknat" },
+  no: { title:"Presis Alderkalkulator", birthLabel:"Fødselsdato (standard: for 16 år siden, daglig oppdatering)", yearPH:"ÅÅÅÅ", monthPH:"MM", dayPH:"DD", defaultHint:"Standard: for 16 år siden, beregnet", manualHint:"Trykk for å beregne", modifiedHint:"Dato endret, trykk Beregn", startBtn:"Beregn", pickBg:"Velg foto/video som bakgrunn", yearsUnit:"år (16 desimaler, sanntid)", detail:"Detaljer", itemYear:"år", itemMonth:"mnd", itemDay:"dag", itemHour:"t", itemMin:"min", itemSec:"s", nextBirthday:"Neste bursdag om", birthdayDone:"🎉 Gratulerer med dagen!", settings:"Innstillinger", langLabel:"Språk / Language", opacity:"Gjennomsiktighet", close:"Lukk", invalidDate:"Ugyldig dato", yearTooEarly:"Året må være 1900 eller senere", fillAll:"Skriv inn full dato", futureDate:"Velg en dato før i dag", notExist:"Datoen finnes ikke", calculated:"Beregnet" },
+  da: { title:"Præcis Alder Beregner", birthLabel:"Fødselsdato (standard: for 16 år siden, daglig opdatering)", yearPH:"ÅÅÅÅ", monthPH:"MM", dayPH:"DD", defaultHint:"Standard: for 16 år siden, beregnet", manualHint:"Tryk for at beregne", modifiedHint:"Dato ændret, tryk Beregn", startBtn:"Beregn", pickBg:"Vælg foto/video som baggrund", yearsUnit:"år (16 decimaler, realtid)", detail:"Detaljer", itemYear:"år", itemMonth:"måneder", itemDay:"dage", itemHour:"t", itemMin:"min", itemSec:"s", nextBirthday:"Næste fødselsdag om", birthdayDone:"🎉 Tillykke med fødselsdagen!", settings:"Indstillinger", langLabel:"Sprog / Language", opacity:"Gennemsigtighed", close:"Luk", invalidDate:"Ugyldig dato", yearTooEarly:"Året skal være 1900 eller senere", fillAll:"Indtast fuld dato", futureDate:"Vælg en dato før i dag", notExist:"Datoen findes ikke", calculated:"Beregnet" },
+  fi: { title:"Tarkka Ikälaskuri", birthLabel:"Syntymäaika (oletus: 16 vuotta sitten, päivittyy päivittäin)", yearPH:"VVVV", monthPH:"KK", dayPH:"PP", defaultHint:"Oletus: 16 vuotta sitten, laskettu", manualHint:"Napauta laskeaksesi", modifiedHint:"Päivämäärä muutettu, napauta Laske", startBtn:"Laske", pickBg:"Valitse valokuva/video taustaksi", yearsUnit:"vuotta (16 desimaalia, reaaliaika)", detail:"Tiedot", itemYear:"v", itemMonth:"kk", itemDay:"pv", itemHour:"t", itemMin:"min", itemSec:"s", nextBirthday:"Seuraavaan syntymäpäivään", birthdayDone:"🎉 Hyvää syntymäpäivää!", settings:"Asetukset", langLabel:"Kieli / Language", opacity:"Läpinäkyvyys", close:"Sulje", invalidDate:"Virheellinen päivämäärä", yearTooEarly:"Vuoden on oltava 1900 tai myöhemmin", fillAll:"Syötä koko päivämäärä", futureDate:"Valitse päivämäärä ennen tätä päivää", notExist:"Päivämäärää ei ole olemassa", calculated:"Laskettu" },
+  el: { title:"Ακριβής Υπολογιστής Ηλικίας", birthLabel:"Ημερομηνία γέννησης (προεπιλογή: πριν 16 έτη, καθημερινή ενημέρωση)", yearPH:"ΕΕΕΕ", monthPH:"ΜΜ", dayPH:"ΗΗ", defaultHint:"Προεπιλογή: πριν 16 έτη, υπολογίστηκε", manualHint:"Πατήστε για υπολογισμό", modifiedHint:"Ημερομηνία άλλαξε, πατήστε Υπολογισμός", startBtn:"Υπολογισμός", pickBg:"Επιλέξτε φωτογραφία/βίντεο ως φόντο", yearsUnit:"έτη (16 δεκαδικά, πραγματικός χρόνος)", detail:"Λεπτομέρειες", itemYear:"έ", itemMonth:"μήν", itemDay:"ημ", itemHour:"ώ", itemMin:"λ", itemSec:"δ", nextBirthday:"Επόμενα γενέθλια σε", birthdayDone:"🎉 Χρόνια πολλά!", settings:"Ρυθμίσεις", langLabel:"Γλώσσα / Language", opacity:"Διαφάνεια", close:"Κλείσιμο", invalidDate:"Μη έγκυρη ημερομηνία", yearTooEarly:"Το έτος πρέπει να είναι 1900 ή μετά", fillAll:"Εισάγετε πλήρη ημερομηνία", futureDate:"Επιλέξτε ημερομηνία πριν από σήμερα", notExist:"Η ημερομηνία δεν υπάρχει", calculated:"Υπολογίστηκε" },
+  he: { title:"מחשבון גיל מדויק", birthLabel:"תאריך לידה (ברירת מחדל: לפני 16 שנה, עדכון יומי)", yearPH:"שנה", monthPH:"חודש", dayPH:"יום", defaultHint:"ברירת מחדל: לפני 16 שנה, חושב", manualHint:"לחץ לחישוב", modifiedHint:"התאריך השתנה, לחץ חשב", startBtn:"חשב", pickBg:"בחר תמונה/סרטון כרקע", yearsUnit:"שנים (16 ספרות, זמן אמת)", detail:"פרטים", itemYear:"שנ", itemMonth:"חד", itemDay:"ימ", itemHour:"שע", itemMin:"דק", itemSec:"שנ'", nextBirthday:"ל יום הולדת הבא", birthdayDone:"🎉 יום הולדת שמח!", settings:"הגדרות", langLabel:"שפה / Language", opacity:"שקיפות", close:"סגור", invalidDate:"תאריך לא תקין", yearTooEarly:"השנה חייבת להיות 1900 או אחרי", fillAll:"הכנס תאריך מלא", futureDate:"בחר תאריך לפני היום", notExist:"התאריך לא קיים", calculated:"חושב" },
+  cs: { title:"Přesný Kalkulátor Věku", birthLabel:"Datum narození (výchozí: před 16 lety, denní aktualizace)", yearPH:"RRRR", monthPH:"MM", dayPH:"DD", defaultHint:"Výchozí: před 16 lety, vypočítáno", manualHint:"Klepnutím spočítat", modifiedHint:"Datum změněno, klepněte Spočítat", startBtn:"Spočítat", pickBg:"Vyberte foto/video jako pozadí", yearsUnit:"let (16 desetinných, reálný čas)", detail:"Detaily", itemYear:"r", itemMonth:"m", itemDay:"d", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Další narozeniny za", birthdayDone:"🎉 Všechno nejlepší!", settings:"Nastavení", langLabel:"Jazyk / Language", opacity:"Průhlednost", close:"Zavřít", invalidDate:"Neplatné datum", yearTooEarly:"Rok musí být 1900 nebo později", fillAll:"Zadejte úplné datum", futureDate:"Vyberte datum před dneškem", notExist:"Datum neexistuje", calculated:"Vypočítáno" },
+  hu: { title:"Pontos Életkor Számláló", birthLabel:"Születési dátum (alapértelmezett: 16 éve, napi frissítés)", yearPH:"ÉÉÉÉ", monthPH:"HH", dayPH:"NN", defaultHint:"Alapértelmezett: 16 éve, kiszámítva", manualHint:"Koppintson a számításhoz", modifiedHint:"Dátum megváltozott, koppintson Számítás", startBtn:"Számítás", pickBg:"Válasszon fotót/videót háttérnek", yearsUnit:"év (16 tizedes, valós időben)", detail:"Részletek", itemYear:"é", itemMonth:"h", itemDay:"n", itemHour:"ó", itemMin:"p", itemSec:"mp", nextBirthday:"Következő születésnap", birthdayDone:"🎉 Boldog születésnapot!", settings:"Beállítások", langLabel:"Nyelv / Language", opacity:"Átlátszóság", close:"Bezárás", invalidDate:"Érvénytelen dátum", yearTooEarly:"Az évnek 1900 vagy későbbinek kell lennie", fillAll:"Adja meg a teljes dátumot", futureDate:"Válasszon a mai napnál korábbi dátumot", notExist:"A dátum nem létezik", calculated:"Kiszámítva" },
+  ro: { title:"Calculator de Vârstă Precis", birthLabel:"Data nașterii (implicit: acum 16 ani, actualizare zilnică)", yearPH:"AAAA", monthPH:"LL", dayPH:"ZZ", defaultHint:"Implicit: acum 16 ani, calculat", manualHint:"Atinge pentru calcul", modifiedHint:"Data schimbată, atinge Calculează", startBtn:"Calculează", pickBg:"Alege foto/video ca fundal", yearsUnit:"ani (16 zecimale, timp real)", detail:"Detalii", itemYear:"a", itemMonth:"l", itemDay:"z", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Următoarea aniversare în", birthdayDone:"🎉 La mulți ani!", settings:"Setări", langLabel:"Limbă / Language", opacity:"Transparență", close:"Închide", invalidDate:"Dată invalidă", yearTooEarly:"Anul trebuie să fie 1900 sau mai târziu", fillAll:"Introduceți data completă", futureDate:"Alegeți o dată anterioară zilei de azi", notExist:"Data nu există", calculated:"Calculat" },
+  bg: { title:"Точен Калкулатор за Възраст", birthLabel:"Дата на раждане (по подразбиране: преди 16 г., ежедневно обновяване)", yearPH:"ГГГГ", monthPH:"ММ", dayPH:"ДД", defaultHint:"По подразбиране: преди 16 г., изчислено", manualHint:"Натиснете за изчисление", modifiedHint:"Датата е променена, натиснете Изчисли", startBtn:"Изчисли", pickBg:"Изберете снимка/видео като фон", yearsUnit:"години (16 знака, в реално време)", detail:"Детайли", itemYear:"г", itemMonth:"м", itemDay:"д", itemHour:"ч", itemMin:"м", itemSec:"с", nextBirthday:"До следния рожден ден", birthdayDone:"🎉 Честит рожден ден!", settings:"Настройки", langLabel:"Език / Language", opacity:"Прозрачност", close:"Затвори", invalidDate:"Невалидна дата", yearTooEarly:"Годината трябва да е 1900 или по-късно", fillAll:"Въведете пълна дата", futureDate:"Изберете дата преди днес", notExist:"Датата не съществува", calculated:"Изчислено" },
+  sk: { title:"Presný Kalkulátor Veku", birthLabel:"Dátum narodenia (predvolené: pred 16 rokmi, denná aktualizácia)", yearPH:"RRRR", monthPH:"MM", dayPH:"DD", defaultHint:"Predvolené: pred 16 rokmi, vypočítané", manualHint:"Kliknite pre výpočet", modifiedHint:"Dátum zmenený, kliknite Vypočítať", startBtn:"Vypočítať", pickBg:"Vyberte foto/video ako pozadie", yearsUnit:"rokov (16 desatinných, reálny čas)", detail:"Podrobnosti", itemYear:"r", itemMonth:"m", itemDay:"d", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Ďalšie narodeniny o", birthdayDone:"🎉 Všetko najlepšie!", settings:"Nastavenia", langLabel:"Jazyk / Language", opacity:"Priehľadnosť", close:"Zavrieť", invalidDate:"Neplatný dátum", yearTooEarly:"Rok musí byť 1900 alebo neskôr", fillAll:"Zadajte celý dátum", futureDate:"Vyberte dátum pred dneškom", notExist:"Dátum neexistuje", calculated:"Vypočítané" },
+  hr: { title:"Precizni Kalkulator Dob", birthLabel:"Datum rođenja (zadano: prije 16 godina, dnevno ažuriranje)", yearPH:"GGGG", monthPH:"MM", dayPH:"DD", defaultHint:"Zadano: prije 16 godina, izračunato", manualHint:"Dodirni za izračun", modifiedHint:"Datum promijenjen, dodirni Izračunaj", startBtn:"Izračunaj", pickBg:"Odaberi fotku/video za pozadinu", yearsUnit:"godina (16 decimala, stvarno vrijeme)", detail:"Detalji", itemYear:"g", itemMonth:"m", itemDay:"d", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Do sljedećeg rođendana", birthdayDone:"🎉 Sretan rođendan!", settings:"Postavke", langLabel:"Jezik / Language", opacity:"Prozirnost", close:"Zatvori", invalidDate:"Nevažeći datum", yearTooEarly:"Godina mora biti 1900 ili kasnije", fillAll:"Unesite cijeli datum", futureDate:"Odaberite datum prije današnjeg", notExist:"Datum ne postoji", calculated:"Izračunato" },
+  sl: { title:"Natančni Kalkulator Starosti", birthLabel:"Datum rojstva (privzeto: pred 16 leti, dnevno posodabljanje)", yearPH:"LLLL", monthPH:"MM", dayPH:"DD", defaultHint:"Privzeto: pred 16 leti, izračunano", manualHint:"Dotaknite za izračun", modifiedHint:"Datum spremenjen, dotaknite Izračunaj", startBtn:"Izračunaj", pickBg:"Izberite foto/video za ozadje", yearsUnit:"let (16 decimalk, v realnem času)", detail:"Podrobnosti", itemYear:"l", itemMonth:"m", itemDay:"d", itemHour:"h", itemMin:"min", itemSec:"s", nextBirthday:"Do naslednjega rojstnega dne", birthdayDone:"🎉 Vse najboljše!", settings:"Nastavitve", langLabel:"Jezik / Language", opacity:"Prosojnost", close:"Zapri", invalidDate:"Neveljaven datum", yearTooEarly:"Leto mora biti 1900 ali kasneje", fillAll:"Vnesite celoten datum", futureDate:"Izberite datum pred današnjim", notExist:"Datum ne obstaja", calculated:"Izračunano" },
+  fa: { title:"ماشین حساب دقیق سن", birthLabel:"تاریخ تولد (پیشفرض: ۱۶ سال پیش، بهروزرسانی روزانه)", yearPH:"سال", monthPH:"ماه", dayPH:"روز", defaultHint:"پیشفرض: ۱۶ سال پیش، محاسبه شد", manualHint:"برای محاسبه ضربه بزنید", modifiedHint:"تاریخ تغییر کرد، ضربه محاسبه", startBtn:"محاسبه", pickBg:"انتخاب عکس/ویدیو به عنوان پسزمینه", yearsUnit:"سال (۱۶ رقم، بلادرنگ)", detail:"جزئیات", itemYear:"س", itemMonth:"م", itemDay:"ر", itemHour:"سا", itemMin:"د", itemSec:"ث", nextBirthday:"تا تولد بعدی", birthdayDone:"🎉 تولدت مبارک!", settings:"تنظیمات", langLabel:"زبان / Language", opacity:"شفافیت", close:"بستن", invalidDate:"تاریخ نامعتبر", yearTooEarly:"سال باید ۱۹۰۰ یا بعد باشد", fillAll:"تاریخ کامل را وارد کنید", futureDate:"تاریخی قبل از امروز انتخاب کنید", notExist:"تاریخ وجود ندارد", calculated:"محاسبه شد" },
+  ur: { title:"درست عمر کیلکولیٹر", birthLabel:"پیدائش کی تاریخ (طے شدہ: 16 سال پہلے، روزانہ اپ ڈیٹ)", yearPH:"سال", monthPH:"ماہ", dayPH:"دن", defaultHint:"طے شدہ: 16 سال پہلے، حساب کیا گیا", manualHint:"حساب کرنے کے لیے دبائیں", modifiedHint:"تاریخ تبدیل ہو گئی، حساب دبائیں", startBtn:"حساب کریں", pickBg:"پس منظر کے لیے تصویر/ویڈیو منتخب کریں", yearsUnit:"سال (16 اعشاریہ، ریئل ٹائم)", detail:"تفصیلات", itemYear:"سال", itemMonth:"ماہ", itemDay:"دن", itemHour:"گھن", itemMin:"منٹ", itemSec:"سیکنڈ", nextBirthday:"اگلے سالگرہ تک", birthdayDone:"🎉 سالگرہ مبارک!", settings:"ترتیبات", langLabel:"زبان / Language", opacity:"شفافیت", close:"بند کریں", invalidDate:"غلط تاریخ", yearTooEarly:"سال 1900 یا بعد کا ہونا چاہیے", fillAll:"مکمل تاریخ درج کریں", futureDate:"آج سے پہلے کی تاریخ چنیں", notExist:"تاریخ موجود نہیں", calculated:"حساب کیا گیا" },
+  sw: { title:"Kikokotoo Sahihi ya Umri", birthLabel:"Tarehe ya kuzaliwa (chaguomsingi: miaka 16 iliyopita, sasisho la kila siku)", yearPH:"Mwaka", monthPH:"Mwezi", dayPH:"Siku", defaultHint:"Chaguomsingi: miaka 16 iliyopita, imekadiriwa", manualHint:"Gusa kuhesabu", modifiedHint:"Tarehe imebadilishwa, gusa Hesabu", startBtn:"Hesabu", pickBg:"Chagua picha/video kama mandhari", yearsUnit:"miaka (desimali 16, wakati halisi)", detail:"Maelezo", itemYear:"m", itemMonth:"m", itemDay:"s", itemHour:"s", itemMin:"d", itemSec:"s", nextBirthday:"Hadi siku ya kuzaliwa ijayo", birthdayDone:"🎉 Hongera siku ya kuzaliwa!", settings:"Mipangilio", langLabel:"Lugha / Language", opacity:"Uwazi", close:"Funga", invalidDate:"Tarehe batili", yearTooEarly:"Mwaka lazima uwe 1900 au baadaye", fillAll:"Weka tarehe kamili", futureDate:"Chagua tarehe kabla ya leo", notExist:"Tarehe haipo", calculated:"Imekadiriwa" },
+  ta: { title:"துல்லிய வயது கணிப்பான்", birthLabel:"பிறந்த தேதி (இயல்புநிலை: 16 ஆண்டுகளுக்கு முன்பு, தினசரி புதுப்பிப்பு)", yearPH:"ஆண்டு", monthPH:"மாதம்", dayPH:"நாள்", defaultHint:"இயல்புநிலை: 16 ஆண்டுகளுக்கு முன்பு, கணக்கிடப்பட்டது", manualHint:"கணக்கிட தட்டவும்", modifiedHint:"தேதி மாற்றப்பட்டது, கணக்கிட தட்டவும்", startBtn:"கணக்கிடு", pickBg:"பின்னணிக்கு புகைப்படம்/வீடியோ தேர்வு", yearsUnit:"வருடங்கள் (16 தசமம், நிகழ்நேரம்)", detail:"விவரங்கள்", itemYear:"ஆ", itemMonth:"மா", itemDay:"நா", itemHour:"மணி", itemMin:"நிமி", itemSec:"வி", nextBirthday:"அடுத்த பிறந்தநாள்", birthdayDone:"🎉 பிறந்தநாள் வாழ்த்துகள்!", settings:"அமைப்புகள்", langLabel:"மொழி / Language", opacity:"வெளிப்படைத்தன்மை", close:"மூடு", invalidDate:"தவறான தேதி", yearTooEarly:"ஆண்டு 1900 அல்லது அதற்குப் பிறகு இருக்க வேண்டும்", fillAll:"முழு தேதியை உள்ளிடவும்", futureDate:"இன்றைய தேதிக்கு முந்தைய தேதியைத் தேர்வு செய்யவும்", notExist:"தேதி இல்லை", calculated:"கணக்கிடப்பட்டது" },
+  pa: { title:"ਸ਼ੁੱਧ ਉਮਰ ਕੈਲਕੁਲੇਟਰ", birthLabel:"ਜਨਮ ਮਿਤੀ (ਡਿਫ਼ਾਲਟ: 16 ਸਾਲ ਪਹਿਲਾਂ, ਰੋਜ਼ਾਨਾ ਅੱਪਡੇਟ)", yearPH:"ਸਾਲ", monthPH:"ਮਹੀਨਾ", dayPH:"ਦਿਨ", defaultHint:"ਡਿਫ਼ਾਲਟ: 16 ਸਾਲ ਪਹਿਲਾਂ, ਗਿਣਤੀ ਹੋ ਗਈ", manualHint:"ਗਿਣਨ ਲਈ ਦਬਾਓ", modifiedHint:"ਮਿਤੀ ਬਦਲੀ ਗਈ, ਗਿਣੋ", startBtn:"ਗਿਣੋ", pickBg:"ਬੈਕਗਰਾਊਂਡ ਲਈ ਫ਼ੋਟੋ/ਵੀਡੀਓ ਚੁਣੋ", yearsUnit:"ਸਾਲ (16 ਦਸ਼ਮਲਵ, ਰੀਅਲ-ਟਾਈਮ)", detail:"ਵੇਰਵਾ", itemYear:"ਸਾਲ", itemMonth:"ਮਹੀਨੇ", itemDay:"ਦਿਨ", itemHour:"ਘੰ", itemMin:"ਮਿੰ", itemSec:"ਸਕਿੰ", nextBirthday:"ਅਗਲੇ ਜਨਮਦਿਨ ਤੱਕ", birthdayDone:"🎉 ਜਨਮਦਿਨ ਮੁਬਾਰਕ!", settings:"ਸੈਟਿੰਗਾਂ", langLabel:"ਭਾਸ਼ਾ / Language", opacity:"ਪਾਰਦਰਸ਼ਤਾ", close:"ਬੰਦ ਕਰੋ", invalidDate:"ਗਲਤ ਮਿਤੀ", yearTooEarly:"ਸਾਲ 1900 ਜਾਂ ਬਾਅਦ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ", fillAll:"ਪੂਰੀ ਮਿਤੀ ਦਾਖਲ ਕਰੋ", futureDate:"ਅੱਜ ਤੋਂ ਪਹਿਲਾਂ ਦੀ ਮਿਤੀ ਚੁਣੋ", notExist:"ਮਿਤੀ ਮੌਜੂਦ ਨਹੀਂ", calculated:"ਗਿਣਤੀ ਹੋ ਗਈ" },
+  mr: { title:"अचूक वय कॅल्क्युलेटर", birthLabel:"जन्मतारीख (डीफॉल्ट: 16 वर्षांपूर्वी, दैनंदिन अद्यतन)", yearPH:"वर्ष", monthPH:"महिना", dayPH:"दिवस", defaultHint:"डीफॉल्ट: 16 वर्षांपूर्वी, मोजले", manualHint:"मोजण्यासाठी टॅप करा", modifiedHint:"तारीख बदलली, मोजा टॅप करा", startBtn:"मोजा", pickBg:"बॅकग्राउंडसाठी फोटो/व्हिडिओ निवडा", yearsUnit:"वर्षे (16 दशांश, रिअल-टाईम)", detail:"तपशील", itemYear:"वर्षे", itemMonth:"महिने", itemDay:"दिवस", itemHour:"ता", itemMin:"मि", itemSec:"से", nextBirthday:"पुढील वाढदिवस", birthdayDone:"🎉 वाढदिवसाच्या हार्दिक शुभेच्छा!", settings:"सेटिंग्ज", langLabel:"भाषा / Language", opacity:"पारदर्शकता", close:"बंद करा", invalidDate:"अवैध तारीख", yearTooEarly:"वर्ष 1900 किंवा नंतरचे असावे", fillAll:"संपूर्ण तारीख प्रविष्ट करा", futureDate:"आजपूर्वीची तारीख निवडा", notExist:"तारीख अस्तित्वात नाही", calculated:"मोजले" }
+};
+
+let currentLang = 'zh';
+function detectLang() {
+  const saved = localStorage.getItem('age_lang');
+  if (saved && i18n[saved]) return saved;
+  const sys = (navigator.language || navigator.userLanguage || 'zh').substring(0, 2).toLowerCase();
+  return i18n[sys] ? sys : 'zh';
+}
+function applyLang(lang) {
+  currentLang = lang;
+  const t = i18n[lang];
+  document.documentElement.lang = lang;
+  document.getElementById('tTitle').textContent = t.title;
+  document.getElementById('tBirthLabel').textContent = t.birthLabel;
+  document.getElementById('yearInput').placeholder = t.yearPH;
+  document.getElementById('monthInput').placeholder = t.monthPH;
+  document.getElementById('dayInput').placeholder = t.dayPH;
+  document.getElementById('tStartBtn').textContent = t.startBtn;
+  document.getElementById('tPickBg').textContent = t.pickBg;
+  document.getElementById('tYearsUnit').textContent = t.yearsUnit;
+  document.getElementById('tDetail').textContent = t.detail;
+  document.getElementById('tIY').textContent = t.itemYear;
+  document.getElementById('tIM').textContent = t.itemMonth;
+  document.getElementById('tID').textContent = t.itemDay;
+  document.getElementById('tIH').textContent = t.itemHour;
+  document.getElementById('tIMi').textContent = t.itemMin;
+  document.getElementById('tIS').textContent = t.itemSec;
+  document.getElementById('tNextBD').textContent = t.nextBirthday;
+  document.getElementById('tSettings').textContent = t.settings;
+  document.getElementById('tLangLabel').querySelector('span').textContent = t.langLabel;
+  document.getElementById('tOpacity').textContent = t.opacity;
+  document.getElementById('closeSet').textContent = t.close;
+  document.getElementById('langSelect').value = lang;
+  if (hint.textContent === i18n['zh'].defaultHint || hint.textContent === '') {
+    hint.textContent = t.defaultHint;
+  }
+  localStorage.setItem('age_lang', lang);
+}
+document.addEventListener('DOMContentLoaded', function() {
+  const langSelect = document.getElementById('langSelect');
+  langSelect.addEventListener('change', function() { applyLang(this.value); });
+  applyLang(detectLang());
+});
+
+/* ===== 滑块 ===== */
 (function(){
   const tr=document.getElementById('trUI'), fill=tr.querySelector('.slider-fill'), thumb=tr.querySelector('.slider-thumb'), valEl=document.getElementById('vUI'), appUI=document.getElementById('appUI');
   const min=0, max=100; let val=100, dragging=false, lastX=0, lastT=0, velocity=0, stretch=0, rafId=null, pressTimer=null;
@@ -240,24 +342,24 @@ input[type=file] { display: none; }
   const saved=localStorage.getItem('age_ui_opacity'); setV(saved!==null?parseInt(saved):100);
 })();
 
-/* 设置面板 */
+/* ===== 设置面板 ===== */
 const setBtn=document.getElementById('settingsBtn'), setPanel=document.getElementById('settingsPanel'), closeSet=document.getElementById('closeSet');
 setBtn.onclick=()=>setPanel.classList.add('show'); closeSet.onclick=()=>setPanel.classList.remove('show');
 setPanel.addEventListener('click',function(e){ if(e.target===setPanel)setPanel.classList.remove('show'); });
 
-/* 计算器 */
+/* ===== 计算器 ===== */
 const yi=document.getElementById('yearInput'), mi=document.getElementById('monthInput'), di=document.getElementById('dayInput'), hint=document.getElementById('hint');
 const STORAGE_KEY='age_calc_birth', BG_KEY='age_calc_bg', MIN_YEAR=1900;
 let currentBirth=null, timer=null, lastDayCheck=new Date().getDate(), currentObjUrl=null;
 function getDefaultBirth(){ const t=new Date(); t.setFullYear(t.getFullYear()-16); return t; }
 function fillDefault(){ const def=getDefaultBirth(); yi.value=def.getFullYear(); mi.value=String(def.getMonth()+1).padStart(2,'0'); di.value=String(def.getDate()).padStart(2,'0'); }
-function init(){ const saved=localStorage.getItem(STORAGE_KEY); if(saved){ const p=saved.split('-'), y=parseInt(p[0]); if(y>=MIN_YEAR&&p[1]&&p[2]){ yi.value=y; mi.value=p[1]; di.value=p[2]; hint.textContent='请手动点开始计算'; } else { fillDefault(); hint.textContent='默认今天往前16年，已自动计算'; } } else { fillDefault(); hint.textContent='默认今天往前16年，已自动计算'; } loadBg(); } init();
-function markChanged(){ hint.textContent='已修改日期，请点击「开始计算」'; hint.className='hint modified'; }
+function init(){ const saved=localStorage.getItem(STORAGE_KEY); if(saved){ const p=saved.split('-'), y=parseInt(p[0]); if(y>=MIN_YEAR&&p[1]&&p[2]){ yi.value=y; mi.value=p[1]; di.value=p[2]; hint.textContent=i18n[currentLang].manualHint; } else { fillDefault(); hint.textContent=i18n[currentLang].defaultHint; } } else { fillDefault(); hint.textContent=i18n[currentLang].defaultHint; } loadBg(); } init();
+function markChanged(){ hint.textContent=i18n[currentLang].modifiedHint; hint.className='hint modified'; }
 yi.addEventListener('input',function(){ let v=this.value.replace(/\D/g,''); if(v.length>4)v=v.slice(0,4); this.value=v; if(v.length===4){ const y=parseInt(v); if(y<MIN_YEAR){this.value='1900';} mi.focus(); } markChanged(); });
 mi.addEventListener('input',function(){ let v=this.value.replace(/\D/g,''); if(v.length>2)v=v.slice(0,2); this.value=v; if(v.length===2)di.focus(); markChanged(); });
 di.addEventListener('input',function(){ let v=this.value.replace(/\D/g,''); if(v.length>2)v=v.slice(0,2); this.value=v; markChanged(); });
-function startCalc(){ const y=parseInt(yi.value),m=parseInt(mi.value),d=parseInt(di.value); if(!y||!m||!d){ hint.textContent='请输入完整日期'; return; } if(y<MIN_YEAR){ hint.textContent='年份不能早于1900年'; return; } if(m<1||m>12||d<1||d>31){ hint.textContent='日期不合法'; return; } const birth=new Date(y,m-1,d,0,0,0); if(isNaN(birth.getTime())){ hint.textContent='日期不存在，请检查'; return; } const today0=new Date(); today0.setHours(0,0,0,0); if(birth>=today0){ hint.textContent='请选择今天之前的日期'; return; } localStorage.setItem(STORAGE_KEY,y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0')); currentBirth=birth; hint.textContent='已计算'; hint.className='hint'; if(timer)clearInterval(timer); doCalc(); timer=setInterval(doCalc,50); }
-function doCalc(){ if(!currentBirth)return; const now=new Date(), diff=now-currentBirth, msY=365.2425*24*60*60*1000; document.getElementById('preciseAge').textContent=(diff/msY).toFixed(16); document.getElementById('rYears').textContent=Math.floor(diff/(365.2425*24*60*60*1000)); document.getElementById('rMonths').textContent=Math.floor(diff/(30.436875*24*60*60*1000)); document.getElementById('rDays').textContent=Math.floor(diff/(24*60*60*1000)); document.getElementById('rHours').textContent=Math.floor(diff/(60*60*1000)).toLocaleString(); document.getElementById('rMinutes').textContent=Math.floor(diff/(60*1000)).toLocaleString(); document.getElementById('rSeconds').textContent=Math.floor(diff/1000).toLocaleString(); const bm=currentBirth.getMonth(), bd=currentBirth.getDate(); let nb=new Date(now.getFullYear(),bm,bd); if(nb<now)nb=new Date(now.getFullYear()+1,bm,bd); const rem=nb-now, dl=Math.ceil(rem/(24*60*60*1000)), hl=Math.floor((rem%(24*60*60*1000))/(60*60*1000)), ml=Math.floor((rem%(60*60*1000))/(60*1000)), sl=Math.floor((rem%(60*1000))/1000); document.getElementById('nextBirthday').textContent=(dl<=0&&hl===0&&ml===0&&sl<=1)?'🎉 生日快乐！':dl+'天'+hl+'时'+ml+'分'+sl+'秒'; const today=new Date(); if(today.getDate()!==lastDayCheck){ lastDayCheck=today.getDate(); if(!localStorage.getItem(STORAGE_KEY)){ fillDefault(); currentBirth=getDefaultBirth(); hint.textContent='已跨天，默认日期自动更新为今天往前16年'; } } }
+function startCalc(){ const y=parseInt(yi.value),m=parseInt(mi.value),d=parseInt(di.value); const t=i18n[currentLang]; if(!y||!m||!d){ hint.textContent=t.fillAll; return; } if(y<MIN_YEAR){ hint.textContent=t.yearTooEarly; return; } if(m<1||m>12||d<1||d>31){ hint.textContent=t.invalidDate; return; } const birth=new Date(y,m-1,d,0,0,0); if(isNaN(birth.getTime())){ hint.textContent=t.notExist; return; } const today0=new Date(); today0.setHours(0,0,0,0); if(birth>=today0){ hint.textContent=t.futureDate; return; } localStorage.setItem(STORAGE_KEY,y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0')); currentBirth=birth; hint.textContent=t.calculated; hint.className='hint'; if(timer)clearInterval(timer); doCalc(); timer=setInterval(doCalc,50); }
+function doCalc(){ if(!currentBirth)return; const now=new Date(), diff=now-currentBirth, msY=365.2425*24*60*60*1000; document.getElementById('preciseAge').textContent=(diff/msY).toFixed(16); document.getElementById('rYears').textContent=Math.floor(diff/(365.2425*24*60*60*1000)); document.getElementById('rMonths').textContent=Math.floor(diff/(30.436875*24*60*60*1000)); document.getElementById('rDays').textContent=Math.floor(diff/(24*60*60*1000)); document.getElementById('rHours').textContent=Math.floor(diff/(60*60*1000)).toLocaleString(); document.getElementById('rMinutes').textContent=Math.floor(diff/(60*1000)).toLocaleString(); document.getElementById('rSeconds').textContent=Math.floor(diff/1000).toLocaleString(); const bm=currentBirth.getMonth(), bd=currentBirth.getDate(); let nb=new Date(now.getFullYear(),bm,bd); if(nb<now)nb=new Date(now.getFullYear()+1,bm,bd); const rem=nb-now, dl=Math.ceil(rem/(24*60*60*1000)), hl=Math.floor((rem%(24*60*60*1000))/(60*60*1000)), ml=Math.floor((rem%(60*60*1000))/(60*1000)), sl=Math.floor((rem%(60*1000))/1000); document.getElementById('nextBirthday').textContent=(dl<=0&&hl===0&&ml===0&&sl<=1)?i18n[currentLang].birthdayDone:dl+'天'+hl+'时'+ml+'分'+sl+'秒'; const today=new Date(); if(today.getDate()!==lastDayCheck){ lastDayCheck=today.getDate(); if(!localStorage.getItem(STORAGE_KEY)){ fillDefault(); currentBirth=getDefaultBirth(); hint.textContent=i18n[currentLang].defaultHint; } } }
 function loadBg(){ const b64=localStorage.getItem(BG_KEY); if(b64){ document.getElementById('bgImg').style.backgroundImage='url('+b64+')'; document.getElementById('bgImg').style.display='block'; } }
 document.getElementById('pickBg').addEventListener('change',function(e){ const file=e.target.files&&e.target.files[0]; if(!file)return; if(currentObjUrl){ URL.revokeObjectURL(currentObjUrl); currentObjUrl=null; } const v=document.getElementById('bgVideo'); v.pause(); v.removeAttribute('src'); v.load(); v.style.display='none'; document.getElementById('bgImg').style.display='none'; document.getElementById('bgImg').style.backgroundImage='none'; if(file.type.startsWith('video/')){ currentObjUrl=URL.createObjectURL(file); v.src=currentObjUrl; v.style.display='block'; v.play().catch(()=>{}); localStorage.removeItem(BG_KEY); } else { currentObjUrl=URL.createObjectURL(file); document.getElementById('bgImg').style.backgroundImage='url('+currentObjUrl+')'; document.getElementById('bgImg').style.display='block'; const reader=new FileReader(); reader.onload=function(){ try{ localStorage.setItem(BG_KEY,reader.result); }catch(_){} }; reader.readAsDataURL(file); } });
 document.addEventListener('visibilitychange',function(){ if(!document.hidden && document.getElementById('bgVideo').style.display==='block'){ document.getElementById('bgVideo').play().catch(()=>{}); } });
