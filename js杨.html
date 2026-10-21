@@ -351,41 +351,53 @@ document.addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey)&&['c'
 
 (function init(){ setTimeout(function(){ input.focus(); }, 120); })();
 
-// ===== 生成并下载 QR 码（内嵌 QRCode 库，不依赖 CDN）=====
-// 内嵌 QRCode.js v1.5.3 (minified, 完整版)
-!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.QRCode=e():t.QRCode=e()}(this,function(){return function(t){function e(r){if(n[r])return n[r].exports;var o=n[r]={exports:{},id:r,loaded:!1};return t[r].call(o.exports,o,o.exports,e),o.loaded=!0,o.exports}var n={};return e.m=t,e.c=n,e.p="",e(0)}([function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var o=n(1),i=r(o),u=n(2),c=r(u),f=n(3),a=r(f);e.default=function(){function t(t,e){return c.default.create(t,e).then(function(t){return new i.default(t)})}return t.toCanvas=function(e,n,r){return c.default.create(e,n).then(function(e){return new i.default(e).toCanvas(r)})},t.toDataURL=function(e,n,r){return c.default.create(e,n).then(function(e){return new i.default(e).toDataURL(r)})},t}()},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function o(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0});var i=n(4),u=r(i),c=n(5),a=r(c),f=function(){function t(e){o(this,t),this._module=e}return t.prototype.toCanvas=function(t){return new Promise(function(e,n){try{var r=u.default.from(t).toCanvas();e(r)}catch(t){n(t)}})},t.prototype.toDataURL=function(t){return this.toCanvas(t).then(function(t){return t.toDataURL()})},t}();e.default=f},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var o=n(6),i=r(o),u=n(7),c=r(u),a=n(8),f=r(a),s=n(9),h=r(s),d=n(10),l=r(d),p=n(11),g=r(p),y=n(12),v=r(y),_=n(13),m=r(_),w=n(14),b=r(w),k=n(15),x=r(k),C=n(16),E=r(C),M=n(17),A=r(M),P=n(18),T=r(P),S=n(19),D=r(S),I=n(20),O=r(I),R=n(21),N=r(R),L=n(22),U=r(L),j=n(23),B=r(j),H=n(24),G=r(H),q=n(25),F=r(q),W=n(26),Y=r(W),K=n(27),V=r(K),X=n(28),J=r(X),z=n(29),Q=r(z),Z=n(30),$=r(Z),tt=n(31),et=r(tt),nt=n(32),rt=r(nt),ot=n(33),it=r(ot),ut=n(34),ct=r(ut),at=n(35),ft=r(at),st=n(36),ht=r(st),dt=n(37),lt=r(dt),pt=n(38),gt=r(pt),yt=n(39),vt=r(yt),_t=n(40),mt=r(_t),wt=n(41),bt=r(wt),kt=n(42),xt=r(kt),Ct=n(43),Et=r(Ct),Mt=n(44),At=r(Mt),Pt=n(45),Tt=r(Pt),St=n(46),Dt=r(St),It=n(47),Ot=r(It),Rt=n(48),Nt=r(Rt),Lt=n(49),Ut=r(Lt),jt=n(50),Bt=r(jt),Ht=n(51),Gt=r(Ht),qt=n(52),Ft=r(qt),Wt=n(53),Yt=r(Wt),Kt=n(54),Vt=r(Kt),Xt=n(55),Jt=r(Xt),Zt=n(56),Qt=r(Zt),te=n(57),ee=r(te),ne=n(58),re=r(ne),oe=n(59),ie=r(oe),ue=n(60),ce=r(ue),ae=n(61),fe=r(ae),se=n(62),he=r(se),de=n(63),le=r(de),pe=n(64),ge=r(pe),ye=n(65),ve=r(ye),_e=n(66),me=r(_e),we=n(67),be=r(we),ke=n(68),xe=r(ke),Ce=n(69),Ee=r(Ce),Me=n(70),Ae=r(Me),Pe=n(71),Te=r(Pe),Se=n(72),De=r(Se),Ie=n(73),Oe=r(Ie),Re=n(74),Ne=r(Re),Le=n(75),Ue=r(Le),je=n(76),Be=r(je),He=n(77),Ge=r(He),qe=n(78),Fe=r(qe),We=n(79),Ye=r(We),Ke=n(80),Ve=r(Ke),Xe=n(81),Je=r(Xe),ze=n(82),Qe=r(ze),Ze=n(83),tn=r(Ze);e.default={create:function(t,e){return new Promise(function(n,r){try{var o=new c.default(t,e);n(o)}catch(t){r(t)}})}}},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){},function(t,e){}])});
-// ===== 重写下载函数 =====
-function generateAndDownloadQR(){
- var qrText = 'CFTH';
- var ua = navigator.userAgent || '';
- var mobile = /Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(ua);
+/* ===== 下载二维码：内置 base64 图片 + 每次随机乱码文件名 ===== */
+var QR_DATA_URL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAFcAQAAAACsbTuBAAABDUlEQVR42u2aQQrDMAwERT/g//9SP3CpLctS0kMayKFoTCkmnVMZZK1i6deXCjAwMDAwMDDwbVh8tT6/Dw8H/JIfFvC/w8uN1n1jhrT0EDcqu+FKfIqJLj38IW7gxth8EQY3cCP2G7iBG+d+IypBv1HcjZhT/ENOwY2rgZe/rqobY9Yxc4rVirGZmQU36roxcquNwpYStqcXpW6oeI9hTWnLg1bcKNyLpkKx6gZucKbs06RvN5hv4EZcKcM25hucKYdRxj5QfAKGG0XdiCNQlf3GjQyLG/nVif2k6ToHbuCGi+HdKW7gRqob4XoPbtBvBA3ySzfcIKeEnGKlQ8gpzDe4WQ0MDAwMDAz8EPwGuIGWoOEqKugAAAAASUVORK5CYII=';
 
- QRCode.toDataURL(qrText, {
-  width: 400,
-  margin: 2,
-  color: { dark: '#000000', light: '#FFFFFF' }
- }, function(err, dataUrl){
-  if(err){ console.error('QR生成失败:', err); return; }
+/* 基础字符池：大小写字母 + 数字 + 合法特殊符号 */
+var CHARS_BASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-@#$%&+=~^()[]{}!,;\'';
+/* 装饰字符池：Unicode 符号，视觉更乱，文件名合法 */
+var CHARS_DECO = '§¶¢£¥€©®°±×÷µøæßðþŋħŁ¤¡¿«»†‡•‰¶';
 
-  if(mobile){
-   // 手机端：新页面展示大图，用户长按保存
-   var win = window.open('');
-   if(!win){
-    // 弹窗被拦截，降级为直接打开图片
-    window.open(dataUrl);
-    return;
-   }
-   win.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>长按保存二维码</title></head><body style="margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#000;color:#fff;font-family:sans-serif"><p style="margin-bottom:24px;font-size:14px">长按下方二维码保存图片</p><img src="'+dataUrl+'" style="width:300px;height:300px"><p style="margin-top:24px;font-size:12px;color:#666">保存后扫描即可获取密码</p></body></html>');
+function rnd(max){
+ if(window.crypto && window.crypto.getRandomValues){
+  var b = new Uint32Array(1);
+  window.crypto.getRandomValues(b);
+  return b[0] % max;
+ }
+ return Math.floor(Math.random() * max);
+}
+
+function randomName(){
+ var alnum = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+ var len = 30, out = '';
+ /* 首位强制字母或数字，避免以符号开头在某些系统出问题 */
+ out += alnum.charAt(rnd(alnum.length));
+ for(var i=1;i<len;i++){
+  if(rnd(100) < 20){
+   out += CHARS_DECO.charAt(rnd(CHARS_DECO.length));
   } else {
-   // 电脑端：直接下载
-   var a = document.createElement('a');
-   a.href = dataUrl;
-   a.download = 'CFTH-qr.png';
-   document.body.appendChild(a);
-   a.click();
-   document.body.removeChild(a);
+   out += CHARS_BASE.charAt(rnd(CHARS_BASE.length));
   }
- });
+ }
+ /* 去掉连续的点（防路径穿越），末尾不能是点 */
+ while(out.indexOf('..') !== -1){ out = out.replace('..', '._'); }
+ if(out.charAt(out.length-1) === '.'){ out = out.slice(0,-1) + alnum.charAt(rnd(alnum.length)); }
+ return out;
+}
+
+function generateAndDownloadQR(){
+ try{
+  var a = document.createElement('a');
+  a.href = QR_DATA_URL;
+  a.download = randomName() + '.png';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+ }catch(e){
+  window.open(QR_DATA_URL, '_blank');
+ }
 }
 </script>
 </body>
