@@ -87,11 +87,26 @@
  .social-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);transition:transform .15s ease,background .2s ease}
  .social-icon:hover{transform:translateY(-3px);background:rgba(255,255,255,.12)}
  .social-icon svg{display:block}
+ @keyframes noticePop{0%{opacity:0;transform:scale(.85) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
  @media (min-width:820px) and (orientation:landscape){.page{flex-direction:row;justify-content:center;align-items:flex-start;gap:56px;max-width:1080px;padding:80px 48px}.left{flex:1;min-width:280px;display:flex;flex-direction:column;align-items:center}.name-wrap{margin-bottom:30px}.box{align-items:center}.btn{width:260px;max-width:none;height:56px;font-size:19px}.tip{margin-top:30px}.about{flex:1;min-width:280px;max-width:none;align-self:flex-start;position:sticky;top:60px}}
  @media (min-width:1100px){.page{gap:72px}.about{padding:30px 28px}.about p{font-size:15px}}
 </style>
 </head>
 <body oncontextmenu="return false;">
+<!-- 公告弹窗 -->
+<div id="noticeMask" style="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.65);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;">
+  <div style="background:rgba(255,255,255,0.82);backdrop-filter:blur(50px) saturate(220%);-webkit-backdrop-filter:blur(50px) saturate(220%);border-radius:24px;padding:28px 24px 22px;border:1px solid rgba(255,255,255,0.25);width:320px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.4);text-align:center;animation:noticePop .4s cubic-bezier(.22,.61,.36,1) forwards;">
+    <div style="font-size:32px;margin-bottom:10px;display:flex;justify-content:center;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" style="width:48px;height:48px;color:#000;">
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path fill="currentColor" d="M18.5 10H22v2h-3.5zm.05-1.17l1.5-1l1.5-1L21 6l-.55-.83l-1.5 1l-1.5 1L18 8zm0 4.34L18 14l-.55.83l1.5 1l1.5 1L21 16l.55-.83l-1.5-1zM15 8.18V4c0-.37-.2-.71-.53-.88s-.72-.15-1.03.05L7.69 7h-1.7c-2.21 0-4 1.79-4 4c0 1.52.86 2.82 2.1 3.5l1.94 6.77l1.92-.55l-1.64-5.73h1.37l5.75 3.83c.17.11.36.17.55.17c.16 0 .32-.04.47-.12c.33-.17.53-.51.53-.88v-4.18c1.16-.41 2-1.51 2-2.82s-.84-2.4-2-2.82Zm-2 7.95l-4.45-2.96A1 1 0 0 0 8 13H6c-1.1 0-2-.9-2-2s.9-2 2-2h2c.2 0 .39-.06.55-.17L13 5.87z"/>
+      </svg>
+    </div>
+    <div style="font-size:18px;font-weight:800;color:#000;margin-bottom:10px;">公告</div>
+    <div style="font-size:14px;color:#333;line-height:1.7;margin-bottom:22px;">下一个版本是 <strong>v3.5</strong>，即将推出。<br>推出时间不固定，请耐心等待。</div>
+    <button onclick="closeNotice()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#fe2c55,#ff6a88);color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s ease;">知道了</button>
+  </div>
+</div>
 <div id="bgOverlay"></div>
 <div id="lockScreen">
  <div class="lock-title">
@@ -153,6 +168,17 @@
 </div>
 
 <script>
+function closeNotice(){
+  var mask = document.getElementById('noticeMask');
+  mask.style.opacity = '0';
+  mask.style.transition = 'opacity .3s ease';
+  setTimeout(function(){ mask.style.display = 'none'; }, 300);
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  // 每次打开都弹，不存任何东西
+});
+
 var TYPE_TEXTS = [ "本网站是我随手乱写的，纯粹一时兴起，敲敲打打拼出来的一个小玩意儿，没什么高大上的架构，也不打算做成什么正经项目，就是图个乐子，写着玩、看着爽。", "至于里面的那些链接和联系方式，随缘就好。跟我破产了几字一、100多字、200多字都可以，别太当真，也别太较真，都是随口说说、随手放上去的。我这个人做事一向随性，今天想起来就更新一下，明天懒了可能就搁那儿不动了。", "所以如果你发现页面很久没变、链接失效、或者按钮点了没反应，先别急着吐槽，很可能只是我又跑去干别的事了。等哪天兴致上来了，说不定就推一版新的，也可能就这么一直放着，谁知道呢。", "总之，这就是一个属于我自己的小角落，写给自己看，也给碰巧进来的你看看。看得开心就好，别想太多 😄"];
 var typeArea = document.getElementById('typeArea');
 var typeQueue = TYPE_TEXTS.slice();
@@ -351,12 +377,9 @@ document.addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey)&&['c'
 
 (function init(){ setTimeout(function(){ input.focus(); }, 120); })();
 
-/* ===== 下载二维码：内置 base64 图片 + 每次随机乱码文件名 ===== */
 var QR_DATA_URL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAFcAQAAAACsbTuBAAABDUlEQVR42u2aQQrDMAwERT/g//9SP3CpLctS0kMayKFoTCkmnVMZZK1i6deXCjAwMDAwMDDwbVh8tT6/Dw8H/JIfFvC/w8uN1n1jhrT0EDcqu+FKfIqJLj38IW7gxth8EQY3cCP2G7iBG+d+IypBv1HcjZhT/ENOwY2rgZe/rqobY9Yxc4rVirGZmQU36roxcquNwpYStqcXpW6oeI9hTWnLg1bcKNyLpkKx6gZucKbs06RvN5hv4EZcKcM25hucKYdRxj5QfAKGG0XdiCNQlf3GjQyLG/nVif2k6ToHbuCGi+HdKW7gRqob4XoPbtBvBA3ySzfcIKeEnGKlQ8gpzDe4WQ0MDAwMDAz8EPwGuIGWoOEqKugAAAAASUVORK5CYII=';
 
-/* 基础字符池：大小写字母 + 数字 + 合法特殊符号 */
 var CHARS_BASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-@#$%&+=~^()[]{}!,;\'';
-/* 装饰字符池：Unicode 符号，视觉更乱，文件名合法 */
 var CHARS_DECO = '§¶¢£¥€©®°±×÷µøæßðþŋħŁ¤¡¿«»†‡•‰¶';
 
 function rnd(max){
@@ -371,7 +394,6 @@ function rnd(max){
 function randomName(){
  var alnum = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
  var len = 30, out = '';
- /* 首位强制字母或数字，避免以符号开头在某些系统出问题 */
  out += alnum.charAt(rnd(alnum.length));
  for(var i=1;i<len;i++){
   if(rnd(100) < 20){
@@ -380,7 +402,6 @@ function randomName(){
    out += CHARS_BASE.charAt(rnd(CHARS_BASE.length));
   }
  }
- /* 去掉连续的点（防路径穿越），末尾不能是点 */
  while(out.indexOf('..') !== -1){ out = out.replace('..', '._'); }
  if(out.charAt(out.length-1) === '.'){ out = out.slice(0,-1) + alnum.charAt(rnd(alnum.length)); }
  return out;
