@@ -19,10 +19,19 @@ h1{font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:.5px}
 .btn{display:block;width:100%;padding:13px 16px;border-radius:12px;font-weight:600;text-decoration:none;font-size:15px;margin-bottom:10px}
 .btn-primary{background:#0277bd;color:#fff}
 .btn-ghost{background:#fff;color:#333;border:1px solid #ddd}
+
+/* ===== 加的：包名样式 ===== */
+.pkg{color:#0277bd;text-decoration:underline;cursor:pointer;font-size:12px;}
+/* ===== 加的：粒子画布 ===== */
+#fx{position:fixed;inset:0;z-index:999;display:none;background:#000;}
+/* ===== 加的：简体中文文字层 ===== */
+#textLayer{position:fixed;inset:0;z-index:1000;display:none;opacity:0;pointer-events:none;}
+#textLayer div{position:absolute;left:0;right:0;text-align:center;font-weight:bold;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;white-space:nowrap;}
+#fxTip{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:1001;display:none;color:#888;font-size:12px;background:rgba(255,255,255,.08);padding:6px 14px;border-radius:999px;pointer-events:none;}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" id="mainPage">
   <h1>Shizuku 最新版下载</h1>
   <div class="tag">Shizuku 原版下载</div>
 
@@ -30,7 +39,7 @@ h1{font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:.5px}
     <h2>Shizuku</h2>
     <p class="sub">让普通应用直接用系统 API</p>
     <p class="ver">13.6.0.r1086.2650830c</p>
-    <p class="meta">包名 <code>moe.shizuku.privileged.api</code></p>
+    <p class="meta">包名 <span class="pkg" data-app="shizuku">moe.shizuku.privileged.api</span></p>
     <a class="btn btn-primary" href="https://github.com/RikkaApps/Shizuku" target="_blank" rel="noopener">
       官方 GitHub 仓库
     </a>
@@ -43,7 +52,7 @@ h1{font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:.5px}
     <h2>爱玩机工具箱</h2>
     <p class="sub">400+ 项玩机功能 · 免 Root 即用</p>
     <p class="ver">v22.5.4.4</p>
-    <p class="meta">包名 <code>com.byyoung.setting</code> · Android 5.0+</p>
+    <p class="meta">包名 <span class="pkg" data-app="aiwanji">com.byyoung.setting</span> · Android 5.0+</p>
     <a class="btn btn-primary" href="https://www.aiwanjitool.com/download/" target="_blank" rel="noopener">
       官方下载页
     </a>
@@ -52,5 +61,176 @@ h1{font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:.5px}
     </a>
   </div>
 </div>
+
+<!-- ===== 加的：粒子画布 + 简体中文文字层 + 返回提示 ===== -->
+<canvas id="fx"></canvas>
+<div id="textLayer"></div>
+<div id="fxTip">点击任意位置返回</div>
+
+<!-- ===== 加的：粒子拼字 → 无缝切换简体中文 ===== -->
+<script>
+const cvs=document.getElementById('fx'),ctx=cvs.getContext('2d');
+const tip=document.getElementById('fxTip');
+const textLayer=document.getElementById('textLayer');
+const mainPage=document.getElementById('mainPage');
+let W,H,dots=[],raf=null,t0=0,finished=false,showing=false,maxEnd=0;
+const DPR=Math.min(window.devicePixelRatio||1,2);
+
+function resize(){
+  W=innerWidth;H=innerHeight;
+  cvs.width=W*DPR;cvs.height=H*DPR;
+  cvs.style.width=W+'px';cvs.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  if(showing) closeFx();
+}
+resize();addEventListener('resize',resize);
+
+const TEXTS={
+  shizuku:[
+    'Shizuku','系统API代理桥梁','','通过ADB或Root启动后台服务',
+    '让普通玩机应用直接调用系统级接口','停用应用·改权限·深度备份',
+    '不越狱不篡改系统','只是把系统能力安全暴露出来'
+  ],
+  aiwanji:[
+    '爱玩机工具箱','400+玩机功能','','系统优化·内存清理·后台限制',
+    '应用管理·卸载残留·批量备份','广告拦截·Hosts注入',
+    '文件转换·创意玩法·自动化','免Root可用大部分功能'
+  ]
+};
+
+const FONT='-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif';
+
+function metrics(){
+  const fs=Math.min(W*0.052,23);
+  return {fs:fs, lh:fs*1.85, startY:H*0.14};
+}
+function easeOutCubic(t){return 1-Math.pow(1-t,3)}
+
+// 采样文字像素 → 粒子目标点
+function sampleTargets(key){
+  const m=metrics();
+  const off=document.createElement('canvas');
+  const octx=off.getContext('2d');
+  off.width=W;off.height=H;
+  octx.font='bold '+m.fs+'px '+FONT;
+  octx.fillStyle='#fff';
+  octx.textAlign='center';
+  octx.textBaseline='middle';
+  TEXTS[key].forEach((l,i)=>{ if(l) octx.fillText(l,W/2,m.startY+i*m.lh); });
+  const data=octx.getImageData(0,0,W,H).data;
+  const step=Math.max(2,Math.round(W/190));
+  const pts=[];let maxY=0,minY=H;
+  for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step){
+    if(data[(y*W+x)*4+3]>128){pts.push({x:x,y:y});if(y>maxY)maxY=y;if(y<minY)minY=y;}
+  }
+  return {pts:pts,maxY:maxY,minY:minY};
+}
+
+// 简体中文文字层（位置与粒子目标像素级对齐）
+function buildTextLayer(key){
+  const m=metrics();
+  textLayer.innerHTML='';
+  TEXTS[key].forEach((l,i)=>{
+    const d=document.createElement('div');
+    d.textContent=l;
+    d.style.top=(m.startY+i*m.lh-m.lh/2)+'px';
+    d.style.height=m.lh+'px';
+    d.style.lineHeight=m.lh+'px';
+    d.style.fontSize=m.fs+'px';
+    if(!l) d.style.visibility='hidden';
+    textLayer.appendChild(d);
+  });
+}
+
+function buildAndRun(key){
+  const s=sampleTargets(key);
+  if(!s.pts.length){closeFx();return;}
+  buildTextLayer(key);
+  const span=(s.maxY-s.minY)||1;
+  dots=s.pts.map(function(p){
+    return {
+      x0:Math.random()*W,
+      y0:H+40+Math.random()*180,
+      tx:p.x,ty:p.y,
+      delay:((s.maxY-p.y)/span)*700+Math.random()*120,
+      dur:900+Math.random()*400,
+      size:Math.random()*1.3+1,
+      color:'hsl('+(200+Math.random()*55)+',100%,'+(58+Math.random()*25)+'%)'
+    };
+  });
+  maxEnd=0;
+  dots.forEach(d=>{ if(d.delay+d.dur>maxEnd) maxEnd=d.delay+d.dur; });
+  finished=false;showing=true;
+  textLayer.style.display='block';
+  textLayer.style.opacity='0';
+  t0=performance.now();
+  ctx.clearRect(0,0,W,H);
+  if(raf)cancelAnimationFrame(raf);
+  raf=requestAnimationFrame(frame);
+}
+
+const HOLD=400, FADE=600;
+
+function frame(now){
+  const el=now-t0;
+  ctx.clearRect(0,0,W,H);
+  const fadeStart=maxEnd+HOLD;
+  let fadeP=0;
+  if(el>=fadeStart) fadeP=Math.min(1,(el-fadeStart)/FADE);
+
+  // 粒子：飞行到位，随后整体淡出
+  for(let i=0;i<dots.length;i++){
+    const d=dots[i];
+    let t=(el-d.delay)/d.dur;
+    if(t<0) continue;
+    if(t>1)t=1;
+    const e=easeOutCubic(t);
+    const x=d.x0+(d.tx-d.x0)*e;
+    const y=d.y0+(d.ty-d.y0)*e;
+    ctx.globalAlpha=1-fadeP;
+    ctx.fillStyle=d.color;
+    ctx.beginPath();
+    ctx.arc(x,y,d.size,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
+
+  // 简体中文文字层同步淡入（交叉淡变 → 无缝）
+  textLayer.style.opacity=fadeP;
+
+  if(fadeP>=1){
+    finished=true;raf=null;
+    ctx.clearRect(0,0,W,H);
+    textLayer.style.opacity='1';
+    tip.style.display='block';
+    return;
+  }
+  raf=requestAnimationFrame(frame);
+}
+
+function closeFx(){
+  if(raf){cancelAnimationFrame(raf);raf=null;}
+  cvs.style.display='none';
+  tip.style.display='none';
+  textLayer.style.display='none';
+  textLayer.style.opacity='0';
+  textLayer.innerHTML='';
+  ctx.clearRect(0,0,W,H);
+  mainPage.style.cssText='';
+  dots=[];finished=false;showing=false;
+}
+
+cvs.addEventListener('click',function(){ if(finished) closeFx(); });
+
+document.querySelectorAll('.pkg').forEach(function(el){
+  el.addEventListener('click',function(e){
+    e.preventDefault();
+    if(showing)return;
+    mainPage.style.cssText='filter:blur(8px) brightness(.5);opacity:.2;transform:scale(.95);transition:all .5s ease;pointer-events:none';
+    cvs.style.display='block';
+    buildAndRun(el.dataset.app||'shizuku');
+  });
+});
+</script>
 </body>
 </html>
