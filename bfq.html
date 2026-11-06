@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CyberPlayer - 词云沉浸版</title>
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ea;
+            --bg-dark: #0a0a0c;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-dark);
+            color: #fff;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden;
+            background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #0a0a0c 70%);
+            -webkit-user-select: none; user-select: none;
+        }
+        
+        #login-panel {
+            width: 350px; padding: 40px 30px;
+            background: var(--glass); border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+            text-align: center; backdrop-filter: blur(10px);
+        }
+        .title { font-size: 22px; font-weight: bold; margin-bottom: 15px; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .secret-box { background: #000; border: 1px dashed var(--neon-blue); padding: 15px 10px; border-radius: 10px; margin-bottom: 10px; }
+        .secret-key { font-family: monospace; color: var(--neon-pink); font-size: 20px; font-weight: bold; user-select: all; word-break: break-all; }
+        .secret-hint { font-size: 11px; color: #666; margin-bottom: 15px; }
+        
+        .period-warning {
+            background: rgba(255, 51, 51, 0.1); border: 1px solid #ff3333; border-radius: 10px;
+            padding: 12px 14px; margin-bottom: 15px; text-align: left;
+            animation: warningPulse 2s ease-in-out infinite alternate;
+        }
+        @keyframes warningPulse { from { box-shadow: 0 0 5px rgba(255,51,51,0.2); } to { box-shadow: 0 0 15px rgba(255,51,51,0.5); } }
+        .period-warning .warning-title { font-size: 13px; font-weight: bold; color: #ff3333; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .period-warning .warning-text { font-size: 11px; color: #ff9999; line-height: 1.6; }
+        .period-warning .warning-text strong { color: #ff5555; font-family: monospace; font-size: 13px; }
+        .period-warning .warning-text .aegis { color: #ff00ea; font-weight: bold; }
+        
+        .manual-input-row { display: flex; gap: 8px; margin-bottom: 15px; }
+        .manual-input-row input { flex: 1; padding: 10px 12px; font-size: 14px; text-align: center; background: rgba(0,0,0,0.6); border: 1px solid var(--neon-pink); color: var(--neon-pink); border-radius: 8px; outline: none; letter-spacing: 1px; font-family: monospace; }
+        .manual-input-row button { padding: 10px 14px; background: var(--neon-pink); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; flex-shrink: 0; }
+        .manual-input-row button:hover { box-shadow: 0 0 15px var(--neon-pink); }
+        
+        .divider { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+        .divider span { font-size: 11px; color: #555; }
+        
+        .input-group { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        input[type="text"] { width: 140px; padding: 12px; font-size: 22px; text-align: center; background: rgba(0,0,0,0.5); border: 1px solid var(--neon-blue); color: var(--neon-blue); border-radius: 8px; outline: none; letter-spacing: 2px; }
+        button.verify-btn { padding: 10px 20px; background: var(--neon-blue); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .error-msg { color: #ff3333; font-size: 13px; height: 20px; margin-top: 10px; font-weight: bold;}
+
+        #player-panel {
+            width: 360px; height: 650px; padding: 20px;
+            background: var(--glass); border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none; flex-direction: column; align-items: center;
+            transition: all 0.3s ease; position: relative;
+        }
+        
+        .cover-wrapper { position: relative; width: 160px; height: 160px; margin-bottom: 15px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; }
+        .cover-container { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue)); box-shadow: 0 0 30px rgba(255, 0, 234, 0.3); display: flex; justify-content: center; align-items: center; font-size: 50px; animation: spin 10s linear infinite; animation-play-state: paused; }
+        .cover-container.playing { animation-play-state: running; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .mode-toggle-btn {
+            position: absolute; right: -45px; top: 50%; transform: translateY(-50%);
+            width: 36px; height: 36px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-blue);
+            border-radius: 50%; color: var(--neon-blue); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 18px; transition: 0.3s; box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); z-index: 10;
+        }
+        .mode-toggle-btn:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 20px var(--neon-blue); }
+
+        .btn-group { display: flex; gap: 10px; margin-bottom: 15px; flex-shrink: 0; }
+        .import-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 12px; }
+        .hidden-file { position: absolute; width: 1px; height: 1px; opacity: 0; z-index: -1; }
+
+        .song-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; text-align: center; flex-shrink: 0; width: 100%;}
+        .song-artist { font-size: 12px; color: var(--neon-blue); margin-bottom: 10px; flex-shrink: 0;}
+        
+        .lyrics-wrapper { width: 100%; flex: 1; position: relative; margin-bottom: 15px; overflow: hidden; }
+
+        .lyrics-container {
+            width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden !important; text-align: center; scrollbar-width: none;
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+            padding: 0;
+            scroll-behavior: auto; touch-action: pan-y;
+        }
+        .lyrics-container::-webkit-scrollbar { display: none; }
+        
+        .lyric-line { 
+            padding: 12px 10px; 
+            color: #777; 
+            font-size: 15px; 
+            opacity: 0.5; 
+            transition: font-size 0.3s ease, color 0.3s ease, opacity 0.3s ease, text-shadow 0.3s ease; 
+        }
+        .lyric-line.active { 
+            color: var(--neon-blue); 
+            font-weight: bold; 
+            opacity: 1; 
+            font-size: 20px; 
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 20px rgba(0, 243, 255, 0.5); 
+            animation: neonBreath 2s ease-in-out infinite alternate; 
+        }
+        @keyframes neonBreath { from { text-shadow: 0 0 10px rgba(0, 243, 255, 0.6), 0 0 20px rgba(0, 243, 255, 0.3); } to { text-shadow: 0 0 15px rgba(0, 243, 255, 1), 0 0 30px rgba(0, 243, 255, 0.7), 0 0 40px rgba(255, 0, 234, 0.4); } }
+
+        .danmaku-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; pointer-events: none; overflow: hidden; }
+        
+        .danmaku-text {
+            position: absolute;
+            color: var(--neon-blue);
+            font-weight: bold;
+            white-space: normal; word-break: break-word; max-width: 85vw; text-align: center; line-height: 1.4;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 1), 0 0 20px rgba(0, 243, 255, 0.8), 0 0 30px rgba(255, 0, 234, 0.6);
+            transform-origin: center;
+            animation: danmakuEnter 0.5s ease-out forwards;
+        }
+        .danmaku-text.fade-out { animation: danmakuExit 0.6s ease-in forwards; }
+        @keyframes danmakuEnter { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(var(--rot)); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(var(--rot)); } }
+        @keyframes danmakuExit { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(var(--rot)); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8) translateY(-20px) rotate(var(--rot)); } }
+
+        .progress-wrap { width: 100%; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-shrink: 0; }
+        .time { font-size: 11px; color: #aaa; width: 35px; text-align: center; }
+        .progress-bar { flex: 1; height: 30px; display: flex; align-items: center; cursor: pointer; position: relative; }
+        .progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; position: relative; pointer-events: none; }
+        .progress-fill { width: 0%; height: 100%; background: var(--neon-blue); border-radius: 3px; position: absolute; left: 0; top: 0; box-shadow: 0 0 10px var(--neon-blue); }
+        .progress-thumb { width: 16px; height: 16px; background: #fff; border-radius: 50%; position: absolute; top: 50%; left: 0; transform: translate(-50%, -50%); box-shadow: 0 0 10px var(--neon-blue); transition: transform 0.1s; }
+        .progress-bar:active .progress-thumb { transform: translate(-50%, -50%) scale(1.4); }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 30px; width: 100%; flex-shrink: 0; margin-bottom: 10px; position: relative;}
+        .btn { cursor: pointer; font-size: 24px; }
+        .play-btn { font-size: 40px; color: var(--neon-blue); }
+        .fullscreen-btn { position: absolute; right: 0; font-size: 20px; color: #aaa; cursor: pointer; }
+        .playlist { width: 100%; max-height: 120px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 5px; }
+        .playlist-item { padding: 8px; font-size: 12px; border-bottom: 1px solid #222; cursor: pointer; display: flex; justify-content: space-between;}
+        audio { display: none; }
+
+        #player-panel.danmaku-mode-active { background-color: #000; border: none; }
+        #player-panel.danmaku-mode-active .cover-wrapper,
+        #player-panel.danmaku-mode-active .song-title,
+        #player-panel.danmaku-mode-active .song-artist,
+        #player-panel.danmaku-mode-active .btn-group,
+        #player-panel.danmaku-mode-active .progress-wrap,
+        #player-panel.danmaku-mode-active .controls,
+        #player-panel.danmaku-mode-active .playlist,
+        #player-panel.danmaku-mode-active .lyrics-container { display: none !important; }
+        #player-panel.danmaku-mode-active .lyrics-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: 0; padding: 0; z-index: 100; }
+        #player-panel.danmaku-mode-active .danmaku-layer { display: block; }
+
+        #exit-danmaku-btn {
+            display: none; position: absolute; top: 20px; right: 20px; z-index: 999;
+            background: rgba(255, 0, 234, 0.15); border: 1px solid var(--neon-pink); color: var(--neon-pink);
+            padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: bold;
+            box-shadow: 0 0 15px rgba(255, 0, 234, 0.3); transition: 0.3s;
+        }
+        #exit-danmaku-btn:hover { background: var(--neon-pink); color: #000; }
+        #player-panel.danmaku-mode-active #exit-danmaku-btn { display: block; }
+
+        #visualizer { display: none; position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; z-index: 99; pointer-events: none; }
+        
+        #player-panel:fullscreen { width: 100vw; height: 100vh; border-radius: 0; padding: 0; background-color: #000; }
+        #player-panel:fullscreen #visualizer { display: block; }
+        
+        #player-panel:fullscreen .cover-wrapper,
+        #player-panel:fullscreen .song-title,
+        #player-panel:fullscreen .song-artist,
+        #player-panel:fullscreen .btn-group,
+        #player-panel:fullscreen .progress-wrap,
+        #player-panel:fullscreen .controls,
+        #player-panel:fullscreen .playlist { display: none !important; }
+
+        #player-panel:fullscreen .lyrics-container { 
+            width: 100%; height: 100%; margin: 0 auto; 
+            text-align: left; padding-left: 10vw;
+        }
+        #player-panel:fullscreen .lyric-line { font-size: 22px; padding: 15px 0; }
+        #player-panel:fullscreen .lyric-line.active { font-size: 30px; }
+        
+        #player-panel:fullscreen .danmaku-text { font-size: 24px !important; }
+
+        #side-controls { display: none; position: fixed; right: 20px; top: 50%; transform: translateY(-50%); flex-direction: column; gap: 20px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(0, 243, 255, 0.3); padding: 20px 15px; border-radius: 30px; backdrop-filter: blur(10px); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
+        #side-controls.show { opacity: 1; }
+        #side-controls .btn { font-size: 24px; color: #fff; cursor: pointer; text-align: center; }
+        #player-panel:fullscreen #side-controls { display: flex; }
+        #top-tools { display: none; position: fixed; top: 20px; right: 20px; gap: 15px; z-index: 999; }
+        #player-panel:fullscreen #top-tools { display: flex; }
+        .tool-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer; backdrop-filter: blur(5px); }
+    </style>
+</head>
+<body>
+
+    <div id="login-panel">
+        <div class="title">首次安全绑定</div>
+        <div class="secret-box"><div class="secret-key" id="secret-display">...</div></div>
+        <div class="secret-hint">上方为自动生成的密钥，也可手动输入旧密钥</div>
+        
+        <div class="period-warning">
+            <div class="warning-title">⚠ 验证器要求</div>
+            <div class="warning-text">
+                ① 必须使用 <span class="aegis">Aegis 验证器</span>，其他验证器（Google、Microsoft、Authy 等）生成的码<strong>无效</strong>。<br>
+                ② 添加密钥时，时间间隔必须设为 <strong>100000 秒</strong>（约27.8小时）。<br>
+                若使用默认 30 秒，生成的6位动态码将<strong>无法通过验证</strong>。
+            </div>
+        </div>
+        
+        <div class="manual-input-row">
+            <input type="text" id="manual-secret" placeholder="输入16位密钥" maxlength="16" style="text-transform: uppercase;">
+            <button onclick="useManualSecret()">使用</button>
+        </div>
+        
+        <div class="divider"><span>或</span></div>
+        
+        <div class="input-group">
+            <input type="text" id="totp-code" maxlength="6" placeholder="000000">
+            <button class="verify-btn" onclick="verifyCode()">验证</button>
+        </div>
+        <div class="error-msg" id="error-msg"></div>
+    </div>
+
+    <div id="player-panel">
+        <canvas id="visualizer"></canvas>
+        
+        <div id="top-tools">
+            <button class="tool-btn" onclick="toggleSideControls()">隐藏/显示侧栏</button>
+            <button class="tool-btn" onclick="exitFullscreen()">退出全屏 ✕</button>
+        </div>
+
+        <div id="side-controls" class="show">
+            <span class="btn" onclick="prevSong()">⏮</span>
+            <span class="btn" id="side-play-btn" onclick="togglePlay()">▶</span>
+            <span class="btn" onclick="nextSong()">⏭</span>
+        </div>
+
+        <button id="exit-danmaku-btn" onclick="toggleLyricMode()">退出词云 ✕</button>
+
+        <div class="cover-wrapper">
+            <div class="cover-container" id="coverContainer">🎵</div>
+            <div class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleLyricMode()" title="切换歌词模式">🔄</div>
+        </div>
+        
+        <div class="song-title" id="title">暂无歌曲</div>
+        <div class="song-artist" id="artist">请导入本地文件</div>
+        
+        <div class="btn-group">
+            <input type="file" id="audioInput" accept="audio/*" class="hidden-file">
+            <button class="import-btn" onclick="document.getElementById('audioInput').click()">添加歌曲</button>
+            <input type="file" id="lyricInput" accept="*/*" class="hidden-file">
+            <button class="import-btn" onclick="document.getElementById('lyricInput').click()">导入歌词</button>
+        </div>
+
+        <div class="lyrics-wrapper">
+            <div class="lyrics-container" id="lyricsContainer">
+                <div class="lyric-line">请添加并选中歌曲</div>
+            </div>
+            <div class="danmaku-layer" id="danmakuLayer"></div>
+        </div>
+
+        <div class="progress-wrap">
+            <span class="time" id="curr-time">0:00</span>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-fill"></div>
+                    <div class="progress-thumb" id="progress-thumb"></div>
+                </div>
+            </div>
+            <span class="time" id="total-time">0:00</span>
+        </div>
+        
+        <div class="controls">
+            <span class="btn" onclick="prevSong()">⏮</span>
+            <span class="btn play-btn" id="play-btn" onclick="togglePlay()">▶</span>
+            <span class="btn" onclick="nextSong()">⏭</span>
+            <span class="fullscreen-btn" onclick="enterFullscreen()">⛶</span>
+        </div>
+
+        <div class="playlist" id="playlist"></div>
+        <audio id="audio-player"></audio>
+    </div>
+
+    <script>
+        let currentSecret = "";
+        function generateRandomBase32(length = 16) { const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'; let result = ''; const randomValues = new Uint32Array(length); window.crypto.getRandomValues(randomValues); for (let i = 0; i < length; i++) result += chars.charAt(randomValues[i] % chars.length); return result; }
+        function base32tohex(base32) { let base32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"; let bits = ""; let hex = ""; for (let i = 0; i < base32.length; i++) bits += base32chars.indexOf(base32.charAt(i).toUpperCase()).toString(2).padStart(5, '0'); for (let i = 0; i + 4 <= bits.length; i += 4) hex += parseInt(bits.substr(i, 4), 2).toString(16).padStart(1, '0'); let bytes = []; for (let i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16)); return new Uint8Array(bytes); }
+        async function generateTOTP(secret) { const counter = Math.floor(Math.round(new Date().getTime() / 1000) / 100000); const buffer = new ArrayBuffer(8); new DataView(buffer).setUint32(4, counter, false); const cryptoKey = await window.crypto.subtle.importKey("raw", base32tohex(secret), { name: "HMAC", hash: "SHA-1" }, false, ["sign"]); const signature = await window.crypto.subtle.sign("HMAC", cryptoKey, buffer); const hash = new Uint8Array(signature); const offset = hash[hash.length - 1] & 0xf; const binary = ((hash[offset] & 0x7f) << 24) | ((hash[offset + 1] & 0xff) << 16) | ((hash[offset + 2] & 0xff) << 8) | (hash[offset + 3] & 0xff); return (binary % 1000000).toString().padStart(6, '0'); }
+        async function verifyCode() { const inputCode = document.getElementById('totp-code').value; if (inputCode === await generateTOTP(currentSecret)) { document.getElementById('login-panel').style.display = 'none'; document.getElementById('player-panel').style.display = 'flex'; } else { document.getElementById('error-msg').innerText = "验证码错误！请确认使用 Aegis 验证器且时间间隔设为 100000 秒"; } }
+        
+        function useManualSecret() {
+            const input = document.getElementById('manual-secret').value.trim().toUpperCase();
+            if (input.length !== 16) { document.getElementById('error-msg').innerText = "密钥必须是16位！"; return; }
+            const validChars = /^[A-Z2-7]+$/;
+            if (!validChars.test(input)) { document.getElementById('error-msg').innerText = "密钥只能包含 A-Z 和 2-7！"; return; }
+            currentSecret = input;
+            localStorage.setItem('cyber_totp_secret', currentSecret);
+            document.getElementById('secret-display').innerText = currentSecret;
+            document.getElementById('manual-secret').value = '';
+            document.getElementById('error-msg').innerText = "";
+            document.getElementById('error-msg').style.color = "var(--neon-blue)";
+            document.getElementById('error-msg').innerText = "密钥已设置！请获取验证码并验证";
+            setTimeout(() => { document.getElementById('error-msg').style.color = "#ff3333"; }, 2000);
+        }
+        
+        function initAuth() { let secret = localStorage.getItem('cyber_totp_secret'); if (!secret || secret.length !== 16) { secret = generateRandomBase32(16); localStorage.setItem('cyber_totp_secret', secret); } currentSecret = secret; document.getElementById('secret-display').innerText = secret; }
+
+        let db;
+        function initDB() { const req = indexedDB.open('CyberPlayerDB', 1); req.onupgradeneeded = e => { db = e.target.result; db.createObjectStore('songs', { keyPath: 'id', autoIncrement: true }); }; req.onsuccess = e => { db = e.target.result; loadPlaylistFromDB(); }; }
+        function saveToDB(name, fileBlob, lyricsText, callback) { const transaction = db.transaction(['songs'], 'readwrite'); const store = transaction.objectStore('songs'); const req = store.add({ name: name, blob: fileBlob, lyrics: lyricsText }); req.onsuccess = () => callback(); }
+
+        const audio = document.getElementById('audio-player');
+        const lyricsContainer = document.getElementById('lyricsContainer');
+        const danmakuLayer = document.getElementById('danmakuLayer');
+        const playlistDiv = document.getElementById('playlist');
+        const playerPanel = document.getElementById('player-panel');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progress-fill');
+        const progressThumb = document.getElementById('progress-thumb');
+        
+        let songs = []; let currentIndex = -1; let parsedLyrics = [];
+        let lyricTimer = null; let isUserScrolling = false; 
+        let userScrollTimeout = null; let currentActiveIndex = -1; let isDraggingProgress = false; 
+
+        let lyricMode = 'scroll';
+        let activeDanmakuEl = null; 
+
+        function toggleLyricMode() {
+            if (lyricMode === 'scroll') {
+                lyricMode = 'danmaku';
+                playerPanel.classList.add('danmaku-mode-active'); 
+                danmakuLayer.style.display = 'block';
+                if (currentActiveIndex !== -1 && parsedLyrics[currentActiveIndex]) {
+                    danmakuLayer.innerHTML = '';
+                    activeDanmakuEl = null;
+                    spawnDanmaku(parsedLyrics[currentActiveIndex].text);
+                }
+            } else {
+                lyricMode = 'scroll';
+                playerPanel.classList.remove('danmaku-mode-active'); 
+                danmakuLayer.style.display = 'none';
+                danmakuLayer.innerHTML = ''; 
+                activeDanmakuEl = null;
+                alignLyricToCenter(); 
+            }
+        }
+
+        function spawnDanmaku(text) {
+            if (lyricMode !== 'danmaku') return;
+            if (activeDanmakuEl) {
+                const oldEl = activeDanmakuEl; 
+                oldEl.classList.add('fade-out'); 
+                setTimeout(() => { if (oldEl.parentNode) oldEl.parentNode.removeChild(oldEl); }, 600);
+            }
+            const el = document.createElement('div');
+            el.className = 'danmaku-text';
+            el.innerText = text;
+            let fontSize = 20 + Math.random() * 6;
+            const randomRotate = (Math.random() * 20 - 10).toFixed(1) + 'deg';
+            el.style.fontSize = `${fontSize}px`;
+            el.style.setProperty('--rot', randomRotate);
+            el.style.left = '50%'; el.style.top = '50%'; el.style.opacity = '0'; el.style.animation = 'none';
+            el.style.transform = `translate(-50%, -50%) scale(1) rotate(${randomRotate})`;
+            danmakuLayer.appendChild(el);
+            el.offsetHeight;
+            let rect = el.getBoundingClientRect();
+            const containerW = danmakuLayer.offsetWidth;
+            const containerH = danmakuLayer.offsetHeight;
+            const safeMaxW = containerW * 0.9;
+            const safeMaxH = containerH * 0.9;
+            if (rect.width > safeMaxW || rect.height > safeMaxH) {
+                const scaleX = safeMaxW / rect.width;
+                const scaleY = safeMaxH / rect.height;
+                const scaleFactor = Math.min(scaleX, scaleY); 
+                fontSize = fontSize * scaleFactor;
+                el.style.fontSize = `${fontSize}px`;
+                rect = el.getBoundingClientRect();
+            }
+            const actualW = rect.width; const actualH = rect.height;
+            const minLeft = actualW / 2 + 5; const maxLeft = containerW - actualW / 2 - 5;
+            const minTop = actualH / 2 + 5; const maxTop = containerH - actualH / 2 - 5;
+            const safeMinLeft = maxLeft > minLeft ? minLeft : containerW / 2;
+            const safeMaxLeft = maxLeft > minLeft ? maxLeft : containerW / 2;
+            const safeMinTop = maxTop > minTop ? minTop : containerH / 2;
+            const safeMaxTop = maxTop > minTop ? maxTop : containerH / 2;
+            const randomLeft = Math.random() * (safeMaxLeft - safeMinLeft) + safeMinLeft;
+            const randomTop = Math.random() * (safeMaxTop - safeMinTop) + safeMinTop;
+            el.style.left = `${randomLeft}px`;
+            el.style.top = `${randomTop}px`;
+            el.style.opacity = '1';
+            el.style.animation = ''; 
+            el.style.transform = ''; 
+            activeDanmakuEl = el; 
+        }
+
+        const sideControls = document.getElementById('side-controls');
+        let sideControlsVisible = true;
+        function toggleSideControls() { sideControlsVisible = !sideControlsVisible; sideControls.classList.toggle('show', sideControlsVisible); }
+
+        lyricsContainer.addEventListener('touchstart', () => { isUserScrolling = true; clearTimeout(userScrollTimeout); });
+        lyricsContainer.addEventListener('touchend', () => { userScrollTimeout = setTimeout(() => { isUserScrolling = false; if (currentActiveIndex !== -1 && lyricMode === 'scroll') alignLyricToCenter(); }, 3000); });
+        lyricsContainer.addEventListener('mousedown', () => { isUserScrolling = true; clearTimeout(userScrollTimeout); });
+        lyricsContainer.addEventListener('mouseup', () => { userScrollTimeout = setTimeout(() => { isUserScrolling = false; if (currentActiveIndex !== -1 && lyricMode === 'scroll') alignLyricToCenter(); }, 3000); });
+        lyricsContainer.addEventListener('wheel', () => { isUserScrolling = true; clearTimeout(userScrollTimeout); userScrollTimeout = setTimeout(() => { isUserScrolling = false; if (currentActiveIndex !== -1 && lyricMode === 'scroll') alignLyricToCenter(); }, 3000); });
+        
+        function loadPlaylistFromDB() { const req = db.transaction(['songs'], 'readonly').objectStore('songs').getAll(); req.onsuccess = () => { songs = req.result; renderPlaylist(); }; }
+        function renderPlaylist() { playlistDiv.innerHTML = ''; songs.forEach((song, index) => { const div = document.createElement('div'); div.className = 'playlist-item'; div.innerHTML = `<span>${song.name}</span> <span style="color:#ff00ea">▶</span>`; div.onclick = () => { currentIndex = index; playCurrentSong(); }; playlistDiv.appendChild(div); }); }
+        
+        document.getElementById('audioInput').addEventListener('change', function(e) { const file = e.target.files[0]; if (!file) return; saveToDB(file.name, file, "", () => { loadPlaylistFromDB(); }); });
+        document.getElementById('lyricInput').addEventListener('change', function(e) {
+            const file = e.target.files[0]; if (!file) return;
+            if (currentIndex === -1) { alert("请先在下方列表中点击一首歌播放，再给它导入歌词！"); return; }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const text = event.target.result;
+                const req = db.transaction(['songs'], 'readwrite').objectStore('songs').get(songs[currentIndex].id);
+                req.onsuccess = () => { const data = req.result; data.lyrics = text; db.transaction(['songs'], 'readwrite').objectStore('songs').put(data); songs[currentIndex].lyrics = text; handleLyrics(text); };
+            };
+            reader.readAsText(file, 'UTF-8');
+        });
+
+        function playCurrentSong() {
+            if (currentIndex === -1 || songs.length === 0) return;
+            const song = songs[currentIndex];
+            audio.src = URL.createObjectURL(song.blob);
+            document.getElementById('title').innerText = song.name.replace(/\.[^/.]+$/, "");
+            document.getElementById('artist').innerText = "本地永久音乐库";
+            document.getElementById('play-btn').innerText = '▶';
+            document.getElementById('side-play-btn').innerText = '▶';
+            document.getElementById('coverContainer').classList.remove('playing');
+            progressFill.style.width = '0%'; progressThumb.style.left = '0%';
+            currentActiveIndex = -1; 
+            danmakuLayer.innerHTML = '';
+            activeDanmakuEl = null;
+            if (song.lyrics) { handleLyrics(song.lyrics); } 
+            else { parsedLyrics = []; lyricsContainer.innerHTML = `<div class="lyric-line">未添加歌词，请点击上方导入</div>`; }
+            togglePlay();
+            clearInterval(lyricTimer); startLyricSync(); 
+        }
+
+        function togglePlay() {
+            if (!audio.src) return;
+            const playBtn = document.getElementById('play-btn');
+            const sidePlayBtn = document.getElementById('side-play-btn');
+            const cover = document.getElementById('coverContainer');
+            if (audio.paused) {
+                audio.play(); playBtn.innerText = '⏸'; sidePlayBtn.innerText = '⏸'; cover.classList.add('playing');
+            } else {
+                audio.pause(); playBtn.innerText = '▶'; sidePlayBtn.innerText = '▶'; cover.classList.remove('playing');
+            }
+        }
+
+        function nextSong() { if (songs.length === 0) return; currentIndex = (currentIndex + 1) % songs.length; playCurrentSong(); }
+        function prevSong() { if (songs.length === 0) return; currentIndex = (currentIndex - 1 + songs.length) % songs.length; playCurrentSong(); }
+        function formatTime(seconds) { if (isNaN(seconds) || seconds < 0) return "0:00"; return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`; }
+
+        let audioCtx, analyser, source, dataArray, visualizerCanvas, canvasCtx, isAudioInitialized = false;
+        let barHeights = []; let barVelocities = []; 
+        audio.addEventListener('pause', () => { for (let i = 0; i < barHeights.length; i++) { const currentHeight = barHeights[i]; if (currentHeight > 0) { const randomTimeSec = 1.5 + Math.random() * 1.5; barVelocities[i] = currentHeight / (randomTimeSec * 60); } } });
+        audio.addEventListener('play', () => { barVelocities.fill(0); });
+        function initAudioVisualizer() { if (isAudioInitialized) return; const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return; audioCtx = new AudioContext(); analyser = audioCtx.createAnalyser(); analyser.fftSize = 256; source = audioCtx.createMediaElementSource(audio); source.connect(analyser); analyser.connect(audioCtx.destination); dataArray = new Uint8Array(analyser.frequencyBinCount); visualizerCanvas = document.getElementById('visualizer'); canvasCtx = visualizerCanvas.getContext('2d'); isAudioInitialized = true; drawVisualizer(); }
+        function drawVisualizer() { requestAnimationFrame(drawVisualizer); if (!isAudioInitialized) return; const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement; if (!isFullscreen) { canvasCtx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height); barHeights = []; return; } const width = window.innerWidth; const height = 80; if (visualizerCanvas.width !== width || visualizerCanvas.height !== height) { visualizerCanvas.width = width; visualizerCanvas.height = height; } const barWidth = 4; const gap = 3; const totalBars = Math.floor(width / (barWidth + gap)); if (barHeights.length !== totalBars) { barHeights = new Array(totalBars).fill(0); barVelocities = new Array(totalBars).fill(0); } if (!audio.paused) { analyser.getByteFrequencyData(dataArray); } canvasCtx.clearRect(0, 0, width, height); let x = 0; for (let i = 0; i < totalBars; i++) { if (!audio.paused) { let index = Math.floor((i / totalBars) * dataArray.length); let targetHeight = (dataArray[index] / 255) * height; barHeights[i] += (targetHeight - barHeights[i]) * 0.3; } else { if (barHeights[i] > 0) { barHeights[i] -= barVelocities[i]; if (barHeights[i] < 0) barHeights[i] = 0; } } const barHeight = barHeights[i]; if (barHeight > 0) { const gradient = canvasCtx.createLinearGradient(0, height, 0, height - barHeight); gradient.addColorStop(0, '#00f3ff'); gradient.addColorStop(1, '#ff00ea'); canvasCtx.fillStyle = gradient; canvasCtx.fillRect(x, height - barHeight, barWidth, barHeight); } x += barWidth + gap; } }
+        document.body.addEventListener('click', () => { if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); } });
+
+        function alignLyricToCenter() {
+            if (currentActiveIndex !== -1 && lyricMode === 'scroll') {
+                const activeLine = document.getElementById(`lyric-${currentActiveIndex}`);
+                if (activeLine) {
+                    const containerRect = lyricsContainer.getBoundingClientRect();
+                    const lineRect = activeLine.getBoundingClientRect();
+                    const currentCenter = lineRect.top + lineRect.height / 2 - containerRect.top;
+                    const targetCenter = containerRect.height / 2;
+                    const scrollDistance = currentCenter - targetCenter;
+                    lyricsContainer.scrollTop += scrollDistance;
+                }
+            }
+        }
+
+        function enterFullscreen() { initAudioVisualizer(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); if (playerPanel.requestFullscreen) playerPanel.requestFullscreen(); else if (playerPanel.webkitRequestFullscreen) playerPanel.webkitRequestFullscreen(); if (screen.orientation && screen.orientation.lock) { screen.orientation.lock('landscape').catch(err => console.log("横屏锁定失败", err)); } sideControlsVisible = true; sideControls.classList.add('show'); 
+            requestAnimationFrame(() => alignLyricToCenter());
+            setTimeout(alignLyricToCenter, 500);
+        }
+        function exitFullscreen() { if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); setTimeout(alignLyricToCenter, 200); }
+        document.addEventListener('fullscreenchange', handleFullscreenChange); document.addEventListener('webkitfullscreenchange', handleFullscreenChange); window.addEventListener('resize', () => { setTimeout(alignLyricToCenter, 100); });
+        function handleFullscreenChange() { const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement; if (!isFullscreen) { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } setTimeout(alignLyricToCenter, 200); }
+
+        function seekToPosition(e) {
+            if (!audio.duration) return;
+            const rect = progressBar.getBoundingClientRect();
+            let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            clientX = Math.max(rect.left, Math.min(clientX, rect.right));
+            const percent = (clientX - rect.left) / rect.width;
+            progressFill.style.width = `${percent * 100}%`; progressThumb.style.left = `${percent * 100}%`;
+            const targetTime = percent * audio.duration;
+            document.getElementById('curr-time').innerText = formatTime(targetTime);
+            audio.currentTime = targetTime;
+            if (parsedLyrics.length > 0) {
+                let activeIndex = -1;
+                for (let i = 0; i < parsedLyrics.length; i++) { if (targetTime + 0.2 >= parsedLyrics[i].time) activeIndex = i; else break; }
+                if (activeIndex !== -1) {
+                    const lines = lyricsContainer.querySelectorAll('.lyric-line');
+                    lines.forEach(line => line.classList.remove('active'));
+                    const activeLine = document.getElementById(`lyric-${activeIndex}`);
+                    if (activeLine) { activeLine.classList.add('active'); if (!isUserScrolling && lyricMode === 'scroll') alignLyricToCenter(); }
+                    currentActiveIndex = activeIndex;
+                    if (lyricMode === 'danmaku') { danmakuLayer.innerHTML = ''; activeDanmakuEl = null; spawnDanmaku(parsedLyrics[activeIndex].text); }
+                }
+            }
+        }
+        progressBar.addEventListener('mousedown', (e) => { isDraggingProgress = true; seekToPosition(e); });
+        progressBar.addEventListener('touchstart', (e) => { isDraggingProgress = true; seekToPosition(e); e.preventDefault(); }, { passive: false });
+        window.addEventListener('mousemove', (e) => { if (isDraggingProgress) seekToPosition(e); });
+        window.addEventListener('touchmove', (e) => { if (isDraggingProgress) seekToPosition(e); }, { passive: false });
+        window.addEventListener('mouseup', () => { isDraggingProgress = false; });
+        window.addEventListener('touchend', () => { isDraggingProgress = false; });
+
+        function handleLyrics(text) {
+            const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
+            if (timeReg.test(text)) {
+                parsedLyrics = [];
+                const lines = text.split('\n');
+                for (let line of lines) {
+                    line = line.trim(); if (!line) continue;
+                    const match = timeReg.exec(line);
+                    if (match) {
+                        const timeInSeconds = parseInt(match[1]) * 60 + parseInt(match[2]) + (parseInt(match[3]) / (match[3].length === 3 ? 1000 : 100));
+                        const lyricText = line.replace(timeReg, '').trim();
+                        if (lyricText && 
+                            !lyricText.includes('词：') && 
+                            !lyricText.includes('曲：') && 
+                            !lyricText.includes('编曲：') && 
+                            !lyricText.includes('吉他：') &&
+                            !lyricText.includes('制作人：') &&
+                            !lyricText.includes('混音：')) {
+                            parsedLyrics.push({ time: timeInSeconds, text: lyricText });
+                        }
+                    }
+                }
+                parsedLyrics.sort((a, b) => a.time - b.time);
+                lyricsContainer.innerHTML = parsedLyrics.map((l, i) => `<div class="lyric-line" id="lyric-${i}">${l.text}</div>`).join('');
+                
+                requestAnimationFrame(() => {
+                    const containerH = lyricsContainer.clientHeight;
+                    const firstLine = document.getElementById('lyric-0');
+                    if (firstLine) {
+                        const lineH = firstLine.offsetHeight;
+                        const pad = Math.max(0, (containerH - lineH) / 2);
+                        lyricsContainer.style.paddingTop = `${pad}px`;
+                        lyricsContainer.style.paddingBottom = `${pad}px`;
+                    }
+                    alignLyricToCenter();
+                });
+            } else {
+                parsedLyrics = []; 
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                lyricsContainer.innerHTML = lines.map(line => `<div class="lyric-line" style="opacity: 0.8; padding: 4px 0;">${line}</div>`).join('');
+                lyricsContainer.scrollTop = 0;
+            }
+        }
+
+        function startLyricSync() {
+            lyricTimer = setInterval(() => {
+                if (!audio.duration || isDraggingProgress) return; 
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = `${percent}%`; progressThumb.style.left = `${percent}%`;
+                document.getElementById('curr-time').innerText = formatTime(audio.currentTime);
+                document.getElementById('total-time').innerText = formatTime(audio.duration);
+                
+                if (parsedLyrics.length > 0) {
+                    const currentTime = audio.currentTime + 0.2; 
+                    let activeIndex = -1;
+                    for (let i = 0; i < parsedLyrics.length; i++) { if (currentTime >= parsedLyrics[i].time) activeIndex = i; else break; }
+                    
+                    if (activeIndex !== -1 && activeIndex !== currentActiveIndex) {
+                        currentActiveIndex = activeIndex;
+                        const lines = lyricsContainer.querySelectorAll('.lyric-line');
+                        lines.forEach(line => line.classList.remove('active'));
+                        const activeLine = document.getElementById(`lyric-${activeIndex}`);
+                        if (activeLine) {
+                            activeLine.classList.add('active');
+                            if (!isUserScrolling && lyricMode === 'scroll') {
+                                alignLyricToCenter();
+                            }
+                        }
+                        if (lyricMode === 'danmaku') {
+                            spawnDanmaku(parsedLyrics[activeIndex].text);
+                        }
+                    }
+                }
+            }, 100); 
+        }
+
+        audio.addEventListener('ended', nextSong);
+        initAuth();
+        window.onload = () => { if (window.indexedDB) initDB(); else alert("你的浏览器不支持本地数据库！"); };
+    </script>
+</body>
+</html>
